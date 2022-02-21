@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Pressable, StyleSheet } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -82,6 +82,17 @@ function BottomTabNavigator() {
       initialRouteName="TabOne"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          position: "absolute",
+          bottom: 25,
+          left: 20,
+          right: 20,
+          backgroundColor: "white",
+          borderRadius: 20,
+          height: 70,
+          ...styles.shadow,
+        },
       }}
     >
       <BottomTab.Screen
@@ -89,26 +100,8 @@ function BottomTabNavigator() {
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
           title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerStyle: {
-            backgroundColor: "#17567B",
-          },
-          headerTintColor: "#fff",
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+          headerShown: false,
         })}
       />
       <BottomTab.Screen
@@ -123,6 +116,19 @@ function BottomTabNavigator() {
     </BottomTab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+});
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
