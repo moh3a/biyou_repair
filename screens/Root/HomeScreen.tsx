@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
-import { Text, View } from "../components/Themed";
 
-export default function TabTwoScreen() {
+import { Text, View } from "../../components/Themed";
+
+export default function HomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Want to know the state of your item?</Text>
+      <Text style={styles.title}>Biyou Repair</Text>
     </View>
   );
 }
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
   },
 });

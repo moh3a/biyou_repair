@@ -1,21 +1,18 @@
-import { Button, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 import { FontAwesome } from "@expo/vector-icons";
+import { Text, View } from "../../components/Themed";
 
-import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
-
-export default function TabOneScreen({
-  navigation,
-}: RootTabScreenProps<"TabOne">) {
+export default function AccountScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Biyou Repair</Text>
       <View style={styles.loginCta}>
         <Text style={styles.loginCtaText}>
           Avoir un compte vous permets de suivre votre produit et recevoir une
           notification dès qu'il est réparé.
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("TabTwo")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.loginCtaButton}>
             Login <FontAwesome size={30} name="arrow-right" />
           </Text>
@@ -34,7 +31,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "bold",
   },
   loginCta: {
