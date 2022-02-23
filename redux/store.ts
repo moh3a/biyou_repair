@@ -1,9 +1,10 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
+import userSlice from "./userSlice";
 
 const initialState = {};
-const reducer = combineReducers({});
+const reducer = combineReducers({ user: userSlice });
 const middleware = [thunk];
 const store = createStore(
   reducer,

@@ -1,15 +1,53 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Button, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { Text, View } from "../../components/Themed";
+import { fetchUser, selectUser } from "../../redux/userSlice";
 
 const LoginScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
+  const [error, setError] = useState("");
+  const { user } = useSelector(selectUser);
+
+  useEffect(() => {
+    if (user) {
+      navigation.navigate("Account");
+    }
+  }, []);
+
+  const dispatch = useDispatch();
+  const auth = getAuth();
+
+  const submitHandler = async () => {
+    if (email && password) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          dispatch(fetchUser(user));
+          navigation.navigate("Account");
+        })
+        .catch((error) => {
+          setError("Impossible de se connecter!");
+          setTimeout(() => {
+            setError("");
+          }, 3000);
+        });
+    } else {
+      setError("Champs obligatoir!");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+  };
 
   return (
     <View style={styles.container}>
+      {error.length > 1 && email && password && (
+        <Text style={styles.error}>{error}</Text>
+      )}
       <Text style={styles.title}>
         <FontAwesome
           style={styles.back}
@@ -19,9 +57,19 @@ const LoginScreen = ({ navigation }: any) => {
         />{" "}
         S'identifier
       </Text>
-      <View>
+      {error.length > 1 && !email && (
+        <Text style={{ color: "#dd1111", marginHorizontal: 20 }}>
+          <FontAwesome size={20} name="warning" /> {error}
+        </Text>
+      )}
+      <View style={styles.email}>
         <TextInput placeholder="email" onChangeText={(e) => setEmail(e)} />
       </View>
+      {error.length > 1 && !password && (
+        <Text style={{ color: "#dd1111", marginHorizontal: 20 }}>
+          <FontAwesome size={20} name="warning" /> {error}
+        </Text>
+      )}
       <View style={styles.password}>
         <TextInput
           style={{ flex: 8 }}
@@ -40,19 +88,20 @@ const LoginScreen = ({ navigation }: any) => {
           )}
         </TouchableOpacity>
       </View>
-      <Text>
-        Vous n'avez pas un compte?{" "}
+      <Text style={styles.message}>
+        Vous n'avez toujours pas un compte?{" "}
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text>Créer un compte</Text>
+          <Text style={{ color: "gray", fontStyle: "italic" }}>
+            Créez un compte maintenant
+          </Text>
         </TouchableOpacity>
         .
       </Text>
-      <Button
-        onPress={() =>
-          console.log("Log in with this " + email + " " + password)
-        }
-        title="S'identifier"
-      />
+      <TouchableOpacity style={styles.button} onPress={submitHandler}>
+        <Text style={{ color: "#17567B", fontSize: 16, fontWeight: "bold" }}>
+          S'identifier
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -74,11 +123,53 @@ const styles = StyleSheet.create({
     top: 3,
     marginRight: 8,
   },
+  error: {
+    backgroundColor: "#dd1111",
+    color: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  email: {
+    marginHorizontal: 15,
+    marginVertical: 4,
+    padding: 10,
+    fontSize: 35,
+    borderRadius: 15,
+  },
   password: {
     position: "relative",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    marginHorizontal: 15,
+    marginVertical: 4,
+    padding: 10,
+    fontSize: 35,
+    borderRadius: 15,
+  },
+  message: {
+    marginHorizontal: 15,
+    marginVertical: 4,
+    textAlign: "center",
+    fontSize: 20,
+    color: "white",
+  },
+  button: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 4,
+    marginHorizontal: "auto",
+    padding: 10,
+    width: "50%",
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "white",
+    backgroundColor: "white",
+    borderStyle: "solid",
   },
 });
 

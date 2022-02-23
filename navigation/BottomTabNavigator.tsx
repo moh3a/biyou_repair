@@ -2,9 +2,11 @@ import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { StyleSheet } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+import { selectUser } from "../redux/userSlice";
 import HomeScreen from "../screens/Root/HomeScreen";
 import { RootTabParamList, RootTabScreenProps } from "../types";
 import AuthNavigator from "./AuthNavigator";
@@ -12,6 +14,8 @@ import AuthNavigator from "./AuthNavigator";
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
+  const { user } = useSelector(selectUser);
+  const dispatch = useDispatch();
   const colorScheme = useColorScheme();
 
   return (
@@ -22,12 +26,12 @@ function BottomTabNavigator() {
         tabBarShowLabel: false,
         tabBarStyle: {
           position: "absolute",
-          bottom: 25,
-          left: 20,
-          right: 20,
+          bottom: 20,
+          left: 15,
+          right: 15,
           backgroundColor: "white",
           borderRadius: 20,
-          height: 70,
+          height: 60,
           ...styles.shadow,
         },
       }}
@@ -47,7 +51,10 @@ function BottomTabNavigator() {
         options={{
           title: "Auth",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          tabBarIcon: ({ color }) => {
+            if (user) return <TabBarIcon name="user" color={color} />;
+            else return <TabBarIcon name="battery-empty" color={color} />;
+          },
         }}
       />
     </BottomTab.Navigator>
