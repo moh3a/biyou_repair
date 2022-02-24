@@ -45,9 +45,7 @@ const LoginScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      {error.length > 1 && email && password && (
-        <Text style={styles.error}>{error}</Text>
-      )}
+      {error.length > 1 && <Text style={styles.error}>{error}</Text>}
       <Text style={styles.title}>
         <FontAwesome
           style={styles.back}
@@ -57,28 +55,46 @@ const LoginScreen = ({ navigation }: any) => {
         />{" "}
         S'identifier
       </Text>
-      {error.length > 1 && !email && (
-        <Text style={{ color: "#dd1111", marginHorizontal: 20 }}>
-          <FontAwesome size={20} name="warning" /> {error}
-        </Text>
-      )}
       <View style={styles.email}>
-        <TextInput placeholder="email" onChangeText={(e) => setEmail(e)} />
+        <TextInput
+          style={
+            error.length > 1 &&
+            !email && {
+              borderColor: "#dd1111",
+              borderWidth: 2,
+              borderRadius: 15,
+              padding: 10,
+            }
+          }
+          placeholder="email"
+          onChangeText={(e) => setEmail(e)}
+        />
       </View>
-      {error.length > 1 && !password && (
-        <Text style={{ color: "#dd1111", marginHorizontal: 20 }}>
-          <FontAwesome size={20} name="warning" /> {error}
-        </Text>
-      )}
       <View style={styles.password}>
         <TextInput
-          style={{ flex: 8 }}
+          style={{
+            flex: 8,
+            ...(error.length > 1 &&
+              !password && {
+                borderColor: "#dd1111",
+                borderWidth: 2,
+                borderRadius: 15,
+                padding: 10,
+              }),
+          }}
           placeholder="mot de passe"
           secureTextEntry={visible ? false : true}
           onChangeText={(e) => setPassword(e)}
         />
         <TouchableOpacity
-          style={{ flex: 1, alignItems: "center" }}
+          style={{
+            flex: 1,
+            alignItems: "center",
+            ...(error.length > 1 &&
+              !password && {
+                padding: 12,
+              }),
+          }}
           onPress={() => setVisible(visible ? false : true)}
         >
           {visible ? (
@@ -91,37 +107,39 @@ const LoginScreen = ({ navigation }: any) => {
       <Text style={styles.message}>
         Vous n'avez toujours pas un compte?{" "}
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={{ color: "gray", fontStyle: "italic" }}>
+          <Text
+            style={{ color: "gray", fontStyle: "italic", ...styles.message }}
+          >
             Créez un compte maintenant
           </Text>
         </TouchableOpacity>
         .
       </Text>
-      <TouchableOpacity style={styles.button} onPress={submitHandler}>
-        <Text style={{ color: "#17567B", fontSize: 16, fontWeight: "bold" }}>
-          S'identifier
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.buttoncontainer}>
+        <TouchableOpacity style={styles.button} onPress={submitHandler}>
+          <Text style={{ color: "#17567B", fontSize: 16, fontWeight: "bold" }}>
+            S'identifier
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#17567B",
     flex: 1,
   },
   title: {
     marginVertical: 30,
     marginHorizontal: 20,
-    color: "white",
     textAlign: "left",
     fontSize: 20,
     fontWeight: "bold",
   },
   back: {
     top: 3,
-    marginRight: 8,
+    marginRight: 15,
   },
   error: {
     backgroundColor: "#dd1111",
@@ -155,7 +173,11 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     textAlign: "center",
     fontSize: 20,
-    color: "white",
+  },
+  buttoncontainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   button: {
     display: "flex",

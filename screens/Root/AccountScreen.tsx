@@ -40,23 +40,19 @@ export default function AccountScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#17567B",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   title: {
-    color: "white",
     fontSize: 20,
     fontWeight: "bold",
   },
   loginCta: {
     marginHorizontal: 20,
     marginTop: 50,
-    backgroundColor: "#17567B",
   },
   loginCtaText: {
-    color: "white",
     textAlign: "center",
     fontSize: 18,
     marginVertical: 10,

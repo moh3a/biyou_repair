@@ -1,8 +1,12 @@
 import { StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 
 import { Text, View } from "../components/Themed";
+import { IUser, selectUser } from "../redux/userSlice";
 
 export default function AdminScreen({ navigation }: any) {
+  const { user }: { user?: IUser | undefined } = useSelector(selectUser);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome admin!</Text>

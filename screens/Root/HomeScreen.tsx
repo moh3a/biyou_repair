@@ -14,10 +14,12 @@ export default function HomeScreen({ navigation }: any) {
         <View style={styles.boninput}>
           <TextInput placeholder="numéro de bon - exemple: 22A008" />
         </View>
-        <View style={styles.button}>
-          <TouchableOpacity>
-            <FontAwesome size={30} name="search" style={{ color: "gray" }} />
-          </TouchableOpacity>
+        <View style={styles.buttoncontainer}>
+          <View style={styles.button}>
+            <TouchableOpacity>
+              <FontAwesome size={30} name="search" style={{ color: "gray" }} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -27,13 +29,12 @@ export default function HomeScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    backgroundColor: "#17567B",
     display: "flex",
+    flex: 1,
     flexDirection: "column",
     alignItems: "center",
   },
   title: {
-    color: "white",
     fontSize: 35,
     fontWeight: "bold",
     marginVertical: 30,
@@ -43,7 +44,6 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#17567B",
   },
   boninput: {
     marginHorizontal: 15,
@@ -52,12 +52,17 @@ const styles = StyleSheet.create({
     fontSize: 35,
     borderRadius: 15,
   },
-  button: {
-    marginHorizontal: "auto",
-    marginVertical: 4,
+  buttoncontainer: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  button: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: "auto",
+    marginVertical: 4,
     height: 50,
     width: 50,
     borderRadius: 50,
