@@ -39,6 +39,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               },
             },
           },
+          Admin: {
+            screens: {
+              AdminScreen: "admin",
+            },
+          },
         },
       },
       Modal: "modal",

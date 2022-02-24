@@ -1,10 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
-const initialState: { status: string; isAuthenticated: boolean; user?: any } = {
-  status: "idle",
-  isAuthenticated: false,
-};
+export interface IUser {
+  uid: string;
+  email: string;
+  emailVerified?: boolean;
+  displayName?: string;
+  isAnonymous?: boolean;
+  photoURL?: string;
+  createdAt?: string;
+  lastLoginAt?: string;
+  apiKey?: string;
+  appName?: string;
+}
+
+const initialState: { status: string; isAuthenticated: boolean; user?: IUser } =
+  {
+    status: "idle",
+    isAuthenticated: false,
+  };
 
 export const userSlice = createSlice({
   name: "user",

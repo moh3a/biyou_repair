@@ -1,7 +1,12 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 import { Text, View } from "../../components/Themed";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,12 +28,24 @@ const RegisterScreen = ({ navigation }: any) => {
 
   const dispatch = useDispatch();
   const auth = getAuth();
+  const db = getFirestore();
+
   const submitHandler = async () => {
     if (name && email && password) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          dispatch(fetchUser(user));
-          navigation.navigate("Account");
+          updateProfile(user.user, {
+            displayName: name,
+            photoURL: `https://avatars.dicebear.com/api/gridy/${name}.svg`,
+          }).then(async () => {
+            await setDoc(doc(db, "custom", user.user.uid), {
+              userId: user.user.uid,
+              username: user.user.displayName,
+              role: "basic",
+            });
+            dispatch(fetchUser(user));
+            navigation.navigate("Account");
+          });
         })
         .catch((error) => {
           setError("Un problème avec vos entrées!");
