@@ -25,10 +25,10 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     fetchUser: (state, action?) => {
-      if (action.payload.user) {
+      if (action.payload) {
         state.status = "complete";
         state.isAuthenticated = true;
-        state.user = action.payload.user;
+        state.user = action.payload;
       } else {
         state.status = "complete";
         state.isAuthenticated = false;
@@ -58,6 +58,6 @@ export const userSlice = createSlice({
 });
 
 export const selectUser = (state: RootState) => state.user;
-export const { fetchUser } = userSlice.actions;
+export const { fetchUser, signOutUser } = userSlice.actions;
 
 export default userSlice.reducer;

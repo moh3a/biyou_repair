@@ -11,8 +11,12 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { Text, View } from "../../components/Themed";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, selectUser } from "../../redux/userSlice";
+import useColorScheme from "../../hooks/useColorScheme";
+import BiyouTextInput from "../../components/TextInput";
+import BiyouButton from "../../components/Button";
 
 const RegisterScreen = ({ navigation }: any) => {
+  const theme = useColorScheme();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,15 +24,18 @@ const RegisterScreen = ({ navigation }: any) => {
   const [visible, setVisible] = useState(false);
   const { user } = useSelector(selectUser);
 
-  useEffect(() => {
-    if (user) {
-      navigation.navigate("Account");
-    }
-  }, []);
-
   const dispatch = useDispatch();
   const auth = getAuth();
   const db = getFirestore();
+
+  useEffect(() => {
+    if (user) {
+      navigation.navigate("Account");
+    } else if (auth.currentUser) {
+      dispatch(fetchUser(auth.currentUser));
+      navigation.navigate("Account");
+    }
+  }, []);
 
   const submitHandler = async () => {
     if (name && email && password) {
@@ -43,7 +50,7 @@ const RegisterScreen = ({ navigation }: any) => {
               username: user.user.displayName,
               role: "basic",
             });
-            dispatch(fetchUser(user));
+            dispatch(fetchUser(user.user));
             navigation.navigate("Account");
           });
         })
@@ -64,56 +71,52 @@ const RegisterScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       {error.length > 1 && <Text style={styles.error}>{error}</Text>}
-      <Text style={styles.title}>
-        <FontAwesome
-          style={styles.back}
-          onPress={() => navigation.navigate("Account")}
-          size={25}
-          name={"arrow-left"}
-        />{" "}
-        Créer un compte
-      </Text>
-      <View style={styles.email}>
-        <TextInput
-          style={
-            error.length > 1 &&
-            !name && {
-              borderColor: "#dd1111",
-              borderWidth: 2,
-              borderRadius: 15,
-              padding: 10,
-            }
-          }
-          placeholder="nom d'utilisateur"
-          onChangeText={(e) => setName(e)}
-        />
-      </View>
-      <View style={styles.email}>
-        <TextInput
-          style={
-            error.length > 1 &&
-            !email && {
-              borderColor: "#dd1111",
-              borderWidth: 2,
-              borderRadius: 15,
-              padding: 10,
-            }
-          }
-          placeholder="email"
-          onChangeText={(e) => setEmail(e)}
-        />
-      </View>
-      <View style={styles.password}>
-        <TextInput
-          style={{
-            flex: 8,
-            ...(error.length > 1 &&
-              !password && {
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Account")}
+        style={styles.titlecontainer}
+      >
+        <Text style={styles.back}>
+          <FontAwesome size={25} name={"arrow-left"} />
+        </Text>
+        <Text style={styles.title}>Créer un compte</Text>
+      </TouchableOpacity>
+      <BiyouTextInput
+        placeholder="nom d'utilisateur"
+        value={name}
+        setValue={setName}
+        condition={error.length > 1 && !name}
+      />
+      <BiyouTextInput
+        placeholder="email"
+        value={email}
+        setValue={setEmail}
+        condition={error.length > 1 && !email}
+      />
+      <View
+        style={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginHorizontal: 15,
+          marginVertical: 4,
+          padding: 10,
+          borderRadius: 15,
+          ...(error.length > 1 && !password
+            ? {
                 borderColor: "#dd1111",
                 borderWidth: 2,
-                borderRadius: 15,
-                padding: 10,
+              }
+            : {
+                borderColor: "#1b1f23",
+                borderWidth: 1,
               }),
+        }}
+      >
+        <TextInput
+          style={{
+            flex: 9,
+            color: theme === "light" ? "#001" : "white",
           }}
           placeholder="mot de passe"
           secureTextEntry={visible ? false : true}
@@ -123,52 +126,60 @@ const RegisterScreen = ({ navigation }: any) => {
           style={{
             flex: 1,
             alignItems: "center",
-            ...(error.length > 1 &&
-              !password && {
-                padding: 12,
-              }),
+            justifyContent: "center",
           }}
           onPress={() => setVisible(visible ? false : true)}
         >
           {visible ? (
-            <FontAwesome size={15} name={"eye"} />
+            <FontAwesome
+              style={{ color: theme === "light" ? "#001" : "white" }}
+              size={15}
+              name={"eye"}
+            />
           ) : (
-            <FontAwesome size={15} name={"eye-slash"} />
+            <FontAwesome
+              style={{ color: theme === "light" ? "#001" : "white" }}
+              size={15}
+              name={"eye-slash"}
+            />
           )}
         </TouchableOpacity>
       </View>
-      <Text style={styles.message}>
-        Vous avez déjà un compte?{" "}
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={{ color: "gray", fontStyle: "italic" }}>
-            Identifiez-vous
-          </Text>
-        </TouchableOpacity>
-        .
-      </Text>
-      <TouchableOpacity style={styles.button} onPress={submitHandler}>
-        <Text style={{ color: "#17567B", fontSize: 16, fontWeight: "bold" }}>
-          Créez un compte
+      <Text style={styles.message}>Vous avez déjà un compte?</Text>
+      <TouchableOpacity
+        style={styles.message}
+        onPress={() => navigation.navigate("Login")}
+      >
+        <Text style={{ color: "gray", fontStyle: "italic", ...styles.message }}>
+          Identifiez-vous
         </Text>
       </TouchableOpacity>
+      <BiyouButton title="Créer un compte" clickHandler={submitHandler} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    display: "flex",
     flex: 1,
+    paddingTop: 20,
   },
-  title: {
+  titlecontainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     marginVertical: 30,
     marginHorizontal: 20,
-    textAlign: "left",
-    fontSize: 20,
-    fontWeight: "bold",
   },
   back: {
-    top: 3,
-    marginRight: 8,
+    marginRight: 30,
+  },
+  title: {
+    textAlign: "left",
+    fontSize: 25,
+    fontWeight: "bold",
   },
   error: {
     backgroundColor: "#dd1111",
@@ -179,43 +190,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  email: {
-    marginHorizontal: 15,
-    marginVertical: 4,
-    padding: 10,
-    fontSize: 35,
-    borderRadius: 15,
-  },
-  password: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 15,
-    marginVertical: 4,
-    padding: 10,
-    fontSize: 35,
-    borderRadius: 15,
-  },
   message: {
     marginHorizontal: 15,
     marginVertical: 4,
     textAlign: "center",
     fontSize: 20,
-  },
-  button: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 4,
-    marginHorizontal: "auto",
-    padding: 10,
-    width: "50%",
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: "white",
-    backgroundColor: "white",
-    borderStyle: "solid",
   },
 });
 

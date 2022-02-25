@@ -2,25 +2,35 @@ import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
-import { IUser, selectUser } from "../redux/userSlice";
+import { fetchUser, IUser, selectUser, signOutUser } from "../redux/userSlice";
 import AdminScreen from "../screens/AdminScreen";
 import HomeScreen from "../screens/Root/HomeScreen";
 import { RootTabParamList, RootTabScreenProps } from "../types";
 import AuthNavigator from "./AuthNavigator";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
+  const auth = getAuth();
   const db = getFirestore();
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const [isAdmin, setIsAdmin] = React.useState(false);
-  const colorScheme = useColorScheme();
+
+  React.useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(fetchUser(user));
+      } else {
+        dispatch(signOutUser());
+      }
+    });
+  }, []);
 
   const checkIfAdmin = React.useCallback(async () => {
     if (user && user.uid) {
@@ -43,7 +53,8 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: "#001",
+        tabBarInactiveTintColor: "#aaf",
         tabBarShowLabel: false,
         tabBarStyle: {
           position: "absolute",
