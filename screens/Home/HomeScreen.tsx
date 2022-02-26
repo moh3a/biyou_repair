@@ -6,6 +6,7 @@ import BiyouTextInput from "../../components/TextInput";
 
 import { Text, View } from "../../components/Themed";
 import useColorScheme from "../../hooks/useColorScheme";
+import { IItem } from "../../utils/method";
 import ItemDetails from "./ItemDetails";
 
 export default function HomeScreen({ navigation }: any) {
@@ -16,7 +17,7 @@ export default function HomeScreen({ navigation }: any) {
   const [error, setError] = useState("");
 
   const [openItemDetails, setOpenItemDetails] = useState(false);
-  const [item, setItem] = useState<any>();
+  const [item, setItem] = useState<IItem>();
 
   const submitHandler = async () => {
     if (name && id) {
@@ -90,7 +91,7 @@ export default function HomeScreen({ navigation }: any) {
           </View>
         </View>
       </View>
-      {openItemDetails && (
+      {openItemDetails && item && (
         <ItemDetails
           item={item}
           openItemDetails={openItemDetails}

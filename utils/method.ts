@@ -1,3 +1,16 @@
+export interface IItem {
+  clientName?: string;
+  clientPhoneNumber?: string;
+  itemId?: string;
+  model?: string;
+  serialNumber?: string;
+  status?: string;
+  diagnostic?: string;
+  createdAt?: string;
+  modifiedAt?: string;
+  clientNote?: string;
+}
+
 export const getMonthByLetter = () => {
   let letter = "";
   const month = new Date().getMonth();

@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IItem } from "../utils/method";
 import { RootState } from "./store";
 
 export interface IUser {
-  uid: string;
-  email: string;
+  uid?: string;
+  email?: string;
   emailVerified?: boolean;
   displayName?: string;
   isAnonymous?: boolean;
@@ -12,6 +13,8 @@ export interface IUser {
   lastLoginAt?: string;
   apiKey?: string;
   appName?: string;
+  role?: string;
+  items?: IItem[];
 }
 
 const initialState: { status: string; isAuthenticated: boolean; user?: IUser } =
@@ -34,6 +37,15 @@ export const userSlice = createSlice({
         state.isAuthenticated = false;
         state.user = undefined;
       }
+    },
+    updateUser: (state, action) => {
+      state.status = "complete";
+      state.isAuthenticated = true;
+      state.user = {
+        ...state.user,
+        role: action.payload.role,
+        items: action.payload.items,
+      };
     },
     signOutUser: (state) => {
       state.status = "complete";
@@ -58,6 +70,6 @@ export const userSlice = createSlice({
 });
 
 export const selectUser = (state: RootState) => state.user;
-export const { fetchUser, signOutUser } = userSlice.actions;
+export const { fetchUser, updateUser, signOutUser } = userSlice.actions;
 
 export default userSlice.reducer;

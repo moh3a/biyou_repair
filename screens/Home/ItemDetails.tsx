@@ -5,13 +5,14 @@ import { Modal, Pressable, StyleSheet, TextInput } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 import useColorScheme from "../../hooks/useColorScheme";
+import { IItem } from "../../utils/method";
 
 export default function ItemDetails({
   item,
   openItemDetails,
   setOpenItemDetails,
 }: {
-  item: any;
+  item: IItem;
   openItemDetails: boolean;
   setOpenItemDetails: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -20,7 +21,7 @@ export default function ItemDetails({
   const db = getFirestore();
 
   const submitHandler = async () => {
-    if (note) {
+    if (note && item.itemId) {
       await updateDoc(doc(db, "items", item.itemId), {
         clientNote: note,
       });

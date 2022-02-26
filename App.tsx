@@ -1,3 +1,4 @@
+import { LogBox } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -10,6 +11,8 @@ import store from "./redux/store";
 
 import { initializeApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+
+LogBox.ignoreLogs(["Setting a timer"]);
 
 const firebaseConfig = {
   apiKey: "AIzaSyBM5PP4iO6svYbv6ekcB9A7Tx-idsQdlg0",

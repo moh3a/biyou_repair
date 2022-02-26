@@ -1,15 +1,27 @@
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Text, View } from "../../components/Themed";
-import { selectUser, signOutUser } from "../../redux/userSlice";
+import { selectUser, signOutUser, updateUser } from "../../redux/userSlice";
 import BiyouButton from "../../components/Button";
 import { getAuth, signOut } from "firebase/auth";
+import { IItem } from "../../utils/method";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { useEffect } from "react";
 
 export default function AccountScreen({ navigation }: any) {
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
   const auth = getAuth();
+  const db = getFirestore();
+
+  useEffect(() => {
+    if (user && user.uid) {
+      onSnapshot(doc(db, "custom", user.uid), (doc) => {
+        dispatch(updateUser(doc.data()));
+      });
+    }
+  }, []);
 
   const signOutHandler = async () => {
     signOut(auth).then(() => dispatch(signOutUser()));
@@ -18,9 +30,59 @@ export default function AccountScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
       {user ? (
-        <View style={styles.loginCta}>
-          <Text style={styles.loginCtaText}>Hello {user.displayName}</Text>
-          <Text style={styles.loginCtaText}>{user.email}</Text>
+        <View>
+          <View
+            style={{
+              marginVertical: 50,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={{ uri: user.photoURL, width: 50, height: 50 }}
+              style={{ borderRadius: 50 }}
+            />
+            <Text style={{ fontSize: 20 }}>{user.displayName}</Text>
+          </View>
+          <View style={{ margin: 30 }}>
+            <Text
+              style={{ fontSize: 15, display: "flex", flexDirection: "row" }}
+            >
+              <Text style={{ fontWeight: "bold", marginRight: 5 }}>Email:</Text>{" "}
+              {user.email}
+            </Text>
+            {user.role && (
+              <Text
+                style={{ fontSize: 15, display: "flex", flexDirection: "row" }}
+              >
+                <Text style={{ fontWeight: "bold", marginRight: 5 }}>
+                  Rôle:
+                </Text>{" "}
+                {user.role}
+              </Text>
+            )}
+          </View>
+          {user.items && user.items.length > 0 && (
+            <View style={{ margin: 30 }}>
+              {user.items.map((item: IItem) => (
+                <View
+                  key={item.itemId}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Text>{item.itemId}</Text>
+                  <Text>{item.clientName}</Text>
+                  <Text>{item.model}</Text>
+                  <Text>{item.status}</Text>
+                </View>
+              ))}
+            </View>
+          )}
           <BiyouButton
             title="Se déconnecter"
             clickHandler={signOutHandler}
@@ -29,7 +91,7 @@ export default function AccountScreen({ navigation }: any) {
           />
         </View>
       ) : (
-        <View style={styles.loginCta}>
+        <View style={styles.block}>
           <Text style={styles.loginCtaText}>
             Avoir un compte vous permets de suivre votre produit et recevoir une
             notification dès qu'il est réparé.
@@ -50,11 +112,10 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     paddingTop: 20,
   },
-  loginCta: {
+  block: {
+    width: "100%",
     marginHorizontal: 20,
     marginTop: 50,
   },

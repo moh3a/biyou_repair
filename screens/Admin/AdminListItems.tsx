@@ -7,10 +7,11 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "../../components/Themed";
+import { IItem } from "../../utils/method";
 
 const ListItems = () => {
   const db = getFirestore();
-  const [items, setItems] = useState<any[]>();
+  const [items, setItems] = useState<IItem[]>();
 
   const fetchItems = useCallback(async () => {
     onSnapshot(query(collection(db, "items")), (querySnapshot) => {
@@ -68,7 +69,7 @@ const ListItems = () => {
               Etat
             </Text>
           </View>
-          {items.map((item: any) => (
+          {items.map((item: IItem) => (
             <View key={item.itemId} style={styles.column}>
               <Text style={[styles.case, styles.caseId]}>{item.itemId}</Text>
               <Text style={[styles.case, styles.caseName]}>
