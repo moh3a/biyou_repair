@@ -1,3 +1,3 @@
 TODO
 
-- add new items
+- after adding an item..update last id

@@ -1,0 +1,67 @@
+export const getMonthByLetter = () => {
+  let letter = "";
+  const month = new Date().getMonth();
+  switch (month) {
+    case 0:
+      letter = "A";
+      break;
+    case 1:
+      letter = "B";
+      break;
+    case 2:
+      letter = "C";
+      break;
+    case 3:
+      letter = "D";
+      break;
+    case 4:
+      letter = "E";
+      break;
+    case 5:
+      letter = "F";
+      break;
+    case 6:
+      letter = "G";
+      break;
+    case 7:
+      letter = "H";
+      break;
+    case 8:
+      letter = "I";
+      break;
+    case 9:
+      letter = "J";
+      break;
+    case 10:
+      letter = "K";
+      break;
+    case 11:
+      letter = "L";
+      break;
+    default:
+      letter = "";
+  }
+  return letter;
+};
+
+export const createNewId = (id: string) => {
+  const id_year_month = id.substring(0, 3);
+  let id_number = parseInt(id.substring(3));
+  let id_number_string = "";
+  let new_id = "";
+  const current_year_month = "22" + getMonthByLetter();
+  if (id_year_month === current_year_month) {
+    id_number++;
+    if (id_number >= 100) {
+      id_number_string = id_number.toString();
+    } else if (100 > id_number && id_number >= 10) {
+      id_number_string = "0".concat(id_number.toString());
+    } else if (10 > id_number) {
+      id_number_string = "00".concat(id_number.toString());
+    }
+    new_id = id_year_month + id_number_string;
+  } else {
+    new_id = current_year_month + "001";
+  }
+  return new_id;
+};

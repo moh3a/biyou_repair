@@ -1,27 +1,22 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
-import { Modal, Pressable, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
-import BiyouButton from "../components/Button";
-import BiyouTextInput from "../components/TextInput";
 
 import { Text, View } from "../components/Themed";
 import { IUser, selectUser } from "../redux/userSlice";
+import AddItem from "./Admin/AddItem";
 
 export default function AdminScreen({ navigation }: any) {
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
   const [openAddModal, setOpenAddModal] = useState(false);
-  const [name, setName] = useState("");
-  const [model, setModel] = useState("");
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bienvenu admin {user?.displayName}</Text>
       <View style={styles.actions}>
         <TouchableOpacity
-          onPress={() =>
-            openAddModal ? setOpenAddModal(false) : setOpenAddModal(true)
-          }
+          onPress={() => setOpenAddModal(!openAddModal)}
           style={[styles.actioncard, styles.actioncardadd]}
         >
           <FontAwesome size={25} color="white" name="plus-circle" />
@@ -36,50 +31,7 @@ export default function AdminScreen({ navigation }: any) {
           <Text>Liste</Text>
         </TouchableOpacity>
       </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={openAddModal}
-        onRequestClose={() => {
-          setOpenAddModal(!openAddModal);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <Pressable
-            style={styles.button}
-            onPress={() => setOpenAddModal(!openAddModal)}
-          >
-            <FontAwesome
-              style={{
-                color: "white",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-              size={25}
-              name="close"
-            />
-          </Pressable>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Ajouter: 22B2521</Text>
-            <BiyouTextInput
-              placeholder="nom du client"
-              value={name}
-              setValue={setName}
-              condition={!name}
-            />
-            <BiyouTextInput
-              placeholder="modèle du produit"
-              value={model}
-              setValue={setModel}
-              condition={!model}
-            />
-            <BiyouButton
-              title="Ajouter"
-              clickHandler={() => console.log(name, model)}
-            />
-          </View>
-        </View>
-      </Modal>
+      <AddItem openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
     </View>
   );
 }
@@ -141,13 +93,13 @@ const styles = StyleSheet.create({
     right: 10,
     borderRadius: 50,
     padding: 10,
-    elevation: 2,
+    elevation: 10,
     backgroundColor: "red",
   },
   modalView: {
     margin: 20,
-    borderRadius: 20,
-    padding: 35,
+    borderRadius: 25,
+    padding: 30,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
