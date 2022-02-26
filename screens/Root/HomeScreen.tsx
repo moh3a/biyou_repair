@@ -1,23 +1,63 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { getAuth } from "firebase/auth";
-import { useEffect } from "react";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import BiyouTextInput from "../../components/TextInput";
 
 import { Text, View } from "../../components/Themed";
 import useColorScheme from "../../hooks/useColorScheme";
-import { fetchUser, IUser, selectUser } from "../../redux/userSlice";
 
 export default function HomeScreen({ navigation }: any) {
   const theme = useColorScheme();
+  const db = getFirestore();
+  const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [error, setError] = useState("");
+
+  const submitHandler = async () => {
+    if (name && id) {
+      onSnapshot(doc(db, "items", id.toUpperCase()), (doc) => {
+        if (doc.exists()) {
+          if (doc.data().clientName.toLowerCase() === name.toLowerCase()) {
+            console.log(doc.data());
+          } else {
+            setError("Veuillez entrer le nom affiché sur le bon!");
+            setTimeout(() => {
+              setError("");
+            }, 3000);
+          }
+        } else {
+          setError("Ce bon n'existe pas!");
+          setTimeout(() => {
+            setError("");
+          }, 3000);
+        }
+      });
+    } else {
+      setError("Champs obligatoire!");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Biyou Repair</Text>
       <View style={styles.searchBar}>
-        <BiyouTextInput placeholder="nom sur le bon - exemple: Mohamed Mohamed" />
-        <BiyouTextInput placeholder="numéro de bon - exemple: 22A008" />
+        {error.length > 1 && <Text style={styles.error}>{error}</Text>}
+        <BiyouTextInput
+          placeholder="numéro de bon - exemple: 22A008"
+          value={id}
+          setValue={setId}
+          condition={error.length > 0 && !id}
+        />
+        <BiyouTextInput
+          placeholder="nom sur le bon - exemple: Mohamed Mohamed"
+          value={name}
+          setValue={setName}
+          condition={error.length > 0 && !name}
+        />
         <View style={styles.buttoncontainer}>
           <View
             style={{
@@ -32,7 +72,7 @@ export default function HomeScreen({ navigation }: any) {
               backgroundColor: theme === "light" ? "#001" : "white",
             }}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={submitHandler}>
               <FontAwesome
                 size={30}
                 name="search"
@@ -69,5 +109,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  error: {
+    backgroundColor: "#dd1111",
+    color: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { useCallback, useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet } from "react-native";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
 
 import { Text, View } from "../../components/Themed";
 import BiyouButton from "../../components/Button";
@@ -23,10 +23,11 @@ export default function AddItem({
   const db = getFirestore();
 
   const getLastId = useCallback(async () => {
-    const docRef = await getDoc(doc(db, "currentId", "currentId"));
-    if (docRef.exists()) {
-      setId(createNewId(docRef.data().id));
-    }
+    onSnapshot(doc(db, "currentId", "currentId"), (doc) => {
+      if (doc.exists()) {
+        setId(createNewId(doc.data().id));
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -43,6 +44,9 @@ export default function AddItem({
       });
       await setDoc(doc(db, "currentId", "currentId"), { id });
       setOpenAddModal(false);
+      setName("");
+      setPhoneNumber("");
+      setModel("");
     } else if (!id) {
       setError("Erreur avec le numéro de bon");
       setTimeout(() => {

@@ -1,16 +1,16 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useDispatch, useSelector } from "react-redux";
+import { FontAwesome } from "@expo/vector-icons";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-import { fetchUser, IUser, selectUser, signOutUser } from "../redux/userSlice";
+import AuthNavigator from "./AuthNavigator";
 import AdminScreen from "../screens/AdminScreen";
 import HomeScreen from "../screens/Root/HomeScreen";
 import { RootTabParamList, RootTabScreenProps } from "../types";
-import AuthNavigator from "./AuthNavigator";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { fetchUser, IUser, selectUser, signOutUser } from "../redux/userSlice";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -77,18 +77,6 @@ function BottomTabNavigator() {
           headerShown: false,
         })}
       />
-      <BottomTab.Screen
-        name="Auth"
-        component={AuthNavigator}
-        options={{
-          title: "Auth",
-          headerShown: false,
-          tabBarIcon: ({ color }) => {
-            if (user) return <TabBarIcon name="user" color={color} />;
-            else return <TabBarIcon name="battery-empty" color={color} />;
-          },
-        }}
-      />
       {isAdmin && (
         <BottomTab.Screen
           name="Admin"
@@ -100,6 +88,27 @@ function BottomTabNavigator() {
           }}
         />
       )}
+      <BottomTab.Screen
+        name="Auth"
+        component={AuthNavigator}
+        options={{
+          title: "Auth",
+          headerShown: false,
+          tabBarIcon: ({ color }) => {
+            if (user)
+              return (
+                <Image
+                  source={{
+                    uri: user.photoURL,
+                    width: 35,
+                    height: 35,
+                  }}
+                />
+              );
+            else return <TabBarIcon name="user" color={color} />;
+          },
+        }}
+      />
     </BottomTab.Navigator>
   );
 }

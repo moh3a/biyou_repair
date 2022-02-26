@@ -1,10 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
-import {
-  getAuth,
-  setPersistence,
-  signInWithEmailAndPassword,
-  browserLocalPersistence,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +21,6 @@ const LoginScreen = ({ navigation }: any) => {
   const auth = getAuth();
 
   useEffect(() => {
-    console.log(auth);
     if (user) {
       navigation.navigate("Account");
     } else if (auth.currentUser) {
@@ -37,19 +31,17 @@ const LoginScreen = ({ navigation }: any) => {
 
   const submitHandler = async () => {
     if (email && password) {
-      setPersistence(auth, browserLocalPersistence).then(() => {
-        signInWithEmailAndPassword(auth, email, password)
-          .then((user) => {
-            dispatch(fetchUser(user.user));
-            navigation.navigate("Account");
-          })
-          .catch((error) => {
-            setError("Impossible de se connecter!");
-            setTimeout(() => {
-              setError("");
-            }, 3000);
-          });
-      });
+      signInWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          dispatch(fetchUser(user.user));
+          navigation.navigate("Account");
+        })
+        .catch((error) => {
+          setError("Impossible de se connecter!");
+          setTimeout(() => {
+            setError("");
+          }, 3000);
+        });
     } else {
       setError("Champs obligatoir!");
       setTimeout(() => {

@@ -1,3 +1,6 @@
 TODO
 
-- after adding an item..update last id
+- client view item details
+- profile details
+- admin search
+- admin edit item

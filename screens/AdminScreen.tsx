@@ -1,15 +1,17 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 
 import { Text, View } from "../components/Themed";
 import { IUser, selectUser } from "../redux/userSlice";
 import AddItem from "./Admin/AddItem";
+import ListItems from "./Admin/ListItems";
 
 export default function AdminScreen({ navigation }: any) {
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openList, setOpenList] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -20,17 +22,41 @@ export default function AdminScreen({ navigation }: any) {
           style={[styles.actioncard, styles.actioncardadd]}
         >
           <FontAwesome size={25} color="white" name="plus-circle" />
-          <Text>Ajouter</Text>
+          <Text style={{ color: "white" }}>Ajouter</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.actioncard, styles.actioncardsearch]}>
           <FontAwesome size={25} color="white" name="search" />
-          <Text>Chercher</Text>
+          <Text style={{ color: "white" }}>Chercher</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.actioncard, styles.actioncardlist]}>
+        <TouchableOpacity
+          onPress={() => setOpenList(!openList)}
+          style={[styles.actioncard, styles.actioncardlist]}
+        >
           <FontAwesome size={25} color="white" name="tasks" />
-          <Text>Liste</Text>
+          <Text style={{ color: "white" }}>Liste</Text>
         </TouchableOpacity>
       </View>
+      {openList && (
+        <View style={styles.listView}>
+          <View style={styles.closebuttoncontainer}>
+            <Pressable
+              style={styles.closebutton}
+              onPress={() => setOpenList(!openList)}
+            >
+              <FontAwesome
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+                size={20}
+                name="close"
+              />
+            </Pressable>
+          </View>
+          <ListItems />
+        </View>
+      )}
       <AddItem openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
     </View>
   );
@@ -46,7 +72,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   title: {
-    color: "white",
     fontSize: 15,
     fontWeight: "bold",
     marginVertical: 30,
@@ -81,37 +106,25 @@ const styles = StyleSheet.create({
     borderColor: "#FF0035",
     backgroundColor: "#FF0035",
   },
-  centeredView: {
-    flex: 1,
+  listView: {
+    width: "100%",
+    marginTop: 30,
+  },
+  closebuttoncontainer: {
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
   },
-  button: {
-    position: "absolute",
-    top: 5,
-    right: 10,
+  closebutton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 40,
+    width: 40,
+    marginVertical: 10,
     borderRadius: 50,
     padding: 10,
     elevation: 10,
     backgroundColor: "red",
-  },
-  modalView: {
-    margin: 20,
-    borderRadius: 25,
-    padding: 30,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
   },
 });

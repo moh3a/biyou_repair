@@ -37,11 +37,7 @@ const BiyouButton = ({
           {title}
         </Text>
         {iconName && iconPosition === "after" && (
-          <FontAwesome
-            size={20}
-            name={iconName as any}
-            color={theme === "light" ? "#001" : "white"}
-          />
+          <FontAwesome size={20} name={iconName as any} color="white" />
         )}
       </TouchableOpacity>
     </View>
