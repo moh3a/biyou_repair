@@ -6,7 +6,7 @@ import { doc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
 import { Text, View } from "../../components/Themed";
 import BiyouButton from "../../components/Button";
 import BiyouTextInput from "../../components/TextInput";
-import { createNewId } from "../../utils/method";
+import { createNewId, localISODate } from "../../utils/method";
 
 export default function AddItem({
   openAddModal,
@@ -41,6 +41,7 @@ export default function AddItem({
         clientPhoneNumber: phoneNumber,
         itemId: id,
         model,
+        createdAt: localISODate(),
       });
       await setDoc(doc(db, "currentId", "currentId"), { id });
       setOpenAddModal(false);

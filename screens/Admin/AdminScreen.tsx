@@ -3,10 +3,10 @@ import { useState } from "react";
 import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 
-import { Text, View } from "../components/Themed";
-import { IUser, selectUser } from "../redux/userSlice";
-import AddItem from "./Admin/AddItem";
-import ListItems from "./Admin/ListItems";
+import { Text, View } from "../../components/Themed";
+import { IUser, selectUser } from "../../redux/userSlice";
+import AdminAddItem from "./AdminAddItem";
+import AdminListItems from "./AdminListItems";
 
 export default function AdminScreen({ navigation }: any) {
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
@@ -54,10 +54,13 @@ export default function AdminScreen({ navigation }: any) {
               />
             </Pressable>
           </View>
-          <ListItems />
+          <AdminListItems />
         </View>
       )}
-      <AddItem openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
+      <AdminAddItem
+        openAddModal={openAddModal}
+        setOpenAddModal={setOpenAddModal}
+      />
     </View>
   );
 }

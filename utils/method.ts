@@ -65,3 +65,10 @@ export const createNewId = (id: string) => {
   }
   return new_id;
 };
+
+export const localISODate = () => {
+  let tzoffset = new Date().getTimezoneOffset() * 60000;
+  let local = new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
+  let date = local.substring(0, 10) + " " + local.substring(11, 16);
+  return date;
+};
