@@ -7,16 +7,19 @@ import { Text, View } from "../../components/Themed";
 import { IUser, selectUser } from "../../redux/userSlice";
 import AdminAddItem from "./AdminAddItem";
 import AdminListItems from "./AdminListItems";
+import AdminSearchItemsModal from "./AdminSearch";
 
-export default function AdminScreen({ navigation }: any) {
+export default function AdminScreen() {
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openSearchModal, setOpenSearchModal] = useState(false);
   const [openList, setOpenList] = useState(false);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bienvenu admin {user?.displayName}</Text>
       <View style={styles.actions}>
+        {/* Ajouter */}
         <TouchableOpacity
           onPress={() => setOpenAddModal(!openAddModal)}
           style={[styles.actioncard, styles.actioncardadd]}
@@ -24,10 +27,17 @@ export default function AdminScreen({ navigation }: any) {
           <FontAwesome size={25} color="white" name="plus-circle" />
           <Text style={{ color: "white" }}>Ajouter</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.actioncard, styles.actioncardsearch]}>
+
+        {/* Chercher */}
+        <TouchableOpacity
+          onPress={() => setOpenSearchModal(!openSearchModal)}
+          style={[styles.actioncard, styles.actioncardsearch]}
+        >
           <FontAwesome size={25} color="white" name="search" />
           <Text style={{ color: "white" }}>Chercher</Text>
         </TouchableOpacity>
+
+        {/* Liste */}
         <TouchableOpacity
           onPress={() => setOpenList(!openList)}
           style={[styles.actioncard, styles.actioncardlist]}
@@ -36,6 +46,7 @@ export default function AdminScreen({ navigation }: any) {
           <Text style={{ color: "white" }}>Liste</Text>
         </TouchableOpacity>
       </View>
+
       {openList && (
         <View style={styles.listView}>
           <View style={styles.closebuttoncontainer}>
@@ -60,6 +71,10 @@ export default function AdminScreen({ navigation }: any) {
       <AdminAddItem
         openAddModal={openAddModal}
         setOpenAddModal={setOpenAddModal}
+      />
+      <AdminSearchItemsModal
+        openSearchModal={openSearchModal}
+        setOpenSearchModal={setOpenSearchModal}
       />
     </View>
   );

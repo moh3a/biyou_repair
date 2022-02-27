@@ -1,13 +1,14 @@
-import { Image, StyleSheet } from "react-native";
+import { useEffect } from "react";
+import { Image, Platform, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { getAuth, signOut } from "firebase/auth";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { SvgUri } from "react-native-svg";
 
-import { Text, View } from "../../components/Themed";
 import { selectUser, signOutUser, updateUser } from "../../redux/userSlice";
 import BiyouButton from "../../components/Button";
-import { getAuth, signOut } from "firebase/auth";
+import { Text, View } from "../../components/Themed";
 import { IItem } from "../../utils/method";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
-import { useEffect } from "react";
 
 export default function AccountScreen({ navigation }: any) {
   const { user } = useSelector(selectUser);
@@ -39,10 +40,24 @@ export default function AccountScreen({ navigation }: any) {
               alignItems: "center",
             }}
           >
-            <Image
-              source={{ uri: user.photoURL, width: 50, height: 50 }}
-              style={{ borderRadius: 50 }}
-            />
+            {Platform.OS === "web" || !user.photoURL?.includes(".svg") ? (
+              <Image
+                source={{
+                  uri: user.photoURL,
+                }}
+                style={{ borderRadius: 50, width: 100, height: 100 }}
+              />
+            ) : (
+              <View style={{ backgroundColor: "transparent" }}>
+                <SvgUri
+                  uri={user.photoURL}
+                  width={100}
+                  height={100}
+                  style={{ borderRadius: 50 }}
+                />
+              </View>
+            )}
+
             <Text style={{ fontSize: 20 }}>{user.displayName}</Text>
           </View>
           <View style={{ margin: 30 }}>

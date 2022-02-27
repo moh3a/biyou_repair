@@ -5,13 +5,16 @@ import {
   query,
 } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "../../components/Themed";
 import { IItem } from "../../utils/method";
+import AdminItemDetails from "./AdminItemDetails";
 
 const ListItems = () => {
   const db = getFirestore();
   const [items, setItems] = useState<IItem[]>();
+  const [item, setItem] = useState<IItem>();
+  const [openAdminItemDetails, setOpenAdminItemDetails] = useState(false);
 
   const fetchItems = useCallback(async () => {
     onSnapshot(query(collection(db, "items")), (querySnapshot) => {
@@ -26,6 +29,11 @@ const ListItems = () => {
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
+
+  const showItemDetails = (item: IItem) => {
+    setOpenAdminItemDetails(true);
+    setItem(item);
+  };
 
   return (
     <View>
@@ -70,20 +78,37 @@ const ListItems = () => {
             </Text>
           </View>
           {items.map((item: IItem) => (
-            <View key={item.itemId} style={styles.column}>
-              <Text style={[styles.case, styles.caseId]}>{item.itemId}</Text>
-              <Text style={[styles.case, styles.caseName]}>
-                {item.clientName}
-              </Text>
-              <Text style={[styles.case, styles.caseModel]}>{item.model}</Text>
-              <Text style={[styles.case, styles.caseStatus]}>
-                {item.status}
-              </Text>
+            <View key={item.itemId}>
+              <TouchableOpacity
+                style={styles.column}
+                onPress={() => showItemDetails(item)}
+              >
+                <Text style={[styles.case, styles.caseId]}>{item.itemId}</Text>
+                <Text style={[styles.case, styles.caseName]}>
+                  {item.clientName}
+                </Text>
+                <Text style={[styles.case, styles.caseModel]}>
+                  {item.model}
+                </Text>
+                <Text style={[styles.case, styles.caseStatus]}>
+                  {item.status}
+                </Text>
+              </TouchableOpacity>
             </View>
           ))}
         </View>
       ) : (
-        <Text>Fetching items</Text>
+        <Text style={{ textAlign: "center", fontWeight: "bold" }}>
+          Fetching items
+        </Text>
+      )}
+      {openAdminItemDetails && item && (
+        <AdminItemDetails
+          item={item}
+          setItem={setItem}
+          openAdminItemDetails={openAdminItemDetails}
+          setOpenAdminItemDetails={setOpenAdminItemDetails}
+        />
       )}
     </View>
   );

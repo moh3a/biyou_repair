@@ -149,10 +149,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalView: {
-    margin: 20,
-    borderRadius: 25,
-    padding: 30,
-    alignItems: "center",
+    width: "100%",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

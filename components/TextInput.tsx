@@ -28,7 +28,7 @@ const BiyouTextInput = ({
                 borderWidth: 2,
               }
             : {
-                borderColor: "#1b1f23",
+                borderColor: "white",
                 borderWidth: 1,
               }),
         }}

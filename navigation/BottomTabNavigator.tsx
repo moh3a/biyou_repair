@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesome } from "@expo/vector-icons";
@@ -11,6 +11,8 @@ import AdminScreen from "../screens/Admin/AdminScreen";
 import HomeScreen from "../screens/Home/HomeScreen";
 import { RootTabParamList, RootTabScreenProps } from "../types";
 import { fetchUser, IUser, selectUser, signOutUser } from "../redux/userSlice";
+import { SvgUri } from "react-native-svg";
+import { View } from "../components/Themed";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -54,6 +56,10 @@ function BottomTabNavigator() {
       initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: "#001",
+        tabBarActiveBackgroundColor: "#aaf",
+        tabBarItemStyle: {
+          borderRadius: 50,
+        },
         tabBarInactiveTintColor: "#aaf",
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -62,7 +68,7 @@ function BottomTabNavigator() {
           left: 15,
           right: 15,
           backgroundColor: "white",
-          borderRadius: 20,
+          borderRadius: 50,
           height: 60,
           ...styles.shadow,
         },
@@ -95,17 +101,29 @@ function BottomTabNavigator() {
           title: "Auth",
           headerShown: false,
           tabBarIcon: ({ color }) => {
-            if (user)
-              return (
-                <Image
-                  source={{
-                    uri: user.photoURL,
-                    width: 35,
-                    height: 35,
-                  }}
-                />
-              );
-            else return <TabBarIcon name="user" color={color} />;
+            if (user) {
+              if (Platform.OS === "web" || !user.photoURL?.includes(".svg")) {
+                return (
+                  <Image
+                    source={{
+                      uri: user.photoURL,
+                    }}
+                    style={{ borderRadius: 50, width: 35, height: 35 }}
+                  />
+                );
+              } else {
+                return (
+                  <View style={{ backgroundColor: "transparent" }}>
+                    <SvgUri
+                      uri={user.photoURL}
+                      width={35}
+                      height={35}
+                      style={{ borderRadius: 50 }}
+                    />
+                  </View>
+                );
+              }
+            } else return <TabBarIcon name="user" color={color} />;
           },
         }}
       />

@@ -1,20 +1,22 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { Dispatch, useState } from "react";
 import { Modal, Pressable, StyleSheet, TextInput } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 import useColorScheme from "../../hooks/useColorScheme";
 import { IItem } from "../../utils/method";
 
-export default function ItemDetails({
+export default function AdminItemDetails({
   item,
-  openItemDetails,
-  setOpenItemDetails,
+  setItem,
+  openAdminItemDetails,
+  setOpenAdminItemDetails,
 }: {
   item: IItem;
-  openItemDetails: boolean;
-  setOpenItemDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  setItem: Dispatch<React.SetStateAction<IItem | undefined>>;
+  openAdminItemDetails: boolean;
+  setOpenAdminItemDetails: Dispatch<React.SetStateAction<boolean>>;
 }) {
   const theme = useColorScheme();
   const [note, setNote] = useState("");
@@ -34,15 +36,19 @@ export default function ItemDetails({
       <Modal
         animationType="slide"
         transparent={true}
-        visible={openItemDetails}
+        visible={openAdminItemDetails}
         onRequestClose={() => {
-          setOpenItemDetails(!openItemDetails);
+          setOpenAdminItemDetails(!openAdminItemDetails);
+          setItem(undefined);
         }}
       >
         <View style={styles.centeredView}>
           <Pressable
             style={styles.button}
-            onPress={() => setOpenItemDetails(!openItemDetails)}
+            onPress={() => {
+              setOpenAdminItemDetails(!openAdminItemDetails);
+              setItem(undefined);
+            }}
           >
             <FontAwesome
               style={{
