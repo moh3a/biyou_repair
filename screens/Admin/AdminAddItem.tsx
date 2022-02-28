@@ -41,6 +41,7 @@ export default function AddItem({
         clientPhoneNumber: phoneNumber,
         itemId: id,
         model,
+        status: "En attente",
         createdAt: localISODate(),
       });
       await setDoc(doc(db, "currentId", "currentId"), { id });

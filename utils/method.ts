@@ -4,7 +4,12 @@ export interface IItem {
   itemId?: string;
   model?: string;
   serialNumber?: string;
-  status?: string;
+  status:
+    | "En attente"
+    | "Réparé"
+    | "Devis"
+    | "Retour au client"
+    | "Attente de pièces";
   diagnostic?: string;
   createdAt?: string;
   modifiedAt?: string;

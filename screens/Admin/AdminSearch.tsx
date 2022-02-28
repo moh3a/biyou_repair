@@ -3,13 +3,13 @@ import {
   collection,
   getDocs,
   getFirestore,
-  onSnapshot,
   query,
   where,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Modal, Pressable, StyleSheet } from "react-native";
 import BiyouButton from "../../components/Button";
+import ItemsList from "../../components/ItemsList";
 import BiyouTextInput from "../../components/TextInput";
 import { Text, View } from "../../components/Themed";
 import { IItem } from "../../utils/method";
@@ -22,6 +22,8 @@ const AdminSearchItemsModal = ({
   setOpenSearchModal: Dispatch<SetStateAction<boolean>>;
 }) => {
   const db = getFirestore();
+  const [openList, setOpenList] = useState(false);
+  const [items, setItems] = useState<IItem[]>();
 
   const [error, setError] = useState("");
   const [itemId, setItemId] = useState("");
@@ -29,21 +31,43 @@ const AdminSearchItemsModal = ({
   const [model, setModel] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [status, setStatus] = useState("");
-  const [createdAt, setCreatedAt] = useState("");
 
   const searchHandler = async () => {
-    // const itemsRef = collection(db, "items");
-    // const q = query(
-    //   itemsRef,
-    //   where("itemId", "==", itemId),
-    //     where("clientName", "==", clientName),
-    //     where("model", "==", model),
-    //     where("serialNumber", "==", serialNumber),
-    //     where("status", "==", status),
-    //     where("createdAt", "==", createdAt)
-    // );
-    // const querySnapshot = await getDocs(q);
-    setOpenSearchModal(false);
+    const queryConstraints: any[] = [];
+    if (itemId) {
+      queryConstraints.push(where("itemId", "==", itemId));
+    }
+    if (clientName) {
+      queryConstraints.push(where("clientName", "==", clientName));
+    }
+    if (model) {
+      queryConstraints.push(where("model", "==", model));
+    }
+    if (serialNumber) {
+      queryConstraints.push(where("serialNumber", "==", serialNumber));
+    }
+    if (status) {
+      queryConstraints.push(where("status", "==", status));
+    }
+
+    const results: any[] = [];
+
+    const itemsRef = collection(db, "items");
+    const q = query(itemsRef, ...queryConstraints);
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      setError("Aucun résultat!");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    } else {
+      querySnapshot.forEach((doc) => {
+        results.push(doc.data());
+      });
+      setItems(results);
+      setOpenSearchModal(false);
+      setOpenList(true);
+    }
   };
 
   return (
@@ -57,8 +81,7 @@ const AdminSearchItemsModal = ({
         }}
       >
         <View style={styles.centeredView}>
-          {/* {error.length > 1 && <Text style={styles.error}>{error}</Text>} */}
-          {<Text style={styles.error}>Sous dévelopement!</Text>}
+          {error.length > 1 && <Text style={styles.error}>{error}</Text>}
           <Pressable
             style={styles.button}
             onPress={() => setOpenSearchModal(!openSearchModal)}
@@ -102,11 +125,6 @@ const AdminSearchItemsModal = ({
               value={status}
               setValue={setStatus}
             />
-            <BiyouTextInput
-              placeholder="Date d'entrée"
-              value={createdAt}
-              setValue={setCreatedAt}
-            />
             <BiyouButton
               title="Chercher"
               clickHandler={searchHandler}
@@ -116,6 +134,13 @@ const AdminSearchItemsModal = ({
           </View>
         </View>
       </Modal>
+      {items && (
+        <ItemsList
+          items={items}
+          openList={openList}
+          setOpenList={setOpenList}
+        />
+      )}
     </View>
   );
 };

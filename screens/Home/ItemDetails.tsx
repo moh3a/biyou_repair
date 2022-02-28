@@ -101,7 +101,7 @@ export default function ItemDetails({
                   },
                 ]}
               >
-                {item.status ? item.status : "En Attente"}
+                {item.status ? item.status : "En attente"}
               </Text>
             </View>
             {item.diagnostic && (

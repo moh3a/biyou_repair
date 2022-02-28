@@ -1,11 +1,21 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
-import React, { Dispatch, useState } from "react";
+import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
+import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, TextInput } from "react-native";
+import { ButtonGroup } from "react-native-elements";
+import BiyouTextInput from "../../components/TextInput";
 
 import { Text, View } from "../../components/Themed";
 import useColorScheme from "../../hooks/useColorScheme";
 import { IItem } from "../../utils/method";
+
+const StatusList = [
+  "En attente",
+  "Réparé",
+  "Devis",
+  "Retour au client",
+  "Attente de pièces",
+];
 
 export default function AdminItemDetails({
   item,
@@ -19,15 +29,91 @@ export default function AdminItemDetails({
   setOpenAdminItemDetails: Dispatch<React.SetStateAction<boolean>>;
 }) {
   const theme = useColorScheme();
-  const [note, setNote] = useState("");
+  const [success, setSuccesss] = useState("");
+  const [statusIdx, setStatusIdx] = useState(
+    StatusList.findIndex((e) => e === item.status)
+  );
+  const [phoneNumber, setPhoneNumber] = useState(
+    item.clientPhoneNumber ? item.clientPhoneNumber : ""
+  );
+  const [model, setModel] = useState(item.model ? item.model : "");
+  const [serialNumber, setSerialNumber] = useState(
+    item.serialNumber ? item.serialNumber : ""
+  );
+  const [diagnostic, setDiagnostic] = useState(
+    item.diagnostic ? item.diagnostic : ""
+  );
   const db = getFirestore();
 
-  const submitHandler = async () => {
-    if (note && item.itemId) {
-      await updateDoc(doc(db, "items", item.itemId), {
-        clientNote: note,
+  useEffect(() => {
+    if (item.itemId) {
+      onSnapshot(doc(db, "items", item.itemId), (doc) => {
+        if (doc.exists()) {
+          console.log(doc.data());
+        } else {
+          console.log("doc doesnt exist");
+        }
       });
-      setNote("");
+    }
+  }, []);
+
+  const updateStatus = useCallback(async () => {
+    if (statusIdx && item.itemId) {
+      await updateDoc(doc(db, "items", item.itemId), {
+        status: StatusList[statusIdx],
+      });
+    }
+  }, [statusIdx]);
+
+  useEffect(() => {
+    updateStatus();
+  }, [updateStatus]);
+
+  const updatePhoneNumberHandler = async () => {
+    if (phoneNumber && item.itemId) {
+      await updateDoc(doc(db, "items", item.itemId), {
+        clientPhoneNumber: phoneNumber,
+      });
+      setSuccesss("phoneNumber");
+      setTimeout(() => {
+        setSuccesss("");
+      }, 3000);
+    }
+  };
+
+  const updateModelHandler = async () => {
+    if (model && item.itemId) {
+      await updateDoc(doc(db, "items", item.itemId), {
+        model,
+      });
+      setSuccesss("model");
+      setTimeout(() => {
+        setSuccesss("");
+      }, 3000);
+    }
+  };
+
+  const updateSerialNumberHandler = async () => {
+    if (serialNumber && item.itemId) {
+      await updateDoc(doc(db, "items", item.itemId), {
+        serialNumber,
+      });
+      setSuccesss("serialNumber");
+      setTimeout(() => {
+        setSuccesss("");
+      }, 3000);
+    }
+  };
+
+  const updateDiagnosticHandler = async () => {
+    if (diagnostic && item.itemId) {
+      await updateDoc(doc(db, "items", item.itemId), {
+        diagnostic,
+      });
+      setSuccesss("diagnostic");
+      setTimeout(() => {
+        setSuccesss("");
+      }, 3000);
     }
   };
 
@@ -75,82 +161,176 @@ export default function AdminItemDetails({
             </View>
             <View style={styles.modalBlock}>
               <Text style={styles.modalText}>
-                Numéro de téléphone: {item.clientPhoneNumber}
-              </Text>
-              <Text style={styles.modalText}>
                 Date d'entrée: {item.createdAt}
               </Text>
+              <View>
+                <Text style={styles.modalText}>Numéro de téléphone:</Text>
+                <View style={{ marginVertical: 5 }}>
+                  <TextInput
+                    value={phoneNumber}
+                    onChangeText={(e) => setPhoneNumber(e)}
+                    placeholder=""
+                    style={{
+                      paddingVertical: 10,
+                      paddingLeft: 10,
+                      paddingRight: 40,
+                      borderRadius: 15,
+                      color: theme === "light" ? "#001" : "white",
+                      borderColor: theme === "light" ? "#001" : "white",
+                      borderWidth: 1,
+                    }}
+                  />
+                  <Pressable
+                    onPress={updatePhoneNumberHandler}
+                    style={{ position: "absolute", right: 10, top: 8 }}
+                  >
+                    <FontAwesome name="save" size={25} color="orange" />
+                  </Pressable>
+                  {success === "phoneNumber" && (
+                    <FontAwesome
+                      name="check"
+                      size={25}
+                      color="green"
+                      style={{ position: "absolute", right: 40, top: 8 }}
+                    />
+                  )}
+                </View>
+              </View>
             </View>
             <View style={styles.modalBlock}>
-              <Text style={{ fontWeight: "bold", fontSize: 22 }}>
-                {item.model}
-              </Text>
-              <Text style={styles.modalText}>
-                Numéro de série: {item.serialNumber}
-              </Text>
+              <View>
+                <Text style={styles.modalText}>Modèle:</Text>
+                <View style={{ marginVertical: 5 }}>
+                  <TextInput
+                    value={model}
+                    onChangeText={(e) => setModel(e)}
+                    placeholder=""
+                    style={{
+                      paddingVertical: 10,
+                      paddingLeft: 10,
+                      paddingRight: 40,
+                      borderRadius: 15,
+                      color: theme === "light" ? "#001" : "white",
+                      borderColor: theme === "light" ? "#001" : "white",
+                      borderWidth: 1,
+                    }}
+                  />
+                  <Pressable
+                    onPress={updateModelHandler}
+                    style={{ position: "absolute", right: 10, top: 8 }}
+                  >
+                    <FontAwesome name="save" size={25} color="orange" />
+                  </Pressable>
+                  {success === "model" && (
+                    <FontAwesome
+                      name="check"
+                      size={25}
+                      color="green"
+                      style={{ position: "absolute", right: 40, top: 8 }}
+                    />
+                  )}
+                </View>
+              </View>
+              <View>
+                <Text style={styles.modalText}>Numéro de série:</Text>
+                <View style={{ marginVertical: 5 }}>
+                  <TextInput
+                    value={serialNumber}
+                    onChangeText={(e) => setSerialNumber(e)}
+                    placeholder=""
+                    style={{
+                      paddingVertical: 10,
+                      paddingLeft: 10,
+                      paddingRight: 40,
+                      borderRadius: 15,
+                      color: theme === "light" ? "#001" : "white",
+                      borderColor: theme === "light" ? "#001" : "white",
+                      borderWidth: 1,
+                    }}
+                  />
+                  <Pressable
+                    onPress={updateSerialNumberHandler}
+                    style={{ position: "absolute", right: 10, top: 8 }}
+                  >
+                    <FontAwesome name="save" size={25} color="orange" />
+                  </Pressable>
+                  {success === "serialNumber" && (
+                    <FontAwesome
+                      name="check"
+                      size={25}
+                      color="green"
+                      style={{ position: "absolute", right: 40, top: 8 }}
+                    />
+                  )}
+                </View>
+              </View>
+              <View>
+                <Text style={styles.modalText}>Etat:</Text>
+                <ButtonGroup
+                  buttons={[
+                    "En attente",
+                    "Réparé",
+                    "Devis",
+                    "Retour au client",
+                    "Attente de pièces",
+                  ]}
+                  selectedIndex={statusIdx}
+                  onPress={(value) => {
+                    setStatusIdx(value);
+                  }}
+                  containerStyle={{ margin: 0 }}
+                  selectedButtonStyle={[
+                    statusIdx === 0 && { backgroundColor: "red" },
+                    statusIdx === 1 && { backgroundColor: "green" },
+                    statusIdx === 2 && { backgroundColor: "blue" },
+                    statusIdx === 3 && { backgroundColor: "red" },
+                    statusIdx === 4 && { backgroundColor: "orange" },
+                  ]}
+                  selectedTextStyle={{ color: "white" }}
+                />
+              </View>
+              <View>
+                <Text style={styles.modalText}>Diagnostique</Text>
+                <View style={{ marginVertical: 5 }}>
+                  <TextInput
+                    value={diagnostic}
+                    onChangeText={(e) => setDiagnostic(e)}
+                    placeholder=""
+                    style={{
+                      paddingVertical: 10,
+                      paddingLeft: 10,
+                      paddingRight: 40,
+                      borderRadius: 15,
+                      color: theme === "light" ? "#001" : "white",
+                      borderColor: theme === "light" ? "#001" : "white",
+                      borderWidth: 1,
+                    }}
+                  />
+                  <Pressable
+                    onPress={updateDiagnosticHandler}
+                    style={{ position: "absolute", right: 10, top: 8 }}
+                  >
+                    <FontAwesome name="send" size={25} color="green" />
+                  </Pressable>
+                  {success === "diagnostic" && (
+                    <FontAwesome
+                      name="check"
+                      size={25}
+                      color="green"
+                      style={{ position: "absolute", right: 40, top: 8 }}
+                    />
+                  )}
+                </View>
+              </View>
             </View>
-            <View
-              style={[
-                styles.modalBlock,
-                { display: "flex", flexDirection: "row", flexWrap: "wrap" },
-              ]}
-            >
-              <Text style={styles.modalText}>Etat:</Text>
-              <Text
-                style={[
-                  styles.modalText,
-                  {
-                    backgroundColor: "red",
-                    color: "white",
-                    marginLeft: 5,
-                    paddingHorizontal: 3,
-                  },
-                ]}
-              >
-                {item.status ? item.status : "En Attente"}
-              </Text>
-            </View>
-            {item.diagnostic && (
+            {item.clientNote && (
               <View style={styles.modalBlock}>
-                <Text style={styles.modalText}>Diagnostique:</Text>
-                <Text style={styles.modalText}>{item.diagnostic}</Text>
+                <Text style={styles.modalText}>Note laissée:</Text>
+                <Text style={{ fontSize: 15, fontStyle: "italic" }}>
+                  {item.clientNote}
+                </Text>
               </View>
             )}
-            <View style={styles.modalBlock}>
-              <Text style={styles.modalText}>
-                Vous pouvez laisser une note au réparateur
-              </Text>
-              <View style={{ marginVertical: 5 }}>
-                <TextInput
-                  value={note}
-                  onChangeText={(e) => setNote(e)}
-                  placeholder=""
-                  style={{
-                    paddingVertical: 10,
-                    paddingLeft: 10,
-                    paddingRight: 40,
-                    borderRadius: 15,
-                    color: theme === "light" ? "#001" : "white",
-                    borderColor: theme === "light" ? "#001" : "white",
-                    borderWidth: 1,
-                  }}
-                />
-                <Pressable
-                  onPress={submitHandler}
-                  style={{ position: "absolute", right: 10, top: 8 }}
-                >
-                  <FontAwesome name="send" size={25} color="green" />
-                </Pressable>
-              </View>
-              {item.clientNote && (
-                <>
-                  <Text>Note laissée:</Text>
-                  <Text style={{ fontSize: 15, fontStyle: "italic" }}>
-                    {item.clientNote}
-                  </Text>
-                </>
-              )}
-            </View>
           </View>
         </View>
       </Modal>
@@ -179,8 +359,9 @@ const styles = StyleSheet.create({
     right: 10,
     borderRadius: 50,
     padding: 10,
-    elevation: 10,
+    elevation: 9,
     backgroundColor: "red",
+    zIndex: 90,
   },
   modalView: {
     width: "100%",

@@ -1,4 +1,5 @@
 TODO
 
-- admin edit item - get item now need to edit it
-- admin search - annoying
+- redesign admin side
+- user adding his entered items
+- finish
