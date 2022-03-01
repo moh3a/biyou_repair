@@ -7,13 +7,13 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
-
-import { Text, View } from "../../components/Themed";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser, selectUser } from "../../redux/userSlice";
+
 import useColorScheme from "../../hooks/useColorScheme";
-import BiyouTextInput from "../../components/TextInput";
-import BiyouButton from "../../components/Button";
+import { Text, View } from "../../components/Themed";
+import BiyouTextInput from "../../components/elements/TextInput";
+import BiyouButton from "../../components/elements/Button";
+import { fetchUser, selectUser } from "../../redux/userSlice";
 
 const RegisterScreen = ({ navigation }: any) => {
   const theme = useColorScheme();

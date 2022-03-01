@@ -3,7 +3,6 @@ import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, TextInput } from "react-native";
 import { ButtonGroup } from "react-native-elements";
-import BiyouTextInput from "../../components/TextInput";
 
 import { Text, View } from "../../components/Themed";
 import useColorScheme from "../../hooks/useColorScheme";

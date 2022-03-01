@@ -3,10 +3,11 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import BiyouButton from "../../components/Button";
-import BiyouTextInput from "../../components/TextInput";
-import { Text, View } from "../../components/Themed";
+
 import useColorScheme from "../../hooks/useColorScheme";
+import { Text, View } from "../../components/Themed";
+import BiyouButton from "../../components/elements/Button";
+import BiyouTextInput from "../../components/elements/TextInput";
 import { fetchUser, selectUser } from "../../redux/userSlice";
 
 const LoginScreen = ({ navigation }: any) => {

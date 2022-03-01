@@ -2,12 +2,11 @@ import { FontAwesome } from "@expo/vector-icons";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import BiyouTextInput from "../../components/TextInput";
 
-import { Text, View } from "../../components/Themed";
-import useColorScheme from "../../hooks/useColorScheme";
-import { IItem } from "../../utils/method";
-import ItemDetails from "./ItemDetails";
+import useColorScheme from "../hooks/useColorScheme";
+import { Text, View } from "../components/Themed";
+import BiyouTextInput from "../components/elements/TextInput";
+import ItemDetails from "../components/home/ItemDetails";
 
 export default function HomeScreen({ navigation }: any) {
   const theme = useColorScheme();
@@ -17,7 +16,7 @@ export default function HomeScreen({ navigation }: any) {
   const [error, setError] = useState("");
 
   const [openItemDetails, setOpenItemDetails] = useState(false);
-  const [item, setItem] = useState<IItem>();
+  const [item, setItem] = useState<any>();
 
   const submitHandler = async () => {
     if (name && id) {

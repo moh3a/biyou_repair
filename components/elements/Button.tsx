@@ -1,8 +1,8 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import useColorScheme from "../hooks/useColorScheme";
-import { Text, View } from "./Themed";
+import useColorScheme from "../../hooks/useColorScheme";
+import { Text, View } from "../Themed";
 
 const BiyouButton = ({
   title,

@@ -5,9 +5,9 @@ import { getAuth, signOut } from "firebase/auth";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { SvgUri } from "react-native-svg";
 
-import { selectUser, signOutUser, updateUser } from "../../redux/userSlice";
-import BiyouButton from "../../components/Button";
 import { Text, View } from "../../components/Themed";
+import BiyouButton from "../../components/elements/Button";
+import { selectUser, signOutUser, updateUser } from "../../redux/userSlice";
 import { IItem } from "../../utils/method";
 
 export default function AccountScreen({ navigation }: any) {

@@ -1,9 +1,10 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
-import AdminItemDetails from "../screens/Admin/AdminItemDetails";
-import { IItem } from "../utils/method";
-import { Text, View } from "./Themed";
+
+import ItemDetails from "./ItemDetails";
+import { Text, View } from "../Themed";
+import { IItem } from "../../utils/method";
 
 const ItemsList = ({
   items,
@@ -97,7 +98,7 @@ const ItemsList = ({
           </View>
         ))}
         {openAdminItemDetails && item && (
-          <AdminItemDetails
+          <ItemDetails
             item={item}
             setItem={setItem}
             openAdminItemDetails={openAdminItemDetails}

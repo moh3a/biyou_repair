@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
-import useColorScheme from "../hooks/useColorScheme";
-import { View } from "./Themed";
+import useColorScheme from "../../hooks/useColorScheme";
+import { View } from "../Themed";
 
 const BiyouTextInput = ({
   placeholder,

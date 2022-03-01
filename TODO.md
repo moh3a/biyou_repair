@@ -1,5 +1,5 @@
 TODO
 
-- redesign admin side
+- modal: scrollable view
 - user adding his entered items
 - finish

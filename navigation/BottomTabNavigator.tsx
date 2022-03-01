@@ -7,8 +7,8 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import AuthNavigator from "./AuthNavigator";
-import AdminScreen from "../screens/Admin/AdminScreen";
-import HomeScreen from "../screens/Home/HomeScreen";
+import AdminScreen from "../screens/AdminScreen";
+import HomeScreen from "../screens/HomeScreen";
 import { RootTabParamList, RootTabScreenProps } from "../types";
 import { fetchUser, IUser, selectUser, signOutUser } from "../redux/userSlice";
 import { SvgUri } from "react-native-svg";

@@ -1,19 +1,41 @@
 import { FontAwesome } from "@expo/vector-icons";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 import { useState } from "react";
-import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 
-import { Text, View } from "../../components/Themed";
-import { IUser, selectUser } from "../../redux/userSlice";
-import AdminAddItem from "./AdminAddItem";
-import AdminListItems from "./AdminListItems";
-import AdminSearchItemsModal from "./AdminSearch";
+import { Text, View } from "../components/Themed";
+import ItemsList from "../components/admin/ItemsList";
+import AddItem from "../components/admin/Add";
+import SearchModal from "../components/admin/Search";
+import { IUser, selectUser } from "../redux/userSlice";
+import { IItem } from "../utils/method";
 
 export default function AdminScreen() {
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
+  const db = getFirestore();
+
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [openList, setOpenList] = useState(false);
+  const [items, setItems] = useState<IItem[]>();
+
+  const fetchItems = async () => {
+    setItems([]);
+    onSnapshot(query(collection(db, "items")), (querySnapshot) => {
+      let newlist: any[] = [];
+      querySnapshot.forEach((doc) => {
+        newlist.unshift(doc.data());
+      });
+      setOpenList(true);
+      setItems(newlist);
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -39,43 +61,38 @@ export default function AdminScreen() {
 
         {/* Liste */}
         <TouchableOpacity
-          onPress={() => setOpenList(!openList)}
+          onPress={fetchItems}
           style={[styles.actioncard, styles.actioncardlist]}
         >
           <FontAwesome size={25} color="white" name="tasks" />
           <Text style={{ color: "white" }}>Liste</Text>
         </TouchableOpacity>
       </View>
-
-      {openList && (
-        <View style={styles.listView}>
-          <View style={styles.closebuttoncontainer}>
-            <Pressable
-              style={styles.closebutton}
-              onPress={() => setOpenList(!openList)}
-            >
-              <FontAwesome
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-                size={20}
-                name="close"
+      <View>
+        {openList && (
+          <View>
+            {items ? (
+              <ItemsList
+                items={items}
+                openList={openList}
+                setOpenList={setOpenList}
               />
-            </Pressable>
+            ) : (
+              <Text>Récupération des données...</Text>
+            )}
           </View>
-          <AdminListItems />
-        </View>
-      )}
-      <AdminAddItem
-        openAddModal={openAddModal}
-        setOpenAddModal={setOpenAddModal}
-      />
-      <AdminSearchItemsModal
-        openSearchModal={openSearchModal}
-        setOpenSearchModal={setOpenSearchModal}
-      />
+        )}
+        <SearchModal
+          setItems={setItems}
+          setOpenList={setOpenList}
+          openSearchModal={openSearchModal}
+          setOpenSearchModal={setOpenSearchModal}
+        />
+        <AddItem
+          openAddModal={openAddModal}
+          setOpenAddModal={setOpenAddModal}
+        />
+      </View>
     </View>
   );
 }
@@ -123,26 +140,5 @@ const styles = StyleSheet.create({
   actioncardlist: {
     borderColor: "#FF0035",
     backgroundColor: "#FF0035",
-  },
-  listView: {
-    width: "100%",
-    marginTop: 30,
-  },
-  closebuttoncontainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  closebutton: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 40,
-    width: 40,
-    marginVertical: 10,
-    borderRadius: 50,
-    padding: 10,
-    elevation: 10,
-    backgroundColor: "red",
   },
 });
