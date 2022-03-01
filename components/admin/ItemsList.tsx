@@ -1,6 +1,11 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 
 import ItemDetails from "./ItemDetails";
 import { Text, View } from "../Themed";
@@ -25,11 +30,8 @@ const ItemsList = ({
 
   return (
     <View style={styles.listView}>
-      <View style={styles.closebuttoncontainer}>
-        <Pressable
-          style={styles.closebutton}
-          onPress={() => setOpenList(!openList)}
-        >
+      <View style={styles.buttoncontainer}>
+        <Pressable style={styles.button} onPress={() => setOpenList(!openList)}>
           <FontAwesome
             style={{
               color: "white",
@@ -41,86 +43,94 @@ const ItemsList = ({
           />
         </Pressable>
       </View>
-      <View style={styles.list}>
-        <View style={styles.column}>
-          <Text
-            style={[
-              styles.case,
-              styles.caseId,
-              { backgroundColor: "#230007", color: "white" },
-            ]}
-          >
-            ID
-          </Text>
-          <Text
-            style={[
-              styles.case,
-              styles.caseName,
-              { backgroundColor: "#d7cf07", color: "white" },
-            ]}
-          >
-            Nom
-          </Text>
-          <Text
-            style={[
-              styles.case,
-              styles.caseModel,
-              { backgroundColor: "#d98324", color: "white" },
-            ]}
-          >
-            Model
-          </Text>
-          <Text
-            style={[
-              styles.case,
-              styles.caseStatus,
-              { backgroundColor: "#a40606", color: "white" },
-            ]}
-          >
-            Etat
-          </Text>
-        </View>
-        {items.map((item: IItem) => (
-          <View key={item.itemId}>
+      <ScrollView style={{ margin: 0, padding: 0 }}>
+        <View>
+          {items.map((item: IItem) => (
             <TouchableOpacity
-              style={styles.column}
+              key={item.itemId}
               onPress={() => showItemDetails(item)}
             >
-              <Text style={[styles.case, styles.caseId]}>{item.itemId}</Text>
-              <Text style={[styles.case, styles.caseName]}>
-                {item.clientName}
-              </Text>
-              <Text style={[styles.case, styles.caseModel]}>{item.model}</Text>
-              <Text style={[styles.case, styles.caseStatus]}>
-                {item.status}
-              </Text>
+              <View
+                style={{
+                  borderTopColor: "gray",
+                  borderTopWidth: 1,
+                  padding: 20,
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                  }}
+                >
+                  <Text>{item.itemId}</Text>
+                </View>
+                <View style={{ flex: 8 }}>
+                  <View
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                    }}
+                  >
+                    <View>
+                      <Text>{item.clientName}</Text>
+                      <Text>{item.clientPhoneNumber}</Text>
+                    </View>
+                    <View>
+                      <Text>{item.model}</Text>
+                      <Text>{item.serialNumber}</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      borderTopColor: "gray",
+                      borderTopWidth: 1,
+                      paddingTop: 10,
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                    }}
+                  >
+                    <Text>{item.createdAt}</Text>
+                    <Text>{item.status}</Text>
+                  </View>
+                </View>
+              </View>
             </TouchableOpacity>
-          </View>
-        ))}
-        {openAdminItemDetails && item && (
-          <ItemDetails
-            item={item}
-            setItem={setItem}
-            openAdminItemDetails={openAdminItemDetails}
-            setOpenAdminItemDetails={setOpenAdminItemDetails}
-          />
-        )}
-      </View>
+          ))}
+        </View>
+      </ScrollView>
+      {openAdminItemDetails && item && (
+        <ItemDetails
+          item={item}
+          setItem={setItem}
+          openAdminItemDetails={openAdminItemDetails}
+          setOpenAdminItemDetails={setOpenAdminItemDetails}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   listView: {
+    flex: 1,
     width: "100%",
-    marginTop: 30,
+    paddingTop: 30,
+    paddingBottom: 10,
   },
-  closebuttoncontainer: {
+  buttoncontainer: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
-  closebutton: {
+  button: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -131,41 +141,6 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 10,
     backgroundColor: "red",
-  },
-  list: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignContent: "flex-start",
-  },
-  column: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginVertical: 8,
-    marginHorizontal: 8,
-  },
-  case: {
-    overflow: "hidden",
-    paddingHorizontal: 6,
-  },
-  caseId: {
-    // width: 60,
-    flex: 1,
-  },
-  caseName: {
-    // width: 120,
-    flex: 2,
-  },
-  caseModel: {
-    // width: 120,
-    flex: 2,
-  },
-  caseStatus: {
-    // width: 70,
-    flex: 1,
   },
 });
 

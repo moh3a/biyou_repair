@@ -11,7 +11,6 @@ import store from "./redux/store";
 
 import FirebaseConfig from "./firebase.config";
 import { initializeApp, getApps } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 
 // Supress warnings
 LogBox.ignoreLogs(["Setting a timer"]);

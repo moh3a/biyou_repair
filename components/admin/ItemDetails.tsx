@@ -44,18 +44,6 @@ export default function AdminItemDetails({
   );
   const db = getFirestore();
 
-  useEffect(() => {
-    if (item.itemId) {
-      onSnapshot(doc(db, "items", item.itemId), (doc) => {
-        if (doc.exists()) {
-          console.log(doc.data());
-        } else {
-          console.log("doc doesnt exist");
-        }
-      });
-    }
-  }, []);
-
   const updateStatus = useCallback(async () => {
     if (statusIdx && item.itemId) {
       await updateDoc(doc(db, "items", item.itemId), {
