@@ -54,9 +54,11 @@ export default function ItemDetails({
       </View>
       <View style={styles.modalBlock}>
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>{item.model}</Text>
-        <Text style={styles.modalText}>
-          Numéro de série: {item.serialNumber}
-        </Text>
+        {item.serialNumber && (
+          <Text style={styles.modalText}>
+            Numéro de série: {item.serialNumber}
+          </Text>
+        )}
       </View>
       <View
         style={[

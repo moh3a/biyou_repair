@@ -20,23 +20,9 @@ const linking: LinkingOptions<RootStackParamList> = {
               HomeScreen: "home",
             },
           },
-          Auth: {
+          Account: {
             screens: {
-              Account: {
-                screens: {
-                  AccountScreen: "account",
-                },
-              },
-              Login: {
-                screens: {
-                  LoginScreen: "login",
-                },
-              },
-              Register: {
-                screens: {
-                  RegisterScreen: "register",
-                },
-              },
+              AccountScreen: "account",
             },
           },
           Admin: {

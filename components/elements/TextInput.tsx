@@ -21,14 +21,15 @@ const BiyouTextInput = ({
         style={{
           padding: 10,
           borderRadius: 15,
-          color: theme === "light" ? "#001" : "white",
+          backgroundColor: theme === "light" ? "#fff" : "#001",
+          color: theme === "light" ? "#001" : "#fff",
           ...(condition
             ? {
                 borderColor: "#dd1111",
                 borderWidth: 2,
               }
             : {
-                borderColor: "white",
+                borderColor: theme === "light" ? "#001" : "#fff",
                 borderWidth: 1,
               }),
         }}
@@ -42,6 +43,7 @@ const BiyouTextInput = ({
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "transparent",
     marginHorizontal: 15,
     marginVertical: 4,
   },

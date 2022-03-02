@@ -6,13 +6,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-import AuthNavigator from "./AuthNavigator";
 import AdminScreen from "../screens/AdminScreen";
 import HomeScreen from "../screens/HomeScreen";
 import { RootTabParamList, RootTabScreenProps } from "../types";
 import { fetchUser, IUser, selectUser, signOutUser } from "../redux/userSlice";
 import { SvgUri } from "react-native-svg";
 import { View } from "../components/Themed";
+import AccountScreen from "../screens/AccountScreen";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -95,10 +95,10 @@ function BottomTabNavigator() {
         />
       )}
       <BottomTab.Screen
-        name="Auth"
-        component={AuthNavigator}
+        name="Account"
+        component={AccountScreen}
         options={{
-          title: "Auth",
+          title: "Account",
           headerShown: false,
           tabBarIcon: ({ color }) => {
             if (user) {

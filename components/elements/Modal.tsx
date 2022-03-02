@@ -13,75 +13,69 @@ const BiyouModal = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
-    <ScrollView>
-      <View
-        style={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          flex: 1,
-          paddingTop: 16,
-        }}
-      >
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={open}
-          onRequestClose={() => {
-            setOpen(!open);
+    <>
+      <ScrollView style={{ flex: 1 }}>
+        <View
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            flex: 1,
+            paddingTop: 16,
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 20,
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={open}
+            onRequestClose={() => {
+              setOpen(!open);
             }}
           >
-            <Pressable
-              style={{
-                position: "absolute",
-                top: 5,
-                right: 10,
-                borderRadius: 50,
-                padding: 10,
-                elevation: 10,
-                zIndex: 50,
-                backgroundColor: "red",
-              }}
-              onPress={() => setOpen(!open)}
-            >
-              <FontAwesome
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-                size={25}
-                name="close"
-              />
-            </Pressable>
             <View
               style={{
-                width: "100%",
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-                elevation: 5,
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 20,
               }}
             >
-              {children}
+              <Pressable
+                style={{
+                  position: "absolute",
+                  top: 5,
+                  right: 10,
+                  borderRadius: 50,
+                  padding: 10,
+                  elevation: 10,
+                  zIndex: 50,
+                  backgroundColor: "red",
+                }}
+                onPress={() => setOpen(!open)}
+              >
+                <FontAwesome
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                  size={25}
+                  name="close"
+                />
+              </Pressable>
+              <View
+                style={{
+                  width: "100%",
+                }}
+              >
+                {children}
+              </View>
             </View>
-          </View>
-        </Modal>
-      </View>
-    </ScrollView>
+          </Modal>
+        </View>
+      </ScrollView>
+    </>
   );
 };
 

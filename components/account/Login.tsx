@@ -1,61 +1,44 @@
 import { FontAwesome } from "@expo/vector-icons";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 
 import useColorScheme from "../../hooks/useColorScheme";
 import { Text, View } from "../../components/Themed";
-import BiyouTextInput from "../../components/elements/TextInput";
 import BiyouButton from "../../components/elements/Button";
+import BiyouTextInput from "../../components/elements/TextInput";
 import { fetchUser, selectUser } from "../../redux/userSlice";
 
-const RegisterScreen = ({ navigation }: any) => {
+const Login = ({ setRegisterOpen }: any) => {
   const theme = useColorScheme();
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [visible, setVisible] = useState(false);
+  const [error, setError] = useState("");
   const { user } = useSelector(selectUser);
 
   const dispatch = useDispatch();
   const auth = getAuth();
-  const db = getFirestore();
 
   useEffect(() => {
     if (user) {
-      navigation.navigate("Account");
+      setRegisterOpen(false);
     } else if (auth.currentUser) {
       dispatch(fetchUser(auth.currentUser));
-      navigation.navigate("Account");
+      setRegisterOpen(false);
     }
   }, []);
 
   const submitHandler = async () => {
-    if (name && email && password) {
-      createUserWithEmailAndPassword(auth, email, password)
+    if (email && password) {
+      signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          updateProfile(user.user, {
-            displayName: name,
-            photoURL: `https://avatars.dicebear.com/api/gridy/${name}.svg`,
-          }).then(async () => {
-            await setDoc(doc(db, "custom", user.user.uid), {
-              userId: user.user.uid,
-              username: user.user.displayName,
-              role: "basic",
-            });
-            dispatch(fetchUser(user.user));
-            navigation.navigate("Account");
-          });
+          dispatch(fetchUser(user.user));
+          setRegisterOpen(false);
         })
         .catch((error) => {
-          setError("Un problème avec vos entrées!");
+          setError("Impossible de se connecter!");
           setTimeout(() => {
             setError("");
           }, 3000);
@@ -71,21 +54,6 @@ const RegisterScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       {error.length > 1 && <Text style={styles.error}>{error}</Text>}
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Account")}
-        style={styles.titlecontainer}
-      >
-        <Text style={styles.back}>
-          <FontAwesome size={25} name={"arrow-left"} />
-        </Text>
-        <Text style={styles.title}>Créer un compte</Text>
-      </TouchableOpacity>
-      <BiyouTextInput
-        placeholder="nom d'utilisateur"
-        value={name}
-        setValue={setName}
-        condition={error.length > 1 && !name}
-      />
       <BiyouTextInput
         placeholder="email"
         value={email}
@@ -145,41 +113,17 @@ const RegisterScreen = ({ navigation }: any) => {
           )}
         </TouchableOpacity>
       </View>
-      <Text style={styles.message}>Vous avez déjà un compte?</Text>
-      <TouchableOpacity
-        style={styles.message}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={{ color: "gray", fontStyle: "italic", ...styles.message }}>
-          Identifiez-vous
-        </Text>
-      </TouchableOpacity>
-      <BiyouButton title="Créer un compte" clickHandler={submitHandler} />
+      <BiyouButton title="S'identifier" clickHandler={submitHandler} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#211",
+    borderRadius: 25,
     display: "flex",
-    flex: 1,
-    paddingTop: 20,
-  },
-  titlecontainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginVertical: 30,
-    marginHorizontal: 20,
-  },
-  back: {
-    marginRight: 30,
-  },
-  title: {
-    textAlign: "left",
-    fontSize: 25,
-    fontWeight: "bold",
+    padding: 20,
   },
   error: {
     backgroundColor: "#dd1111",
@@ -190,12 +134,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  message: {
-    marginHorizontal: 15,
-    marginVertical: 4,
-    textAlign: "center",
-    fontSize: 20,
-  },
 });
 
-export default RegisterScreen;
+export default Login;

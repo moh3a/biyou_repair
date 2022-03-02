@@ -1,16 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Image, Platform, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signOut } from "firebase/auth";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { SvgUri } from "react-native-svg";
 
-import { Text, View } from "../../components/Themed";
-import BiyouButton from "../../components/elements/Button";
+import { Text, View } from "../Themed";
+import BiyouButton from "../elements/Button";
 import { selectUser, signOutUser, updateUser } from "../../redux/userSlice";
 import { IItem } from "../../utils/method";
 
-export default function AccountScreen({ navigation }: any) {
+const Profile = () => {
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
   const auth = getAuth();
@@ -23,14 +23,12 @@ export default function AccountScreen({ navigation }: any) {
       });
     }
   }, []);
-
   const signOutHandler = async () => {
     signOut(auth).then(() => dispatch(signOutUser()));
   };
-
   return (
-    <View style={styles.container}>
-      {user ? (
+    <>
+      {user && (
         <View>
           <View
             style={{
@@ -105,38 +103,9 @@ export default function AccountScreen({ navigation }: any) {
             iconPosition="after"
           />
         </View>
-      ) : (
-        <View style={styles.block}>
-          <Text style={styles.loginCtaText}>
-            Avoir un compte vous permets de suivre votre produit et recevoir une
-            notification dès qu'il est réparé.
-          </Text>
-          <BiyouButton
-            title="S'identifier"
-            clickHandler={() => navigation.navigate("Login")}
-            iconName="arrow-right"
-            iconPosition="after"
-          />
-        </View>
       )}
-    </View>
+    </>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flex: 1,
-    paddingTop: 20,
-  },
-  block: {
-    width: "100%",
-    marginHorizontal: 20,
-    marginTop: 50,
-  },
-  loginCtaText: {
-    textAlign: "center",
-    fontSize: 18,
-    marginVertical: 10,
-  },
-});
+export default Profile;

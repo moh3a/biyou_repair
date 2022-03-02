@@ -1,8 +1,8 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import {
+  Dimensions,
   Pressable,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
@@ -43,69 +43,135 @@ const ItemsList = ({
           />
         </Pressable>
       </View>
-      <ScrollView style={{ margin: 0, padding: 0 }}>
-        <View>
-          {items.map((item: IItem) => (
-            <TouchableOpacity
-              key={item.itemId}
-              onPress={() => showItemDetails(item)}
+      <View style={{ width: "100%", display: "flex" }}>
+        {items.map((item: IItem) => (
+          <TouchableOpacity
+            key={item.itemId}
+            onPress={() => showItemDetails(item)}
+          >
+            <View
+              style={{
+                borderTopColor: "gray",
+                borderTopWidth: 1,
+                width: Dimensions.get("window").width,
+                display: "flex",
+                flexDirection: "row",
+                paddingVertical: 10,
+                paddingHorizontal: 5,
+              }}
             >
               <View
                 style={{
-                  borderTopColor: "gray",
-                  borderTopWidth: 1,
-                  padding: 20,
+                  flex: 1,
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  overflow: "hidden",
+                }}
+              >
+                <Text>{item.itemId}</Text>
+              </View>
+              <View
+                style={{
+                  flex: 6,
                   width: "100%",
                   display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
+                  flexDirection: "column",
                 }}
               >
                 <View
                   style={{
                     flex: 1,
+                    display: "flex",
+                    flexDirection: "row",
+                    paddingVertical: 5,
                   }}
                 >
-                  <Text>{item.itemId}</Text>
-                </View>
-                <View style={{ flex: 8 }}>
                   <View
                     style={{
-                      width: "100%",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-around",
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
                     }}
                   >
-                    <View>
-                      <Text>{item.clientName}</Text>
-                      <Text>{item.clientPhoneNumber}</Text>
-                    </View>
-                    <View>
-                      <Text>{item.model}</Text>
-                      <Text>{item.serialNumber}</Text>
-                    </View>
+                    <Text style={{ fontWeight: "bold", textAlign: "center" }}>
+                      {item.clientName}
+                    </Text>
                   </View>
                   <View
                     style={{
-                      borderTopColor: "gray",
-                      borderTopWidth: 1,
-                      paddingTop: 10,
-                      width: "100%",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-around",
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
                     }}
                   >
-                    <Text>{item.createdAt}</Text>
-                    <Text>{item.status}</Text>
+                    <Text>{item.model}</Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    borderTopWidth: 1,
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "row",
+                    paddingVertical: 5,
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Text style={{ fontStyle: "italic" }}>
+                      {item.clientPhoneNumber}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Text
+                      style={[
+                        {
+                          color: "white",
+                          fontWeight: "bold",
+                          paddingHorizontal: 3,
+                        },
+                        item.status === "En attente" && {
+                          backgroundColor: "red",
+                        },
+                        item.status === "Réparé" && {
+                          backgroundColor: "green",
+                        },
+                        item.status === "Devis" && {
+                          backgroundColor: "blue",
+                        },
+                        item.status === "Retour au client" && {
+                          backgroundColor: "red",
+                        },
+                        item.status === "Attente de pièces" && {
+                          backgroundColor: "orange",
+                        },
+                      ]}
+                    >
+                      {item.status}
+                    </Text>
                   </View>
                 </View>
               </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
       {openAdminItemDetails && item && (
         <ItemDetails
           item={item}
@@ -141,6 +207,9 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 10,
     backgroundColor: "red",
+  },
+  textDesc: {
+    overflow: "hidden",
   },
 });
 

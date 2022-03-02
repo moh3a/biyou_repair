@@ -46,6 +46,7 @@ const BiyouButton = ({
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "transparent",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
