@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Image, Platform, StyleSheet } from "react-native";
+import { useEffect } from "react";
+import { Image, Platform } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signOut } from "firebase/auth";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";

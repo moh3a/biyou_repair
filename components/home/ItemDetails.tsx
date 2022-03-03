@@ -60,27 +60,34 @@ export default function ItemDetails({
           </Text>
         )}
       </View>
-      <View
-        style={[
-          styles.modalBlock,
-          { display: "flex", flexDirection: "row", flexWrap: "wrap" },
-        ]}
-      >
-        <Text style={styles.modalText}>Etat:</Text>
-        <Text
-          style={[
-            styles.modalText,
-            {
-              backgroundColor: "red",
-              color: "white",
-              marginLeft: 5,
-              paddingHorizontal: 3,
-            },
-          ]}
+      <View style={[styles.modalBlock]}>
+        <View
+          style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
         >
-          {item.status ? item.status : "En attente"}
-        </Text>
+          <Text style={styles.modalText}>Etat:</Text>
+          <Text
+            style={[
+              styles.modalText,
+              {
+                backgroundColor: "red",
+                color: "white",
+                marginLeft: 5,
+                paddingHorizontal: 3,
+              },
+            ]}
+          >
+            {item.status}
+          </Text>
+        </View>
+        {item.prestation && (
+          <View>
+            <Text style={styles.modalText}>
+              Prestation: {item.prestation} DZD
+            </Text>
+          </View>
+        )}
       </View>
+
       {item.diagnostic && (
         <View style={styles.modalBlock}>
           <Text style={styles.modalText}>Diagnostique:</Text>

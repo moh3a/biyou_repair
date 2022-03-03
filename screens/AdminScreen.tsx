@@ -77,7 +77,7 @@ export default function AdminScreen() {
           </View>
           <View style={{ height: Dimensions.get("window").height - 250 }}>
             {openList && (
-              <View>
+              <View style={{ paddingBottom: 75 }}>
                 {items ? (
                   <ItemsList
                     items={items}

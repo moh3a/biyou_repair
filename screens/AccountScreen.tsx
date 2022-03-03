@@ -10,6 +10,8 @@ import Profile from "../components/account/Profile";
 import Login from "../components/account/Login";
 import Register from "../components/account/Register";
 import { selectUser, updateUser } from "../redux/userSlice";
+import BiyouModal from "../components/elements/Modal";
+import EditProfile from "../components/account/EditProfile";
 
 export default function AccountScreen() {
   const { user } = useSelector(selectUser);
@@ -18,6 +20,7 @@ export default function AccountScreen() {
 
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -82,7 +85,9 @@ export default function AccountScreen() {
             icon={{ name: "add", color: "#fff" }}
             title="Ajouter un produit"
             titleStyle={{ position: "relative", bottom: 80 }}
-            onPress={() => console.log("Add Something")}
+            onPress={() => {
+              setOpen(false);
+            }}
           />
           <SpeedDial.Action
             style={{ bottom: 80 }}
@@ -90,9 +95,17 @@ export default function AccountScreen() {
             icon={{ name: "edit", color: "#fff" }}
             title="Modifier votre profil"
             titleStyle={{ position: "relative", bottom: 80 }}
-            onPress={() => console.log("Delete Something")}
+            onPress={() => {
+              setOpen(false);
+              setEditOpen(true);
+            }}
           />
         </SpeedDial>
+      )}
+      {editOpen && (
+        <BiyouModal open={editOpen} setOpen={setEditOpen}>
+          <EditProfile setEditOpen={setEditOpen} />
+        </BiyouModal>
       )}
     </View>
   );

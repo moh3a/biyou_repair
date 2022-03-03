@@ -10,6 +10,7 @@ export interface IItem {
     | "Devis"
     | "Retour au client"
     | "Attente de pièces";
+  prestation?: number;
   diagnostic?: string;
   createdAt?: string;
   modifiedAt?: string;

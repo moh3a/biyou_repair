@@ -1,5 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
+import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, TextInput } from "react-native";
 import { ButtonGroup } from "react-native-elements";
@@ -39,6 +39,9 @@ export default function AdminItemDetails({
   const [serialNumber, setSerialNumber] = useState(
     item.serialNumber ? item.serialNumber : ""
   );
+  const [prestation, setPrestation] = useState(
+    item.prestation ? item.prestation : 0
+  );
   const [diagnostic, setDiagnostic] = useState(
     item.diagnostic ? item.diagnostic : ""
   );
@@ -56,48 +59,19 @@ export default function AdminItemDetails({
     updateStatus();
   }, [updateStatus]);
 
-  const updatePhoneNumberHandler = async () => {
-    if (phoneNumber && item.itemId) {
-      await updateDoc(doc(db, "items", item.itemId), {
-        clientPhoneNumber: phoneNumber,
-      });
-      setSuccesss("phoneNumber");
-      setTimeout(() => {
-        setSuccesss("");
-      }, 3000);
-    }
-  };
-
-  const updateModelHandler = async () => {
-    if (model && item.itemId) {
-      await updateDoc(doc(db, "items", item.itemId), {
-        model,
-      });
-      setSuccesss("model");
-      setTimeout(() => {
-        setSuccesss("");
-      }, 3000);
-    }
-  };
-
-  const updateSerialNumberHandler = async () => {
-    if (serialNumber && item.itemId) {
-      await updateDoc(doc(db, "items", item.itemId), {
-        serialNumber,
-      });
-      setSuccesss("serialNumber");
-      setTimeout(() => {
-        setSuccesss("");
-      }, 3000);
-    }
-  };
-
-  const updateDiagnosticHandler = async () => {
-    if (diagnostic && item.itemId) {
-      await updateDoc(doc(db, "items", item.itemId), {
-        diagnostic,
-      });
-      setSuccesss("diagnostic");
+  const updateHandler = async (key: string, value: string | number) => {
+    if (key && item.itemId) {
+      let updatedValue: any = {};
+      await updateDoc(
+        doc(db, "items", item.itemId),
+        Object.defineProperty(updatedValue, key, {
+          value: value,
+          configurable: true,
+          writable: true,
+          enumerable: true,
+        })
+      );
+      setSuccesss(key);
       setTimeout(() => {
         setSuccesss("");
       }, 3000);
@@ -168,7 +142,7 @@ export default function AdminItemDetails({
                     }}
                   />
                   <Pressable
-                    onPress={updatePhoneNumberHandler}
+                    onPress={() => updateHandler("phoneNumber", phoneNumber)}
                     style={{ position: "absolute", right: 10, top: 8 }}
                   >
                     <FontAwesome name="save" size={25} color="orange" />
@@ -203,7 +177,8 @@ export default function AdminItemDetails({
                     }}
                   />
                   <Pressable
-                    onPress={updateModelHandler}
+                    // onPress={updateModelHandler}
+                    onPress={() => updateHandler("model", model)}
                     style={{ position: "absolute", right: 10, top: 8 }}
                   >
                     <FontAwesome name="save" size={25} color="orange" />
@@ -236,7 +211,7 @@ export default function AdminItemDetails({
                     }}
                   />
                   <Pressable
-                    onPress={updateSerialNumberHandler}
+                    onPress={() => updateHandler("serialNumber", serialNumber)}
                     style={{ position: "absolute", right: 10, top: 8 }}
                   >
                     <FontAwesome name="save" size={25} color="orange" />
@@ -277,6 +252,39 @@ export default function AdminItemDetails({
                 />
               </View>
               <View>
+                <Text style={styles.modalText}>Prestation:</Text>
+                <View style={{ marginVertical: 5 }}>
+                  <TextInput
+                    value={prestation.toString()}
+                    onChangeText={(e) => setPrestation(parseFloat(e))}
+                    placeholder=""
+                    style={{
+                      paddingVertical: 10,
+                      paddingLeft: 10,
+                      paddingRight: 40,
+                      borderRadius: 15,
+                      color: theme === "light" ? "#001" : "white",
+                      borderColor: theme === "light" ? "#001" : "white",
+                      borderWidth: 1,
+                    }}
+                  />
+                  <Pressable
+                    onPress={() => updateHandler("prestation", prestation)}
+                    style={{ position: "absolute", right: 10, top: 8 }}
+                  >
+                    <FontAwesome name="save" size={25} color="orange" />
+                  </Pressable>
+                  {success === "prestation" && (
+                    <FontAwesome
+                      name="check"
+                      size={25}
+                      color="green"
+                      style={{ position: "absolute", right: 40, top: 8 }}
+                    />
+                  )}
+                </View>
+              </View>
+              <View>
                 <Text style={styles.modalText}>Diagnostique</Text>
                 <View style={{ marginVertical: 5 }}>
                   <TextInput
@@ -294,7 +302,7 @@ export default function AdminItemDetails({
                     }}
                   />
                   <Pressable
-                    onPress={updateDiagnosticHandler}
+                    onPress={() => updateHandler("diagnostic", diagnostic)}
                     style={{ position: "absolute", right: 10, top: 8 }}
                   >
                     <FontAwesome name="send" size={25} color="green" />

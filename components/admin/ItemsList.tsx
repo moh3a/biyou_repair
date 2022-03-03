@@ -51,13 +51,18 @@ const ItemsList = ({
           >
             <View
               style={{
-                borderTopColor: "gray",
-                borderTopWidth: 1,
-                width: Dimensions.get("window").width,
+                borderRadius: 15,
+                width: Dimensions.get("window").width - 10,
+                marginHorizontal: "auto",
+                marginVertical: 5,
                 display: "flex",
                 flexDirection: "row",
                 paddingVertical: 10,
                 paddingHorizontal: 5,
+                shadowColor: "black",
+                shadowOffset: { width: 1, height: 5 },
+                shadowOpacity: 0.5,
+                shadowRadius: 40,
               }}
             >
               <View
