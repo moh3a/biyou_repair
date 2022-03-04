@@ -1,7 +1,13 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
-import { Modal, Pressable, StyleSheet, TextInput } from "react-native";
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+} from "react-native";
 import { ButtonGroup } from "react-native-elements";
 
 import { Text, View } from "../../components/Themed";
@@ -89,245 +95,255 @@ export default function AdminItemDetails({
           setItem(undefined);
         }}
       >
-        <View style={styles.centeredView}>
-          <Pressable
-            style={styles.button}
-            onPress={() => {
-              setOpenAdminItemDetails(!openAdminItemDetails);
-              setItem(undefined);
-            }}
-          >
-            <FontAwesome
-              style={{
-                color: "white",
-                fontWeight: "bold",
-                textAlign: "center",
+        <ScrollView>
+          <View style={styles.centeredView}>
+            <Pressable
+              style={styles.button}
+              onPress={() => {
+                setOpenAdminItemDetails(!openAdminItemDetails);
+                setItem(undefined);
               }}
-              size={25}
-              name="close"
-            />
-          </Pressable>
-          <View style={styles.modalView}>
-            <View style={styles.modalBlock}>
-              <Text style={styles.modalText}>Numéro de bon:</Text>
-              <Text style={{ fontSize: 45, fontWeight: "bold" }}>
-                {item.itemId}
-              </Text>
-            </View>
-            <View style={styles.modalBlock}>
-              <Text style={styles.modalText}>Nom du client:</Text>
-              <Text style={{ fontSize: 30, fontWeight: "600" }}>
-                {item.clientName}
-              </Text>
-            </View>
-            <View style={styles.modalBlock}>
-              <Text style={styles.modalText}>
-                Date d'entrée: {item.createdAt}
-              </Text>
-              <View>
-                <Text style={styles.modalText}>Numéro de téléphone:</Text>
-                <View style={{ marginVertical: 5 }}>
-                  <TextInput
-                    value={phoneNumber}
-                    onChangeText={(e) => setPhoneNumber(e)}
-                    placeholder=""
-                    style={{
-                      paddingVertical: 10,
-                      paddingLeft: 10,
-                      paddingRight: 40,
-                      borderRadius: 15,
-                      color: theme === "light" ? "#001" : "white",
-                      borderColor: theme === "light" ? "#001" : "white",
-                      borderWidth: 1,
-                    }}
-                  />
-                  <Pressable
-                    onPress={() => updateHandler("phoneNumber", phoneNumber)}
-                    style={{ position: "absolute", right: 10, top: 8 }}
-                  >
-                    <FontAwesome name="save" size={25} color="orange" />
-                  </Pressable>
-                  {success === "phoneNumber" && (
-                    <FontAwesome
-                      name="check"
-                      size={25}
-                      color="green"
-                      style={{ position: "absolute", right: 40, top: 8 }}
-                    />
-                  )}
-                </View>
-              </View>
-            </View>
-            <View style={styles.modalBlock}>
-              <View>
-                <Text style={styles.modalText}>Modèle:</Text>
-                <View style={{ marginVertical: 5 }}>
-                  <TextInput
-                    value={model}
-                    onChangeText={(e) => setModel(e)}
-                    placeholder=""
-                    style={{
-                      paddingVertical: 10,
-                      paddingLeft: 10,
-                      paddingRight: 40,
-                      borderRadius: 15,
-                      color: theme === "light" ? "#001" : "white",
-                      borderColor: theme === "light" ? "#001" : "white",
-                      borderWidth: 1,
-                    }}
-                  />
-                  <Pressable
-                    // onPress={updateModelHandler}
-                    onPress={() => updateHandler("model", model)}
-                    style={{ position: "absolute", right: 10, top: 8 }}
-                  >
-                    <FontAwesome name="save" size={25} color="orange" />
-                  </Pressable>
-                  {success === "model" && (
-                    <FontAwesome
-                      name="check"
-                      size={25}
-                      color="green"
-                      style={{ position: "absolute", right: 40, top: 8 }}
-                    />
-                  )}
-                </View>
-              </View>
-              <View>
-                <Text style={styles.modalText}>Numéro de série:</Text>
-                <View style={{ marginVertical: 5 }}>
-                  <TextInput
-                    value={serialNumber}
-                    onChangeText={(e) => setSerialNumber(e)}
-                    placeholder=""
-                    style={{
-                      paddingVertical: 10,
-                      paddingLeft: 10,
-                      paddingRight: 40,
-                      borderRadius: 15,
-                      color: theme === "light" ? "#001" : "white",
-                      borderColor: theme === "light" ? "#001" : "white",
-                      borderWidth: 1,
-                    }}
-                  />
-                  <Pressable
-                    onPress={() => updateHandler("serialNumber", serialNumber)}
-                    style={{ position: "absolute", right: 10, top: 8 }}
-                  >
-                    <FontAwesome name="save" size={25} color="orange" />
-                  </Pressable>
-                  {success === "serialNumber" && (
-                    <FontAwesome
-                      name="check"
-                      size={25}
-                      color="green"
-                      style={{ position: "absolute", right: 40, top: 8 }}
-                    />
-                  )}
-                </View>
-              </View>
-              <View>
-                <Text style={styles.modalText}>Etat:</Text>
-                <ButtonGroup
-                  buttons={[
-                    "En attente",
-                    "Réparé",
-                    "Devis",
-                    "Retour au client",
-                    "Attente de pièces",
-                  ]}
-                  selectedIndex={statusIdx}
-                  onPress={(value) => {
-                    setStatusIdx(value);
-                  }}
-                  containerStyle={{ margin: 0 }}
-                  selectedButtonStyle={[
-                    statusIdx === 0 && { backgroundColor: "red" },
-                    statusIdx === 1 && { backgroundColor: "green" },
-                    statusIdx === 2 && { backgroundColor: "blue" },
-                    statusIdx === 3 && { backgroundColor: "red" },
-                    statusIdx === 4 && { backgroundColor: "orange" },
-                  ]}
-                  selectedTextStyle={{ color: "white" }}
-                />
-              </View>
-              <View>
-                <Text style={styles.modalText}>Prestation:</Text>
-                <View style={{ marginVertical: 5 }}>
-                  <TextInput
-                    value={prestation.toString()}
-                    onChangeText={(e) => setPrestation(parseFloat(e))}
-                    placeholder=""
-                    style={{
-                      paddingVertical: 10,
-                      paddingLeft: 10,
-                      paddingRight: 40,
-                      borderRadius: 15,
-                      color: theme === "light" ? "#001" : "white",
-                      borderColor: theme === "light" ? "#001" : "white",
-                      borderWidth: 1,
-                    }}
-                  />
-                  <Pressable
-                    onPress={() => updateHandler("prestation", prestation)}
-                    style={{ position: "absolute", right: 10, top: 8 }}
-                  >
-                    <FontAwesome name="save" size={25} color="orange" />
-                  </Pressable>
-                  {success === "prestation" && (
-                    <FontAwesome
-                      name="check"
-                      size={25}
-                      color="green"
-                      style={{ position: "absolute", right: 40, top: 8 }}
-                    />
-                  )}
-                </View>
-              </View>
-              <View>
-                <Text style={styles.modalText}>Diagnostique</Text>
-                <View style={{ marginVertical: 5 }}>
-                  <TextInput
-                    value={diagnostic}
-                    onChangeText={(e) => setDiagnostic(e)}
-                    placeholder=""
-                    style={{
-                      paddingVertical: 10,
-                      paddingLeft: 10,
-                      paddingRight: 40,
-                      borderRadius: 15,
-                      color: theme === "light" ? "#001" : "white",
-                      borderColor: theme === "light" ? "#001" : "white",
-                      borderWidth: 1,
-                    }}
-                  />
-                  <Pressable
-                    onPress={() => updateHandler("diagnostic", diagnostic)}
-                    style={{ position: "absolute", right: 10, top: 8 }}
-                  >
-                    <FontAwesome name="send" size={25} color="green" />
-                  </Pressable>
-                  {success === "diagnostic" && (
-                    <FontAwesome
-                      name="check"
-                      size={25}
-                      color="green"
-                      style={{ position: "absolute", right: 40, top: 8 }}
-                    />
-                  )}
-                </View>
-              </View>
-            </View>
-            {item.clientNote && (
+            >
+              <FontAwesome
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+                size={25}
+                name="close"
+              />
+            </Pressable>
+            <View style={styles.modalView}>
               <View style={styles.modalBlock}>
-                <Text style={styles.modalText}>Note laissée:</Text>
-                <Text style={{ fontSize: 15, fontStyle: "italic" }}>
-                  {item.clientNote}
+                <Text style={styles.modalText}>Numéro de bon:</Text>
+                <Text style={{ fontSize: 45, fontWeight: "bold" }}>
+                  {item.itemId}
                 </Text>
               </View>
-            )}
+              <View style={styles.modalBlock}>
+                <Text style={styles.modalText}>Nom du client:</Text>
+                <Text style={{ fontSize: 30, fontWeight: "600" }}>
+                  {item.clientName}
+                </Text>
+              </View>
+              <View style={styles.modalBlock}>
+                <Text style={styles.modalText}>
+                  Date d'entrée: {item.createdAt}
+                </Text>
+                <View>
+                  <Text style={styles.modalText}>Numéro de téléphone:</Text>
+                  <View style={{ marginVertical: 5 }}>
+                    <TextInput
+                      value={phoneNumber}
+                      onChangeText={(e) => setPhoneNumber(e)}
+                      placeholder=""
+                      style={{
+                        paddingVertical: 10,
+                        paddingLeft: 10,
+                        paddingRight: 40,
+                        borderRadius: 15,
+                        backgroundColor: "#001",
+                        color: "#fff",
+                        borderColor: "#fff",
+                        borderWidth: 1,
+                      }}
+                    />
+                    <Pressable
+                      onPress={() => updateHandler("phoneNumber", phoneNumber)}
+                      style={{ position: "absolute", right: 10, top: 10 }}
+                    >
+                      <FontAwesome name="save" size={25} color="orange" />
+                    </Pressable>
+                    {success === "phoneNumber" && (
+                      <FontAwesome
+                        name="check"
+                        size={25}
+                        color="green"
+                        style={{ position: "absolute", right: 40, top: 10 }}
+                      />
+                    )}
+                  </View>
+                </View>
+              </View>
+              <View style={styles.modalBlock}>
+                <View>
+                  <Text style={styles.modalText}>Modèle:</Text>
+                  <View style={{ marginVertical: 5 }}>
+                    <TextInput
+                      value={model}
+                      onChangeText={(e) => setModel(e)}
+                      placeholder=""
+                      style={{
+                        paddingVertical: 10,
+                        paddingLeft: 10,
+                        paddingRight: 40,
+                        borderRadius: 15,
+                        backgroundColor: "#001",
+                        color: "#fff",
+                        borderColor: "#fff",
+                        borderWidth: 1,
+                      }}
+                    />
+                    <Pressable
+                      onPress={() => updateHandler("model", model)}
+                      style={{ position: "absolute", right: 10, top: 10 }}
+                    >
+                      <FontAwesome name="save" size={25} color="orange" />
+                    </Pressable>
+                    {success === "model" && (
+                      <FontAwesome
+                        name="check"
+                        size={25}
+                        color="green"
+                        style={{ position: "absolute", right: 40, top: 10 }}
+                      />
+                    )}
+                  </View>
+                </View>
+                <View>
+                  <Text style={styles.modalText}>Numéro de série:</Text>
+                  <View style={{ marginVertical: 5 }}>
+                    <TextInput
+                      value={serialNumber}
+                      onChangeText={(e) => setSerialNumber(e)}
+                      placeholder=""
+                      style={{
+                        paddingVertical: 10,
+                        paddingLeft: 10,
+                        paddingRight: 40,
+                        borderRadius: 15,
+                        backgroundColor: "#001",
+                        color: "#fff",
+                        borderColor: "#fff",
+                        borderWidth: 1,
+                      }}
+                    />
+                    <Pressable
+                      onPress={() =>
+                        updateHandler("serialNumber", serialNumber)
+                      }
+                      style={{ position: "absolute", right: 10, top: 10 }}
+                    >
+                      <FontAwesome name="save" size={25} color="orange" />
+                    </Pressable>
+                    {success === "serialNumber" && (
+                      <FontAwesome
+                        name="check"
+                        size={25}
+                        color="green"
+                        style={{ position: "absolute", right: 40, top: 10 }}
+                      />
+                    )}
+                  </View>
+                </View>
+                <View>
+                  <Text style={styles.modalText}>Etat:</Text>
+                  <ButtonGroup
+                    buttons={[
+                      "En attente",
+                      "Réparé",
+                      "Devis",
+                      "Retour au client",
+                      "Attente de pièces",
+                    ]}
+                    selectedIndex={statusIdx}
+                    onPress={(value) => {
+                      setStatusIdx(value);
+                    }}
+                    containerStyle={{ margin: 0 }}
+                    selectedButtonStyle={[
+                      statusIdx === 0 && { backgroundColor: "red" },
+                      statusIdx === 1 && { backgroundColor: "green" },
+                      statusIdx === 2 && { backgroundColor: "blue" },
+                      statusIdx === 3 && { backgroundColor: "red" },
+                      statusIdx === 4 && { backgroundColor: "orange" },
+                    ]}
+                    selectedTextStyle={{ color: "white" }}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.modalText}>Prestation:</Text>
+                  <View style={{ marginVertical: 5 }}>
+                    <TextInput
+                      value={prestation.toString()}
+                      onChangeText={(e) =>
+                        setPrestation(isNaN(parseFloat(e)) ? 0 : parseFloat(e))
+                      }
+                      placeholder=""
+                      style={{
+                        paddingVertical: 10,
+                        paddingLeft: 10,
+                        paddingRight: 40,
+                        borderRadius: 15,
+                        backgroundColor: "#001",
+                        color: "#fff",
+                        borderColor: "#fff",
+                        borderWidth: 1,
+                      }}
+                    />
+                    <Pressable
+                      onPress={() => updateHandler("prestation", prestation)}
+                      style={{ position: "absolute", right: 10, top: 10 }}
+                    >
+                      <FontAwesome name="save" size={25} color="orange" />
+                    </Pressable>
+                    {success === "prestation" && (
+                      <FontAwesome
+                        name="check"
+                        size={25}
+                        color="green"
+                        style={{ position: "absolute", right: 40, top: 10 }}
+                      />
+                    )}
+                  </View>
+                </View>
+                <View>
+                  <Text style={styles.modalText}>Diagnostique</Text>
+                  <View style={{ marginVertical: 5 }}>
+                    <TextInput
+                      value={diagnostic}
+                      onChangeText={(e) => setDiagnostic(e)}
+                      placeholder=""
+                      style={{
+                        paddingVertical: 10,
+                        paddingLeft: 10,
+                        paddingRight: 40,
+                        borderRadius: 15,
+                        backgroundColor: "#001",
+                        color: "#fff",
+                        borderColor: "#fff",
+                        borderWidth: 1,
+                      }}
+                    />
+                    <Pressable
+                      onPress={() => updateHandler("diagnostic", diagnostic)}
+                      style={{ position: "absolute", right: 10, top: 10 }}
+                    >
+                      <FontAwesome name="send" size={25} color="green" />
+                    </Pressable>
+                    {success === "diagnostic" && (
+                      <FontAwesome
+                        name="check"
+                        size={25}
+                        color="green"
+                        style={{ position: "absolute", right: 40, top: 10 }}
+                      />
+                    )}
+                  </View>
+                </View>
+              </View>
+              {item.clientNote && (
+                <View style={styles.modalBlock}>
+                  <Text style={styles.modalText}>Note laissée:</Text>
+                  <Text style={{ fontSize: 15, fontStyle: "italic" }}>
+                    {item.clientNote}
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </Modal>
     </View>
   );
@@ -360,14 +376,6 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "100%",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
   modalText: {
     fontSize: 15,

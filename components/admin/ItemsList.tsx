@@ -59,9 +59,9 @@ const ItemsList = ({
                 flexDirection: "row",
                 paddingVertical: 10,
                 paddingHorizontal: 5,
-                shadowColor: "black",
-                shadowOffset: { width: 1, height: 5 },
-                shadowOpacity: 0.5,
+                shadowColor: "#001",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.4,
                 shadowRadius: 40,
               }}
             >

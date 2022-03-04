@@ -75,7 +75,7 @@ export default function AdminScreen() {
               <Text style={{ color: "white" }}>Liste</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ height: Dimensions.get("window").height - 250 }}>
+          <View style={{ height: Dimensions.get("window").height - 190 }}>
             {openList && (
               <View style={{ paddingBottom: 75 }}>
                 {items ? (

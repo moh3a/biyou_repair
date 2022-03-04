@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Image, Platform, Pressable } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,17 +6,13 @@ import {
   getAuth,
   sendEmailVerification,
   sendPasswordResetEmail,
-  signOut,
   updateEmail,
   updateProfile,
 } from "firebase/auth";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { SvgUri } from "react-native-svg";
 
 import { Text, View } from "../Themed";
-import BiyouButton from "../elements/Button";
 import { selectUser, signOutUser } from "../../redux/userSlice";
-import { IItem } from "../../utils/method";
 import BiyouTextInput from "../elements/TextInput";
 import { FontAwesome } from "@expo/vector-icons";
 

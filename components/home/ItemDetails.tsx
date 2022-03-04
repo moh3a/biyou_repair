@@ -41,12 +41,9 @@ export default function ItemDetails({
         <Text style={{ fontSize: 45, fontWeight: "bold" }}>{item.itemId}</Text>
       </View>
       <View style={styles.modalBlock}>
-        <Text style={styles.modalText}>Nom du client:</Text>
-        <Text style={{ fontSize: 30, fontWeight: "600" }}>
+        <Text style={{ fontSize: 35, fontWeight: "700" }}>
           {item.clientName}
         </Text>
-      </View>
-      <View style={styles.modalBlock}>
         <Text style={styles.modalText}>
           Numéro de téléphone: {item.clientPhoneNumber}
         </Text>
