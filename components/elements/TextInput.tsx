@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
+import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
 import { View } from "../Themed";
 
@@ -21,15 +22,15 @@ const BiyouTextInput = ({
         style={{
           padding: 10,
           borderRadius: 15,
-          backgroundColor: "#001",
-          color: "#fff",
+          backgroundColor: Colors.black,
+          color: Colors.white,
           ...(condition
             ? {
-                borderColor: "#dd1111",
+                borderColor: Colors.red,
                 borderWidth: 2,
               }
             : {
-                borderColor: "#fff",
+                borderColor: Colors.white,
                 borderWidth: 1,
               }),
         }}

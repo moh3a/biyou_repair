@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { Text, View } from "../components/Themed";
+import Colors from "../constants/Colors";
 import { RootStackScreenProps } from "../types";
 
 export default function NotFoundScreen({
@@ -25,14 +26,14 @@ export default function NotFoundScreen({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#17567B",
+    backgroundColor: Colors.darkBlue,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
   },
   title: {
-    color: "white",
+    color: Colors.white,
     fontSize: 35,
     fontWeight: "bold",
   },
@@ -42,6 +43,6 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 15,
-    color: "white",
+    color: Colors.white,
   },
 });

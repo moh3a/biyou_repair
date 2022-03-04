@@ -7,6 +7,7 @@ import BiyouButton from "../elements/Button";
 import BiyouModal from "../elements/Modal";
 import BiyouTextInput from "../elements/TextInput";
 import { createNewId, localISODate } from "../../utils/method";
+import Colors from "../../constants/Colors";
 
 export default function AddItem({
   openAddModal,
@@ -91,8 +92,8 @@ export default function AddItem({
 
 const styles = StyleSheet.create({
   error: {
-    backgroundColor: "#dd1111",
-    color: "white",
+    backgroundColor: Colors.red,
+    color: Colors.white,
     paddingHorizontal: 10,
     paddingVertical: 20,
     fontSize: 20,

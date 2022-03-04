@@ -14,6 +14,7 @@ import { Text, View } from "../../components/Themed";
 import BiyouTextInput from "../../components/elements/TextInput";
 import BiyouButton from "../../components/elements/Button";
 import { fetchUser, selectUser } from "../../redux/userSlice";
+import Colors from "../../constants/Colors";
 
 const Register = ({ setRegisterOpen }: any) => {
   const theme = useColorScheme();
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
   },
   error: {
     backgroundColor: "#dd1111",
-    color: "white",
+    color: Colors.white,
     paddingHorizontal: 10,
     paddingVertical: 20,
     fontSize: 20,

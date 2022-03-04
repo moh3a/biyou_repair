@@ -12,6 +12,8 @@ import Register from "../components/account/Register";
 import { selectUser, updateUser } from "../redux/userSlice";
 import BiyouModal from "../components/elements/Modal";
 import EditProfile from "../components/account/EditProfile";
+import Colors from "../constants/Colors";
+import AddItem from "../components/account/AddItem";
 
 export default function AccountScreen() {
   const { user } = useSelector(selectUser);
@@ -21,6 +23,7 @@ export default function AccountScreen() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -71,28 +74,30 @@ export default function AccountScreen() {
       )}
       {user && (
         <SpeedDial
-          buttonStyle={{ backgroundColor: "black" }}
+          buttonStyle={{ backgroundColor: Colors.lightBlue }}
           containerStyle={{ bottom: 80 }}
           isOpen={open}
-          icon={{ name: "edit", color: "#fff" }}
-          openIcon={{ name: "close", color: "#fff" }}
+          icon={{ name: "edit", color: Colors.white }}
+          openIcon={{ name: "close", color: Colors.white }}
+          onPress={() => setOpen(!open)}
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
         >
           <SpeedDial.Action
             style={{ bottom: 80 }}
-            buttonStyle={{ backgroundColor: "black" }}
-            icon={{ name: "add", color: "#fff" }}
+            buttonStyle={{ backgroundColor: Colors.lightBlue }}
+            icon={{ name: "add", color: Colors.white }}
             title="Ajouter un produit"
             titleStyle={{ position: "relative", bottom: 80 }}
             onPress={() => {
               setOpen(false);
+              setAddOpen(true);
             }}
           />
           <SpeedDial.Action
             style={{ bottom: 80 }}
-            buttonStyle={{ backgroundColor: "black" }}
-            icon={{ name: "edit", color: "#fff" }}
+            buttonStyle={{ backgroundColor: Colors.lightBlue }}
+            icon={{ name: "edit", color: Colors.white }}
             title="Modifier votre profil"
             titleStyle={{ position: "relative", bottom: 80 }}
             onPress={() => {
@@ -101,6 +106,11 @@ export default function AccountScreen() {
             }}
           />
         </SpeedDial>
+      )}
+      {addOpen && (
+        <BiyouModal open={addOpen} setOpen={setAddOpen}>
+          <AddItem setAddOpen={setAddOpen} />
+        </BiyouModal>
       )}
       {editOpen && (
         <BiyouModal open={editOpen} setOpen={setEditOpen}>

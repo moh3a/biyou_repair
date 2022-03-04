@@ -13,6 +13,7 @@ import { fetchUser, IUser, selectUser, signOutUser } from "../redux/userSlice";
 import { SvgUri } from "react-native-svg";
 import { View } from "../components/Themed";
 import AccountScreen from "../screens/AccountScreen";
+import Colors from "../constants/Colors";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -55,19 +56,19 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: "#001",
-        tabBarActiveBackgroundColor: "#aaf",
+        tabBarActiveTintColor: Colors.darkBlue,
+        tabBarActiveBackgroundColor: Colors.yellow,
         tabBarItemStyle: {
           borderRadius: 50,
         },
-        tabBarInactiveTintColor: "#aaf",
+        tabBarInactiveTintColor: Colors.yellow,
         tabBarShowLabel: false,
         tabBarStyle: {
           position: "absolute",
           bottom: 20,
           left: 15,
           right: 15,
-          backgroundColor: "white",
+          backgroundColor: Colors.white,
           borderRadius: 50,
           height: 60,
           ...styles.shadow,
@@ -133,7 +134,7 @@ function BottomTabNavigator() {
 
 const styles = StyleSheet.create({
   shadow: {
-    shadowColor: "#7F5DF0",
+    shadowColor: Colors.yellow,
     shadowOffset: {
       width: 0,
       height: 10,

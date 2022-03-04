@@ -20,6 +20,7 @@ import AddItem from "../components/admin/Add";
 import SearchModal from "../components/admin/Search";
 import { IUser, selectUser } from "../redux/userSlice";
 import { IItem } from "../utils/method";
+import Colors from "../constants/Colors";
 
 export default function AdminScreen() {
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
@@ -53,8 +54,8 @@ export default function AdminScreen() {
               onPress={() => setOpenAddModal(!openAddModal)}
               style={[styles.actioncard, styles.actioncardadd]}
             >
-              <FontAwesome size={25} color="white" name="plus-circle" />
-              <Text style={{ color: "white" }}>Ajouter</Text>
+              <FontAwesome size={25} color={Colors.white} name="plus-circle" />
+              <Text style={{ color: Colors.white }}>Ajouter</Text>
             </TouchableOpacity>
 
             {/* Chercher */}
@@ -62,8 +63,8 @@ export default function AdminScreen() {
               onPress={() => setOpenSearchModal(!openSearchModal)}
               style={[styles.actioncard, styles.actioncardsearch]}
             >
-              <FontAwesome size={25} color="white" name="search" />
-              <Text style={{ color: "white" }}>Chercher</Text>
+              <FontAwesome size={25} color={Colors.white} name="search" />
+              <Text style={{ color: Colors.white }}>Chercher</Text>
             </TouchableOpacity>
 
             {/* Liste */}
@@ -71,8 +72,8 @@ export default function AdminScreen() {
               onPress={fetchItems}
               style={[styles.actioncard, styles.actioncardlist]}
             >
-              <FontAwesome size={25} color="white" name="tasks" />
-              <Text style={{ color: "white" }}>Liste</Text>
+              <FontAwesome size={25} color={Colors.white} name="tasks" />
+              <Text style={{ color: Colors.white }}>Liste</Text>
             </TouchableOpacity>
           </View>
           <View style={{ height: Dimensions.get("window").height - 190 }}>
@@ -139,15 +140,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   actioncardadd: {
-    borderColor: "#0E131F",
-    backgroundColor: "#0E131F",
+    borderColor: Colors.black,
+    backgroundColor: Colors.black,
   },
   actioncardsearch: {
-    borderColor: "#38405F",
-    backgroundColor: "#38405F",
+    borderColor: Colors.violet,
+    backgroundColor: Colors.violet,
   },
   actioncardlist: {
-    borderColor: "#FF0035",
-    backgroundColor: "#FF0035",
+    borderColor: Colors.red,
+    backgroundColor: Colors.red,
   },
 });

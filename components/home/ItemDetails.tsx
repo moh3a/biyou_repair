@@ -7,6 +7,7 @@ import useColorScheme from "../../hooks/useColorScheme";
 import { Text, View } from "../../components/Themed";
 import BiyouModal from "../../components/elements/Modal";
 import { IItem } from "../../utils/method";
+import Colors from "../../constants/Colors";
 
 export default function ItemDetails({
   item,
@@ -66,8 +67,8 @@ export default function ItemDetails({
             style={[
               styles.modalText,
               {
-                backgroundColor: "red",
-                color: "white",
+                backgroundColor: Colors.red,
+                color: Colors.white,
                 marginLeft: 5,
                 paddingHorizontal: 3,
               },
@@ -105,9 +106,9 @@ export default function ItemDetails({
               paddingLeft: 10,
               paddingRight: 40,
               borderRadius: 15,
-              backgroundColor: "#001",
-              color: "#fff",
-              borderColor: "#fff",
+              backgroundColor: Colors.black,
+              color: Colors.white,
+              borderColor: Colors.white,
               borderWidth: 1,
             }}
           />

@@ -10,6 +10,7 @@ import {
 import ItemDetails from "./ItemDetails";
 import { Text, View } from "../Themed";
 import { IItem } from "../../utils/method";
+import Colors from "../../constants/Colors";
 
 const ItemsList = ({
   items,
@@ -34,7 +35,7 @@ const ItemsList = ({
         <Pressable style={styles.button} onPress={() => setOpenList(!openList)}>
           <FontAwesome
             style={{
-              color: "white",
+              color: Colors.white,
               fontWeight: "bold",
               textAlign: "center",
             }}
@@ -51,7 +52,8 @@ const ItemsList = ({
           >
             <View
               style={{
-                borderRadius: 15,
+                borderRadius: 10,
+                backgroundColor: Colors.black,
                 width: Dimensions.get("window").width - 10,
                 marginHorizontal: "auto",
                 marginVertical: 5,
@@ -59,7 +61,7 @@ const ItemsList = ({
                 flexDirection: "row",
                 paddingVertical: 10,
                 paddingHorizontal: 5,
-                shadowColor: "#001",
+                shadowColor: Colors.black,
                 shadowOffset: { width: 0, height: 1 },
                 shadowOpacity: 0.4,
                 shadowRadius: 40,
@@ -69,6 +71,7 @@ const ItemsList = ({
                 style={{
                   flex: 1,
                   width: "100%",
+                  backgroundColor: "transparent",
                   justifyContent: "center",
                   alignItems: "center",
                   overflow: "hidden",
@@ -79,6 +82,7 @@ const ItemsList = ({
               <View
                 style={{
                   flex: 6,
+                  backgroundColor: "transparent",
                   width: "100%",
                   display: "flex",
                   flexDirection: "column",
@@ -88,6 +92,7 @@ const ItemsList = ({
                   style={{
                     flex: 1,
                     display: "flex",
+                    backgroundColor: "transparent",
                     flexDirection: "row",
                     paddingVertical: 5,
                   }}
@@ -95,6 +100,7 @@ const ItemsList = ({
                   <View
                     style={{
                       flex: 1,
+                      backgroundColor: "transparent",
                       justifyContent: "center",
                       alignItems: "center",
                       overflow: "hidden",
@@ -107,6 +113,7 @@ const ItemsList = ({
                   <View
                     style={{
                       flex: 1,
+                      backgroundColor: "transparent",
                       justifyContent: "center",
                       alignItems: "center",
                       overflow: "hidden",
@@ -122,11 +129,13 @@ const ItemsList = ({
                     display: "flex",
                     flexDirection: "row",
                     paddingVertical: 5,
+                    backgroundColor: "transparent",
                   }}
                 >
                   <View
                     style={{
                       flex: 1,
+                      backgroundColor: "transparent",
                       justifyContent: "center",
                       alignItems: "center",
                       overflow: "hidden",
@@ -138,6 +147,7 @@ const ItemsList = ({
                   </View>
                   <View
                     style={{
+                      backgroundColor: "transparent",
                       flex: 1,
                       justifyContent: "center",
                       alignItems: "center",
@@ -147,24 +157,24 @@ const ItemsList = ({
                     <Text
                       style={[
                         {
-                          color: "white",
+                          color: Colors.white,
                           fontWeight: "bold",
                           paddingHorizontal: 3,
                         },
                         item.status === "En attente" && {
-                          backgroundColor: "red",
+                          backgroundColor: Colors.red,
                         },
                         item.status === "Réparé" && {
                           backgroundColor: "green",
                         },
                         item.status === "Devis" && {
-                          backgroundColor: "blue",
+                          backgroundColor: Colors.violet,
                         },
                         item.status === "Retour au client" && {
-                          backgroundColor: "red",
+                          backgroundColor: Colors.red,
                         },
                         item.status === "Attente de pièces" && {
-                          backgroundColor: "orange",
+                          backgroundColor: Colors.yellow,
                         },
                       ]}
                     >
@@ -211,7 +221,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 10,
     elevation: 10,
-    backgroundColor: "red",
+    backgroundColor: Colors.red,
   },
   textDesc: {
     overflow: "hidden",

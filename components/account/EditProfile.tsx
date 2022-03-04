@@ -15,6 +15,7 @@ import { Text, View } from "../Themed";
 import { selectUser, signOutUser } from "../../redux/userSlice";
 import BiyouTextInput from "../elements/TextInput";
 import { FontAwesome } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
 
 const EditProfile = ({ setEditOpen }: any) => {
   const { user } = useSelector(selectUser);
@@ -96,7 +97,7 @@ const EditProfile = ({ setEditOpen }: any) => {
           >
             <FontAwesome
               style={{
-                color: "white",
+                color: Colors.white,
                 fontWeight: "bold",
                 textAlign: "center",
               }}
@@ -211,7 +212,7 @@ const EditProfile = ({ setEditOpen }: any) => {
             <Pressable onPress={deleteAccount}>
               <Text
                 style={{
-                  color: "red",
+                  color: Colors.red,
                   fontWeight: "bold",
                   textDecorationLine: "underline",
                 }}

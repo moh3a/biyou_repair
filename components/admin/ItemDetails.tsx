@@ -11,6 +11,7 @@ import {
 import { ButtonGroup } from "react-native-elements";
 
 import { Text, View } from "../../components/Themed";
+import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
 import { IItem } from "../../utils/method";
 
@@ -106,7 +107,7 @@ export default function AdminItemDetails({
             >
               <FontAwesome
                 style={{
-                  color: "white",
+                  color: Colors.white,
                   fontWeight: "bold",
                   textAlign: "center",
                 }}
@@ -143,9 +144,9 @@ export default function AdminItemDetails({
                         paddingLeft: 10,
                         paddingRight: 40,
                         borderRadius: 15,
-                        backgroundColor: "#001",
-                        color: "#fff",
-                        borderColor: "#fff",
+                        backgroundColor: Colors.black,
+                        color: Colors.white,
+                        borderColor: Colors.white,
                         borderWidth: 1,
                       }}
                     />
@@ -179,9 +180,9 @@ export default function AdminItemDetails({
                         paddingLeft: 10,
                         paddingRight: 40,
                         borderRadius: 15,
-                        backgroundColor: "#001",
-                        color: "#fff",
-                        borderColor: "#fff",
+                        backgroundColor: Colors.black,
+                        color: Colors.white,
+                        borderColor: Colors.white,
                         borderWidth: 1,
                       }}
                     />
@@ -213,9 +214,9 @@ export default function AdminItemDetails({
                         paddingLeft: 10,
                         paddingRight: 40,
                         borderRadius: 15,
-                        backgroundColor: "#001",
-                        color: "#fff",
-                        borderColor: "#fff",
+                        backgroundColor: Colors.black,
+                        color: Colors.white,
+                        borderColor: Colors.white,
                         borderWidth: 1,
                       }}
                     />
@@ -253,13 +254,13 @@ export default function AdminItemDetails({
                     }}
                     containerStyle={{ margin: 0 }}
                     selectedButtonStyle={[
-                      statusIdx === 0 && { backgroundColor: "red" },
+                      statusIdx === 0 && { backgroundColor: Colors.red },
                       statusIdx === 1 && { backgroundColor: "green" },
-                      statusIdx === 2 && { backgroundColor: "blue" },
-                      statusIdx === 3 && { backgroundColor: "red" },
-                      statusIdx === 4 && { backgroundColor: "orange" },
+                      statusIdx === 2 && { backgroundColor: Colors.violet },
+                      statusIdx === 3 && { backgroundColor: Colors.red },
+                      statusIdx === 4 && { backgroundColor: Colors.yellow },
                     ]}
-                    selectedTextStyle={{ color: "white" }}
+                    selectedTextStyle={{ color: Colors.white }}
                   />
                 </View>
                 <View>
@@ -276,9 +277,9 @@ export default function AdminItemDetails({
                         paddingLeft: 10,
                         paddingRight: 40,
                         borderRadius: 15,
-                        backgroundColor: "#001",
-                        color: "#fff",
-                        borderColor: "#fff",
+                        backgroundColor: Colors.black,
+                        color: Colors.white,
+                        borderColor: Colors.white,
                         borderWidth: 1,
                       }}
                     />
@@ -310,9 +311,9 @@ export default function AdminItemDetails({
                         paddingLeft: 10,
                         paddingRight: 40,
                         borderRadius: 15,
-                        backgroundColor: "#001",
-                        color: "#fff",
-                        borderColor: "#fff",
+                        backgroundColor: Colors.black,
+                        color: Colors.white,
+                        borderColor: Colors.white,
                         borderWidth: 1,
                       }}
                     />
@@ -371,7 +372,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 10,
     elevation: 9,
-    backgroundColor: "red",
+    backgroundColor: Colors.red,
     zIndex: 90,
   },
   modalView: {

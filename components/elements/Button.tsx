@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import useColorScheme from "../../hooks/useColorScheme";
+import Colors from "../../constants/Colors";
 import { Text, View } from "../Themed";
 
 const BiyouButton = ({
@@ -15,20 +15,15 @@ const BiyouButton = ({
   iconName?: string;
   iconPosition?: "before" | "after";
 }) => {
-  const theme = useColorScheme();
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={clickHandler}>
         {iconName && iconPosition === "before" && (
-          <FontAwesome
-            size={20}
-            name={iconName as any}
-            color={theme === "light" ? "#001" : "white"}
-          />
+          <FontAwesome size={20} name={iconName as any} color={Colors.white} />
         )}
         <Text
           style={{
-            color: "white",
+            color: Colors.white,
             fontSize: 16,
             fontWeight: "bold",
             padding: 10,
@@ -37,7 +32,7 @@ const BiyouButton = ({
           {title}
         </Text>
         {iconName && iconPosition === "after" && (
-          <FontAwesome size={20} name={iconName as any} color="white" />
+          <FontAwesome size={20} name={iconName as any} color={Colors.white} />
         )}
       </TouchableOpacity>
     </View>
@@ -59,8 +54,8 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     marginHorizontal: "auto",
     minWidth: "50%",
-    backgroundColor: "#000",
-    borderColor: "#000",
+    backgroundColor: Colors.black,
+    borderColor: Colors.black,
     borderWidth: 1,
     borderStyle: "solid",
     borderRadius: 15,

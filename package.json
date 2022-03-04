@@ -2,6 +2,7 @@
   "name": "biyou_repair",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
+  "homepage": "https://moh3a.github.io/biyou_repair",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -10,7 +11,7 @@
     "eject": "expo eject",
     "test": "jest --watchAll",
     "predeploy": "expo build:web",
-    "deploy-hosting": "npm run predeploy && firebase deploy --only hosting"
+    "deploy": "gh-pages -d web-build"
   },
   "jest": {
     "preset": "jest-expo"

@@ -7,6 +7,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import { Text, View } from "../components/Themed";
 import BiyouTextInput from "../components/elements/TextInput";
 import ItemDetails from "../components/home/ItemDetails";
+import Colors from "../constants/Colors";
 
 export default function HomeScreen({ navigation }: any) {
   const theme = useColorScheme();
@@ -77,15 +78,11 @@ export default function HomeScreen({ navigation }: any) {
               height: 50,
               width: 50,
               borderRadius: 50,
-              backgroundColor: theme === "light" ? "#001" : "white",
+              backgroundColor: Colors.lightBlue,
             }}
           >
             <TouchableOpacity onPress={submitHandler}>
-              <FontAwesome
-                size={30}
-                name="search"
-                color={theme === "light" ? "white" : "#001"}
-              />
+              <FontAwesome size={30} name="search" color={Colors.white} />
             </TouchableOpacity>
           </View>
         </View>
@@ -126,8 +123,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   error: {
-    backgroundColor: "#dd1111",
-    color: "white",
+    backgroundColor: Colors.red,
+    color: Colors.white,
     paddingHorizontal: 10,
     paddingVertical: 20,
     fontSize: 20,
