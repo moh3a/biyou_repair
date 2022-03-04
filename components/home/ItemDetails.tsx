@@ -105,8 +105,9 @@ export default function ItemDetails({
               paddingLeft: 10,
               paddingRight: 40,
               borderRadius: 15,
-              color: theme === "light" ? "#001" : "white",
-              borderColor: theme === "light" ? "#001" : "white",
+              backgroundColor: "#001",
+              color: "#fff",
+              borderColor: "#fff",
               borderWidth: 1,
             }}
           />

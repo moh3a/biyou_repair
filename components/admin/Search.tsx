@@ -36,16 +36,20 @@ const SearchModal = ({
   const searchHandler = async () => {
     const queryConstraints: any[] = [];
     if (itemId) {
-      queryConstraints.push(where("itemId", "==", itemId));
+      queryConstraints.push(where("itemId", "==", itemId.toLowerCase()));
     }
     if (clientName) {
-      queryConstraints.push(where("clientName", "==", clientName));
+      queryConstraints.push(
+        where("clientName", "==", clientName.toLowerCase())
+      );
     }
     if (model) {
-      queryConstraints.push(where("model", "==", model));
+      queryConstraints.push(where("model", "==", model.toLowerCase()));
     }
     if (serialNumber) {
-      queryConstraints.push(where("serialNumber", "==", serialNumber));
+      queryConstraints.push(
+        where("serialNumber", "==", serialNumber.toLowerCase())
+      );
     }
     if (status) {
       queryConstraints.push(where("status", "==", status));

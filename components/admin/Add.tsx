@@ -37,7 +37,7 @@ export default function AddItem({
   const addHandler = async () => {
     if (id && name && phoneNumber && model) {
       await setDoc(doc(db, "items", id), {
-        clientName: name,
+        clientName: name.toLowerCase(),
         clientPhoneNumber: phoneNumber,
         itemId: id,
         model,

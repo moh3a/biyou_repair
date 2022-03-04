@@ -71,7 +71,7 @@ export default function AdminItemDetails({
       await updateDoc(
         doc(db, "items", item.itemId),
         Object.defineProperty(updatedValue, key, {
-          value: value,
+          value: typeof value === "string" ? value.toLowerCase() : value,
           configurable: true,
           writable: true,
           enumerable: true,
