@@ -15,7 +15,6 @@ const BiyouTextInput = ({
   setValue?: React.Dispatch<React.SetStateAction<string>>;
   condition?: boolean;
 }) => {
-  const theme = useColorScheme();
   return (
     <View style={styles.container}>
       <TextInput

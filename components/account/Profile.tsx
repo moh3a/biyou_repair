@@ -65,6 +65,16 @@ const Profile = () => {
               <Text style={{ fontWeight: "bold", marginRight: 5 }}>Email:</Text>{" "}
               {user.email}
             </Text>
+            {user.phoneNumber && (
+              <Text
+                style={{ fontSize: 15, display: "flex", flexDirection: "row" }}
+              >
+                <Text style={{ fontWeight: "bold", marginRight: 5 }}>
+                  N téléphone:
+                </Text>{" "}
+                {user.phoneNumber}
+              </Text>
+            )}
             {user.role && (
               <Text
                 style={{ fontSize: 15, display: "flex", flexDirection: "row" }}

@@ -1,16 +1,15 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Dimensions, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-import useColorScheme from "../hooks/useColorScheme";
 import { Text, View } from "../components/Themed";
 import BiyouTextInput from "../components/elements/TextInput";
 import ItemDetails from "../components/home/ItemDetails";
 import Colors from "../constants/Colors";
 
-export default function HomeScreen({ navigation }: any) {
-  const theme = useColorScheme();
+export default function HomeScreen() {
   const db = getFirestore();
   const [name, setName] = useState("");
   const [id, setId] = useState("");
@@ -51,50 +50,67 @@ export default function HomeScreen({ navigation }: any) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Biyou Repair</Text>
-      <View style={styles.searchBar}>
-        {error.length > 1 && <Text style={styles.error}>{error}</Text>}
-        <BiyouTextInput
-          placeholder="numéro de bon - exemple: 22A008"
-          value={id}
-          setValue={setId}
-          condition={error.length > 0 && !id}
+    <>
+      <LinearGradient
+        colors={[Colors.black, Colors.darkBlue, Colors.white, Colors.yellow]}
+        start={{ x: 0.1, y: 0.1 }}
+        end={{ x: 0.9, y: 0.9 }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: Dimensions.get("window").width,
+          height: Dimensions.get("window").height,
+        }}
+      />
+      <View style={styles.container}>
+        <Image
+          source={require("../assets/images/adaptive-icon.png")}
+          style={{ height: 250, width: 250 }}
         />
-        <BiyouTextInput
-          placeholder="nom sur le bon - exemple: Mohamed Mohamed"
-          value={name}
-          setValue={setName}
-          condition={error.length > 0 && !name}
-        />
-        <View style={styles.buttoncontainer}>
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginHorizontal: "auto",
-              marginVertical: 4,
-              height: 50,
-              width: 50,
-              borderRadius: 50,
-              backgroundColor: Colors.lightBlue,
-            }}
-          >
-            <TouchableOpacity onPress={submitHandler}>
-              <FontAwesome size={30} name="search" color={Colors.white} />
-            </TouchableOpacity>
+        <View style={styles.searchBar}>
+          {error.length > 1 && <Text style={styles.error}>{error}</Text>}
+          <BiyouTextInput
+            placeholder="numéro de bon - exemple: 22A008"
+            value={id}
+            setValue={setId}
+            condition={error.length > 0 && !id}
+          />
+          <BiyouTextInput
+            placeholder="nom sur le bon - exemple: Mohamed Mohamed"
+            value={name}
+            setValue={setName}
+            condition={error.length > 0 && !name}
+          />
+          <View style={styles.buttoncontainer}>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: "auto",
+                marginVertical: 4,
+                height: 50,
+                width: 50,
+                borderRadius: 50,
+                backgroundColor: Colors.lightBlue,
+              }}
+            >
+              <TouchableOpacity onPress={submitHandler}>
+                <FontAwesome size={30} name="search" color={Colors.white} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+        {openItemDetails && item && (
+          <ItemDetails
+            item={item}
+            openItemDetails={openItemDetails}
+            setOpenItemDetails={setOpenItemDetails}
+          />
+        )}
       </View>
-      {openItemDetails && item && (
-        <ItemDetails
-          item={item}
-          openItemDetails={openItemDetails}
-          setOpenItemDetails={setOpenItemDetails}
-        />
-      )}
-    </View>
+    </>
   );
 }
 
@@ -105,6 +121,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 20,
+    backgroundColor: "transparent",
   },
   title: {
     fontSize: 35,
@@ -116,11 +133,13 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     justifyContent: "center",
+    backgroundColor: "transparent",
   },
   buttoncontainer: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "transparent",
   },
   error: {
     backgroundColor: Colors.red,

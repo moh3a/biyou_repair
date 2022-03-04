@@ -6,13 +6,23 @@ import {
   where,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction, useState } from "react";
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
+import { BottomSheet, ListItem } from "react-native-elements";
 
 import { Text } from "../Themed";
 import BiyouButton from "../elements/Button";
 import BiyouModal from "../elements/Modal";
 import BiyouTextInput from "../elements/TextInput";
 import Colors from "../../constants/Colors";
+
+const StatusList = [
+  "",
+  "En attente",
+  "Réparé",
+  "Devis",
+  "Retour au client",
+  "Attente de pièces",
+];
 
 const SearchModal = ({
   setItems,
@@ -32,7 +42,9 @@ const SearchModal = ({
   const [clientName, setClientName] = useState("");
   const [model, setModel] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
-  const [status, setStatus] = useState("");
+
+  const [status, setStatus] = useState(StatusList[0]);
+  const [openStatusPicker, setOpenStatusPicker] = useState(false);
 
   const searchHandler = async () => {
     const queryConstraints: any[] = [];
@@ -102,7 +114,39 @@ const SearchModal = ({
         value={serialNumber}
         setValue={setSerialNumber}
       />
-      <BiyouTextInput placeholder="Etat" value={status} setValue={setStatus} />
+      <Pressable
+        onPress={() => setOpenStatusPicker(true)}
+        style={{
+          marginHorizontal: 15,
+          marginVertical: 4,
+          padding: 10,
+          borderRadius: 15,
+          backgroundColor: Colors.black,
+          borderColor: Colors.white,
+          borderWidth: 1,
+        }}
+      >
+        {status ? (
+          <Text style={{ color: Colors.white }}>{status}</Text>
+        ) : (
+          <Text style={{ color: "#777" }}>Etat</Text>
+        )}
+      </Pressable>
+      <BottomSheet isVisible={openStatusPicker}>
+        {StatusList.map((el, i) => (
+          <ListItem
+            key={i}
+            onPress={() => {
+              setStatus(el);
+              setOpenStatusPicker(false);
+            }}
+          >
+            <ListItem.Content>
+              <ListItem.Title>{el.length > 0 ? el : "*"}</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        ))}
+      </BottomSheet>
       <BiyouButton
         title="Chercher"
         clickHandler={searchHandler}

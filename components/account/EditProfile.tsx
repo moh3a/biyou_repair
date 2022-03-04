@@ -16,11 +16,13 @@ import { selectUser, signOutUser } from "../../redux/userSlice";
 import BiyouTextInput from "../elements/TextInput";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import { doc, getFirestore, updateDoc } from "firebase/firestore";
 
 const EditProfile = ({ setEditOpen }: any) => {
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
   const auth = getAuth();
+  const db = getFirestore();
 
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState("");
   const [verifyEmailSuccess, setVerifyEmailSuccess] = useState("");
@@ -28,6 +30,9 @@ const EditProfile = ({ setEditOpen }: any) => {
     user && user.displayName ? user.displayName : ""
   );
   const [email, setEmail] = useState(user && user.email ? user.email : "");
+  const [phoneNumber, setPhoneNumber] = useState(
+    user && user.phoneNumber ? user.phoneNumber : ""
+  );
 
   const resetPassword = async () => {
     if (auth.currentUser && auth.currentUser.email) {
@@ -70,6 +75,12 @@ const EditProfile = ({ setEditOpen }: any) => {
       }
       if (email && email !== auth.currentUser.email) {
         updateEmail(auth.currentUser, email).then(() => setEditOpen(false));
+      }
+      if (phoneNumber) {
+        await updateDoc(doc(db, "custom", auth.currentUser.uid), {
+          phoneNumber,
+        });
+        setEditOpen(false);
       }
     }
   };
@@ -162,6 +173,25 @@ const EditProfile = ({ setEditOpen }: any) => {
                 value={email}
                 setValue={setEmail}
                 placeholder="Addresse email du client"
+              />
+            </Text>
+          </View>
+          <View style={{ marginLeft: 30, marginVertical: 10 }}>
+            <Text
+              style={{
+                fontSize: 15,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontWeight: "bold", marginRight: 5 }}>
+                N téléphone:
+              </Text>{" "}
+              <BiyouTextInput
+                value={phoneNumber}
+                setValue={setPhoneNumber}
+                placeholder="Numéro de téléphone du client"
               />
             </Text>
           </View>

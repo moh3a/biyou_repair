@@ -90,17 +90,18 @@ const Register = ({ setRegisterOpen }: any) => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          backgroundColor: Colors.black,
           marginHorizontal: 15,
           marginVertical: 4,
           padding: 10,
           borderRadius: 15,
           ...(error.length > 1 && !password
             ? {
-                borderColor: "#dd1111",
+                borderColor: Colors.red,
                 borderWidth: 2,
               }
             : {
-                borderColor: "#1b1f23",
+                borderColor: Colors.white,
                 borderWidth: 1,
               }),
         }}
@@ -108,9 +109,10 @@ const Register = ({ setRegisterOpen }: any) => {
         <TextInput
           style={{
             flex: 9,
-            color: theme === "light" ? "#001" : "white",
+            color: Colors.white,
           }}
           placeholder="mot de passe"
+          placeholderTextColor={"#777"}
           secureTextEntry={visible ? false : true}
           onChangeText={(e) => setPassword(e)}
         />
@@ -124,13 +126,13 @@ const Register = ({ setRegisterOpen }: any) => {
         >
           {visible ? (
             <FontAwesome
-              style={{ color: theme === "light" ? "#001" : "white" }}
+              style={{ color: Colors.white }}
               size={15}
               name={"eye"}
             />
           ) : (
             <FontAwesome
-              style={{ color: theme === "light" ? "#001" : "white" }}
+              style={{ color: Colors.white }}
               size={15}
               name={"eye-slash"}
             />
@@ -144,13 +146,13 @@ const Register = ({ setRegisterOpen }: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#211",
+    backgroundColor: Colors.darkBlue,
     borderRadius: 25,
     display: "flex",
     padding: 20,
   },
   error: {
-    backgroundColor: "#dd1111",
+    backgroundColor: Colors.red,
     color: Colors.white,
     paddingHorizontal: 10,
     paddingVertical: 20,

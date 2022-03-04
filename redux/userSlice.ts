@@ -13,6 +13,8 @@ export interface IUser {
   lastLoginAt?: string;
   apiKey?: string;
   appName?: string;
+  // custom collection
+  phoneNumber?: string;
   role?: string;
   items?: IItem[];
 }
@@ -45,6 +47,7 @@ export const userSlice = createSlice({
         ...state.user,
         role: action.payload.role,
         items: action.payload.items,
+        phoneNumber: action.payload.phoneNumber,
       };
     },
     signOutUser: (state) => {

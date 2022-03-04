@@ -141,5 +141,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     width: "90%",
     backgroundColor: "transparent",
+    padding: 0,
   },
 });
