@@ -1,0 +1,39 @@
+{
+  "files": {
+    "app.js": "/biyou_repair/static/js/app.bf7518d6.chunk.js",
+    "app.js.map": "/biyou_repair/static/js/app.bf7518d6.chunk.js.map",
+    "runtime~app.js": "/biyou_repair/static/js/runtime~app.a7f6f59c.js",
+    "runtime~app.js.map": "/biyou_repair/static/js/runtime~app.a7f6f59c.js.map",
+    "static/js/2.17caeab4.chunk.js": "/biyou_repair/static/js/2.17caeab4.chunk.js",
+    "static/js/2.17caeab4.chunk.js.map": "/biyou_repair/static/js/2.17caeab4.chunk.js.map",
+    "fonts/AntDesign.ttf": "/biyou_repair/./fonts/AntDesign.ttf",
+    "fonts/Entypo.ttf": "/biyou_repair/./fonts/Entypo.ttf",
+    "fonts/Feather.ttf": "/biyou_repair/./fonts/Feather.ttf",
+    "fonts/FontAwesome.ttf": "/biyou_repair/./fonts/FontAwesome.ttf",
+    "fonts/FontAwesome5_Brands.ttf": "/biyou_repair/./fonts/FontAwesome5_Brands.ttf",
+    "fonts/FontAwesome5_Solid.ttf": "/biyou_repair/./fonts/FontAwesome5_Solid.ttf",
+    "fonts/Fontisto.ttf": "/biyou_repair/./fonts/Fontisto.ttf",
+    "fonts/Foundation.ttf": "/biyou_repair/./fonts/Foundation.ttf",
+    "fonts/Ionicons.ttf": "/biyou_repair/./fonts/Ionicons.ttf",
+    "fonts/MaterialCommunityIcons.ttf": "/biyou_repair/./fonts/MaterialCommunityIcons.ttf",
+    "fonts/MaterialIcons.ttf": "/biyou_repair/./fonts/MaterialIcons.ttf",
+    "fonts/SimpleLineIcons.ttf": "/biyou_repair/./fonts/SimpleLineIcons.ttf",
+    "fonts/SpaceMono-Regular.ttf": "/biyou_repair/./fonts/SpaceMono-Regular.ttf",
+    "favicon-16.png": "/biyou_repair/favicon-16.png",
+    "favicon-32.png": "/biyou_repair/favicon-32.png",
+    "favicon.ico": "/biyou_repair/favicon.ico",
+    "index.html": "/biyou_repair/index.html",
+    "manifest.json": "/biyou_repair/manifest.json",
+    "serve.json": "/biyou_repair/serve.json",
+    "static/js/2.17caeab4.chunk.js.LICENSE.txt": "/biyou_repair/static/js/2.17caeab4.chunk.js.LICENSE.txt",
+    "static/media/bell.png": "/biyou_repair/static/media/bell.cf04af27.png",
+    "static/media/heart.png": "/biyou_repair/static/media/heart.23b5c2c0.png",
+    "static/media/rocket.png": "/biyou_repair/static/media/rocket.d2f3bf41.png",
+    "static/media/star.png": "/biyou_repair/static/media/star.69c71386.png"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.a7f6f59c.js",
+    "static/js/2.17caeab4.chunk.js",
+    "static/js/app.bf7518d6.chunk.js"
+  ]
+}

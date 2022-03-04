@@ -1,0 +1,27 @@
+{
+  "background_color": "#17567B",
+  "description": "cross platfrom native mobile app for managing a smartphone's repair shop",
+  "display": "standalone",
+  "lang": "en",
+  "name": "biyou_repair",
+  "short_name": "biyou_repair",
+  "start_url": "/?utm_source=web_app_manifest",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "\\biyou_repair\\pwa\\chrome-icon\\chrome-icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "\\biyou_repair\\pwa\\chrome-icon\\chrome-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "\\biyou_repair\\pwa\\chrome-icon\\chrome-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
