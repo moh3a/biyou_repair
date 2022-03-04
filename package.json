@@ -2,7 +2,7 @@
   "name": "biyou_repair",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-  "homepage": "http://moh3a.github.com/biyou_repair",
+  "homepage": "https://moh3a.github.io/biyou_repair",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

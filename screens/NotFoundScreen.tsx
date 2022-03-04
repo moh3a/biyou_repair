@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { Text, View } from "../components/Themed";
@@ -6,6 +7,9 @@ import { RootStackScreenProps } from "../types";
 export default function NotFoundScreen({
   navigation,
 }: RootStackScreenProps<"NotFound">) {
+  useEffect(() => {
+    navigation.navigate("Root");
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>404 - NOT FOUND</Text>
