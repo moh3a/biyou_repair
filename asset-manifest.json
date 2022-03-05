@@ -1,11 +1,11 @@
 {
   "files": {
-    "app.js": "/biyou_repair/static/js/app.f2bbdb3b.chunk.js",
-    "app.js.map": "/biyou_repair/static/js/app.f2bbdb3b.chunk.js.map",
+    "app.js": "/biyou_repair/static/js/app.ad22429a.chunk.js",
+    "app.js.map": "/biyou_repair/static/js/app.ad22429a.chunk.js.map",
     "runtime~app.js": "/biyou_repair/static/js/runtime~app.a7f6f59c.js",
     "runtime~app.js.map": "/biyou_repair/static/js/runtime~app.a7f6f59c.js.map",
-    "static/js/2.ac8b4e6d.chunk.js": "/biyou_repair/static/js/2.ac8b4e6d.chunk.js",
-    "static/js/2.ac8b4e6d.chunk.js.map": "/biyou_repair/static/js/2.ac8b4e6d.chunk.js.map",
+    "static/js/2.368b2a86.chunk.js": "/biyou_repair/static/js/2.368b2a86.chunk.js",
+    "static/js/2.368b2a86.chunk.js.map": "/biyou_repair/static/js/2.368b2a86.chunk.js.map",
     "fonts/AntDesign.ttf": "/biyou_repair/./fonts/AntDesign.ttf",
     "fonts/Entypo.ttf": "/biyou_repair/./fonts/Entypo.ttf",
     "fonts/Feather.ttf": "/biyou_repair/./fonts/Feather.ttf",
@@ -25,16 +25,17 @@
     "index.html": "/biyou_repair/index.html",
     "manifest.json": "/biyou_repair/manifest.json",
     "serve.json": "/biyou_repair/serve.json",
-    "static/js/2.ac8b4e6d.chunk.js.LICENSE.txt": "/biyou_repair/static/js/2.ac8b4e6d.chunk.js.LICENSE.txt",
-    "static/media/adaptive-icon.png": "/biyou_repair/static/media/adaptive-icon.64156e2b.png",
+    "static/js/2.368b2a86.chunk.js.LICENSE.txt": "/biyou_repair/static/js/2.368b2a86.chunk.js.LICENSE.txt",
+    "static/media/adaptive-icon.png": "/biyou_repair/static/media/adaptive-icon.cd34f223.png",
     "static/media/bell.png": "/biyou_repair/static/media/bell.cf04af27.png",
     "static/media/heart.png": "/biyou_repair/static/media/heart.23b5c2c0.png",
+    "static/media/ring.png": "/biyou_repair/static/media/ring.41bc6751.png",
     "static/media/rocket.png": "/biyou_repair/static/media/rocket.d2f3bf41.png",
     "static/media/star.png": "/biyou_repair/static/media/star.69c71386.png"
   },
   "entrypoints": [
     "static/js/runtime~app.a7f6f59c.js",
-    "static/js/2.ac8b4e6d.chunk.js",
-    "static/js/app.f2bbdb3b.chunk.js"
+    "static/js/2.368b2a86.chunk.js",
+    "static/js/app.ad22429a.chunk.js"
   ]
 }
