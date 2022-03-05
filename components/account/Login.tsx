@@ -122,7 +122,8 @@ const Login = ({ setRegisterOpen }: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.darkBlue,
+    // backgroundColor: Colors.darkBlue,
+    backgroundColor: Colors.black,
     borderRadius: 25,
     display: "flex",
     padding: 20,

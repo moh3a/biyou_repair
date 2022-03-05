@@ -74,7 +74,8 @@ export default function AccountScreen() {
       )}
       {user && (
         <SpeedDial
-          buttonStyle={{ backgroundColor: Colors.lightBlue }}
+          buttonStyle={{ backgroundColor: Colors.green }}
+          // buttonStyle={{ backgroundColor: Colors.lightBlue }}
           containerStyle={{ bottom: 80 }}
           isOpen={open}
           icon={{ name: "edit", color: Colors.white }}
@@ -85,7 +86,8 @@ export default function AccountScreen() {
         >
           <SpeedDial.Action
             style={{ bottom: 80 }}
-            buttonStyle={{ backgroundColor: Colors.lightBlue }}
+            buttonStyle={{ backgroundColor: Colors.green }}
+            // buttonStyle={{ backgroundColor: Colors.lightBlue }}
             icon={{ name: "add", color: Colors.white }}
             title="Ajouter un produit"
             titleStyle={{ position: "relative", bottom: 80 }}
@@ -96,7 +98,8 @@ export default function AccountScreen() {
           />
           <SpeedDial.Action
             style={{ bottom: 80 }}
-            buttonStyle={{ backgroundColor: Colors.lightBlue }}
+            buttonStyle={{ backgroundColor: Colors.green }}
+            // buttonStyle={{ backgroundColor: Colors.lightBlue }}
             icon={{ name: "edit", color: Colors.white }}
             title="Modifier votre profil"
             titleStyle={{ position: "relative", bottom: 80 }}

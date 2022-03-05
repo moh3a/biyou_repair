@@ -56,7 +56,7 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors.darkBlue,
+        tabBarActiveTintColor: Colors.black,
         tabBarActiveBackgroundColor: Colors.yellow,
         tabBarItemStyle: {
           borderRadius: 50,
@@ -68,7 +68,7 @@ function BottomTabNavigator() {
           bottom: 20,
           left: 15,
           right: 15,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.gray,
           borderRadius: 50,
           height: 60,
           ...styles.shadow,
@@ -145,9 +145,6 @@ const styles = StyleSheet.create({
   },
 });
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;

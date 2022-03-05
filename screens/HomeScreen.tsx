@@ -50,67 +50,54 @@ export default function HomeScreen() {
   };
 
   return (
-    <>
-      <LinearGradient
-        colors={[Colors.black, Colors.darkBlue, Colors.white, Colors.yellow]}
-        start={{ x: 0.1, y: 0.1 }}
-        end={{ x: 0.9, y: 0.9 }}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: Dimensions.get("window").width,
-          height: Dimensions.get("window").height,
-        }}
+    <View style={styles.container}>
+      <Image
+        source={require("../assets/images/adaptive-icon.png")}
+        style={{ height: 250, width: 250 }}
       />
-      <View style={styles.container}>
-        <Image
-          source={require("../assets/images/adaptive-icon.png")}
-          style={{ height: 250, width: 250 }}
+      <View style={styles.searchBar}>
+        {error.length > 1 && <Text style={styles.error}>{error}</Text>}
+        <BiyouTextInput
+          placeholder="numéro de bon - exemple: 22A008"
+          value={id}
+          setValue={setId}
+          condition={error.length > 0 && !id}
         />
-        <View style={styles.searchBar}>
-          {error.length > 1 && <Text style={styles.error}>{error}</Text>}
-          <BiyouTextInput
-            placeholder="numéro de bon - exemple: 22A008"
-            value={id}
-            setValue={setId}
-            condition={error.length > 0 && !id}
-          />
-          <BiyouTextInput
-            placeholder="nom sur le bon - exemple: Mohamed Mohamed"
-            value={name}
-            setValue={setName}
-            condition={error.length > 0 && !name}
-          />
-          <View style={styles.buttoncontainer}>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginHorizontal: "auto",
-                marginVertical: 4,
-                height: 50,
-                width: 50,
-                borderRadius: 50,
-                backgroundColor: Colors.lightBlue,
-              }}
-            >
-              <TouchableOpacity onPress={submitHandler}>
-                <FontAwesome size={30} name="search" color={Colors.white} />
-              </TouchableOpacity>
-            </View>
+        <BiyouTextInput
+          placeholder="nom sur le bon - exemple: Mohamed Mohamed"
+          value={name}
+          setValue={setName}
+          condition={error.length > 0 && !name}
+        />
+        <View style={styles.buttoncontainer}>
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginHorizontal: "auto",
+              marginVertical: 4,
+              height: 50,
+              width: 50,
+              borderRadius: 50,
+              // backgroundColor: Colors.lightBlue,
+              backgroundColor: Colors.green,
+            }}
+          >
+            <TouchableOpacity onPress={submitHandler}>
+              <FontAwesome size={30} name="search" color={Colors.white} />
+            </TouchableOpacity>
           </View>
         </View>
-        {openItemDetails && item && (
-          <ItemDetails
-            item={item}
-            openItemDetails={openItemDetails}
-            setOpenItemDetails={setOpenItemDetails}
-          />
-        )}
       </View>
-    </>
+      {openItemDetails && item && (
+        <ItemDetails
+          item={item}
+          openItemDetails={openItemDetails}
+          setOpenItemDetails={setOpenItemDetails}
+        />
+      )}
+    </View>
   );
 }
 
@@ -121,7 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 20,
-    backgroundColor: "transparent",
+    // backgroundColor: Colors.white,
   },
   title: {
     fontSize: 35,

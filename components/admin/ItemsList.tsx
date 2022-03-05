@@ -53,18 +53,18 @@ const ItemsList = ({
             <View
               style={{
                 borderRadius: 10,
-                backgroundColor: Colors.black,
+                backgroundColor: Colors.gray,
                 width: Dimensions.get("window").width - 10,
                 marginHorizontal: "auto",
-                marginVertical: 5,
+                marginVertical: 8,
                 display: "flex",
                 flexDirection: "row",
                 paddingVertical: 10,
                 paddingHorizontal: 5,
                 shadowColor: Colors.black,
                 shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.4,
-                shadowRadius: 40,
+                shadowOpacity: 0.3,
+                shadowRadius: 10,
               }}
             >
               <View
@@ -125,6 +125,7 @@ const ItemsList = ({
                 <View
                   style={{
                     borderTopWidth: 1,
+                    borderTopColor: Colors.yellow,
                     flex: 1,
                     display: "flex",
                     flexDirection: "row",

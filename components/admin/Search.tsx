@@ -83,6 +83,11 @@ const SearchModal = ({
         results.push(doc.data());
       });
       setOpenSearchModal(false);
+      setClientName("");
+      setItemId("");
+      setModel("");
+      setSerialNumber("");
+      setStatus(StatusList[0]);
       setOpenList(true);
       setItems(results);
     }
@@ -121,15 +126,15 @@ const SearchModal = ({
           marginVertical: 4,
           padding: 10,
           borderRadius: 15,
-          backgroundColor: Colors.black,
-          borderColor: Colors.white,
+          backgroundColor: Colors.gray,
+          borderColor: Colors.black,
           borderWidth: 1,
         }}
       >
         {status ? (
-          <Text style={{ color: Colors.white }}>{status}</Text>
+          <Text style={{ color: Colors.black }}>{status}</Text>
         ) : (
-          <Text style={{ color: "#777" }}>Etat</Text>
+          <Text style={{ color: "#999" }}>Etat</Text>
         )}
       </Pressable>
       <BottomSheet isVisible={openStatusPicker}>

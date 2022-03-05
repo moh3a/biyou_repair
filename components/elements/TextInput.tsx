@@ -21,20 +21,20 @@ const BiyouTextInput = ({
         style={{
           padding: 10,
           borderRadius: 15,
-          backgroundColor: Colors.black,
-          color: Colors.white,
+          backgroundColor: Colors.gray,
+          color: Colors.black,
           ...(condition
             ? {
                 borderColor: Colors.red,
                 borderWidth: 2,
               }
             : {
-                borderColor: Colors.white,
+                borderColor: Colors.black,
                 borderWidth: 1,
               }),
         }}
         placeholder={placeholder}
-        placeholderTextColor={"#777"}
+        placeholderTextColor={"#999"}
         value={value}
         onChangeText={(e) => setValue && setValue(e)}
       />

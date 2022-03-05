@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Image, Platform } from "react-native";
+import { Dimensions, Image, Platform } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signOut } from "firebase/auth";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
@@ -29,15 +29,25 @@ const Profile = () => {
   return (
     <>
       {user && (
-        <View>
+        <View style={{ paddingTop: 20 }}>
           <View
             style={{
+              position: "relative",
               marginVertical: 50,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
+            <Image
+              style={{
+                position: "absolute",
+                right: Dimensions.get("window").width / 2 - 120,
+                height: 250,
+                width: 250,
+              }}
+              source={require("../../assets/images/ring.png")}
+            />
             {Platform.OS === "web" || !user.photoURL?.includes(".svg") ? (
               <Image
                 source={{
