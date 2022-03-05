@@ -68,7 +68,7 @@ const Login = ({ setRegisterOpen }: any) => {
           flexDirection: "row",
           justifyContent: "space-between",
           marginHorizontal: 15,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.gray,
           marginVertical: 4,
           padding: 10,
           borderRadius: 15,
@@ -78,7 +78,7 @@ const Login = ({ setRegisterOpen }: any) => {
                 borderWidth: 2,
               }
             : {
-                borderColor: Colors.white,
+                borderColor: Colors.black,
                 borderWidth: 1,
               }),
         }}
@@ -86,9 +86,10 @@ const Login = ({ setRegisterOpen }: any) => {
         <TextInput
           style={{
             flex: 9,
-            color: Colors.white,
+            color: Colors.black,
           }}
           placeholder="mot de passe"
+          placeholderTextColor={"#999"}
           secureTextEntry={visible ? false : true}
           onChangeText={(e) => setPassword(e)}
         />
@@ -102,13 +103,13 @@ const Login = ({ setRegisterOpen }: any) => {
         >
           {visible ? (
             <FontAwesome
-              style={{ color: Colors.white }}
+              style={{ color: Colors.black }}
               size={15}
               name={"eye"}
             />
           ) : (
             <FontAwesome
-              style={{ color: Colors.white }}
+              style={{ color: Colors.black }}
               size={15}
               name={"eye-slash"}
             />
@@ -122,8 +123,7 @@ const Login = ({ setRegisterOpen }: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: Colors.darkBlue,
-    backgroundColor: Colors.black,
+    backgroundColor: Colors.white,
     borderRadius: 25,
     display: "flex",
     padding: 20,
