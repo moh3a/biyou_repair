@@ -1,11 +1,11 @@
 {
   "files": {
-    "app.js": "/biyou_repair/static/js/app.64f59f64.chunk.js",
-    "app.js.map": "/biyou_repair/static/js/app.64f59f64.chunk.js.map",
+    "app.js": "/biyou_repair/static/js/app.4bc20803.chunk.js",
+    "app.js.map": "/biyou_repair/static/js/app.4bc20803.chunk.js.map",
     "runtime~app.js": "/biyou_repair/static/js/runtime~app.a7f6f59c.js",
     "runtime~app.js.map": "/biyou_repair/static/js/runtime~app.a7f6f59c.js.map",
-    "static/js/2.368b2a86.chunk.js": "/biyou_repair/static/js/2.368b2a86.chunk.js",
-    "static/js/2.368b2a86.chunk.js.map": "/biyou_repair/static/js/2.368b2a86.chunk.js.map",
+    "static/js/2.3532e508.chunk.js": "/biyou_repair/static/js/2.3532e508.chunk.js",
+    "static/js/2.3532e508.chunk.js.map": "/biyou_repair/static/js/2.3532e508.chunk.js.map",
     "fonts/AntDesign.ttf": "/biyou_repair/./fonts/AntDesign.ttf",
     "fonts/Entypo.ttf": "/biyou_repair/./fonts/Entypo.ttf",
     "fonts/Feather.ttf": "/biyou_repair/./fonts/Feather.ttf",
@@ -25,7 +25,7 @@
     "index.html": "/biyou_repair/index.html",
     "manifest.json": "/biyou_repair/manifest.json",
     "serve.json": "/biyou_repair/serve.json",
-    "static/js/2.368b2a86.chunk.js.LICENSE.txt": "/biyou_repair/static/js/2.368b2a86.chunk.js.LICENSE.txt",
+    "static/js/2.3532e508.chunk.js.LICENSE.txt": "/biyou_repair/static/js/2.3532e508.chunk.js.LICENSE.txt",
     "static/media/adaptive-icon.png": "/biyou_repair/static/media/adaptive-icon.cd34f223.png",
     "static/media/bell.png": "/biyou_repair/static/media/bell.cf04af27.png",
     "static/media/heart.png": "/biyou_repair/static/media/heart.23b5c2c0.png",
@@ -35,7 +35,7 @@
   },
   "entrypoints": [
     "static/js/runtime~app.a7f6f59c.js",
-    "static/js/2.368b2a86.chunk.js",
-    "static/js/app.64f59f64.chunk.js"
+    "static/js/2.3532e508.chunk.js",
+    "static/js/app.4bc20803.chunk.js"
   ]
 }
