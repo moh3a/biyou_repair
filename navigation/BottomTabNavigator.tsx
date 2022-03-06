@@ -14,6 +14,7 @@ import { SvgUri } from "react-native-svg";
 import { View } from "../components/Themed";
 import AccountScreen from "../screens/AccountScreen";
 import Colors from "../constants/Colors";
+import InfoScreen from "../screens/InfoScreen";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -127,6 +128,17 @@ function BottomTabNavigator() {
             } else return <TabBarIcon name="user" color={color} />;
           },
         }}
+      />
+      <BottomTab.Screen
+        name="Info"
+        component={InfoScreen}
+        options={({ navigation }: RootTabScreenProps<"Info">) => ({
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="info-circle" color={color} />
+          ),
+          headerShown: false,
+        })}
       />
     </BottomTab.Navigator>
   );

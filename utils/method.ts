@@ -12,9 +12,10 @@ export interface IItem {
     | "Attente de pièces";
   prestation?: number;
   diagnostic?: string;
+  clientNote?: string;
   createdAt?: string;
   modifiedAt?: string;
-  clientNote?: string;
+  finishedAt?: string;
 }
 
 export const getMonthByLetter = () => {

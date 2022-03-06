@@ -20,14 +20,19 @@ const linking: LinkingOptions<RootStackParamList> = {
               HomeScreen: "home",
             },
           },
+          Admin: {
+            screens: {
+              AdminScreen: "admin",
+            },
+          },
           Account: {
             screens: {
               AccountScreen: "account",
             },
           },
-          Admin: {
+          Info: {
             screens: {
-              AdminScreen: "admin",
+              InfoScreen: "info",
             },
           },
         },

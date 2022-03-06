@@ -8,12 +8,12 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
-import { ButtonGroup } from "react-native-elements";
+import { ButtonGroup, CheckBox } from "react-native-elements";
 
 import { Text, View } from "../../components/Themed";
 import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
-import { IItem } from "../../utils/method";
+import { IItem, localISODate } from "../../utils/method";
 
 const StatusList = [
   "En attente",
@@ -36,6 +36,9 @@ export default function AdminItemDetails({
 }) {
   const theme = useColorScheme();
   const [success, setSuccesss] = useState("");
+  const [finishedCheck, setFinishedCheck] = useState(
+    item.finishedAt ? true : false
+  );
   const [statusIdx, setStatusIdx] = useState(
     StatusList.findIndex((e) => e === item.status)
   );
@@ -65,6 +68,24 @@ export default function AdminItemDetails({
   useEffect(() => {
     updateStatus();
   }, [updateStatus]);
+
+  const updateFinishedDate = useCallback(async () => {
+    if (item.itemId) {
+      if (finishedCheck) {
+        await updateDoc(doc(db, "items", item.itemId), {
+          finishedAt: localISODate(),
+        });
+      } else {
+        await updateDoc(doc(db, "items", item.itemId), {
+          finishedAt: null,
+        });
+      }
+    }
+  }, [finishedCheck]);
+
+  useEffect(() => {
+    updateFinishedDate();
+  }, [updateFinishedDate]);
 
   const updateHandler = async (key: string, value: string | number) => {
     if (key && item.itemId) {
@@ -321,7 +342,7 @@ export default function AdminItemDetails({
                       onPress={() => updateHandler("diagnostic", diagnostic)}
                       style={{ position: "absolute", right: 10, top: 10 }}
                     >
-                      <FontAwesome name="send" size={25} color="green" />
+                      <FontAwesome name="send" size={25} color={Colors.green} />
                     </Pressable>
                     {success === "diagnostic" && (
                       <FontAwesome
@@ -342,6 +363,21 @@ export default function AdminItemDetails({
                   </Text>
                 </View>
               )}
+              <View style={styles.modalBlock}>
+                <CheckBox
+                  center
+                  title="Marqué comme sortie"
+                  checkedColor={Colors.green}
+                  containerStyle={{ backgroundColor: Colors.white }}
+                  checked={finishedCheck}
+                  onPress={() => setFinishedCheck(!finishedCheck)}
+                />
+                {item.finishedAt && (
+                  <Text style={[styles.modalText, { textAlign: "center" }]}>
+                    Sortie le: {item.finishedAt}
+                  </Text>
+                )}
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -382,6 +418,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   modalBlock: {
-    margin: 30,
+    marginHorizontal: 30,
+    marginVertical: 20,
   },
 });
