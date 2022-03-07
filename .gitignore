@@ -13,7 +13,9 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-firebase.config.ts
 
 # macOS
 .DS_Store
+
+.vercel
+.env
