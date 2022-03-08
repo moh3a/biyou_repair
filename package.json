@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "predeploy": "expo build:web"
+    "predeploy": "expo build:web",
+    "deploy-hosting": "npm run predeploy && firebase deploy --only hosting"
   },
   "jest": {
     "preset": "jest-expo"

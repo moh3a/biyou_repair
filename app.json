@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "biyou_repair",
+    "name": "Biyou Repair",
     "slug": "biyou_repair",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },

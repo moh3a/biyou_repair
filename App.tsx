@@ -11,6 +11,8 @@ import store from "./redux/store";
 
 import FirebaseConfig from "./config/firebase.config";
 import { initializeApp, getApps } from "firebase/app";
+import { getMessaging, getToken } from "firebase/messaging";
+import { FIREBASE_VAPIDKEY } from "@env";
 
 // Supress warnings
 LogBox.ignoreLogs(["Setting a timer"]);
@@ -18,10 +20,24 @@ LogBox.ignoreLogs([
   "AsyncStorage has been extracted from react-native core and will be removed in a future release",
 ]);
 
-if (getApps().length === 0) {
-  const app = initializeApp(FirebaseConfig);
-  // const analytics = getAnalytics(app);
-}
+const app = getApps().length === 0 && initializeApp(FirebaseConfig);
+const messaging = app ? getMessaging(app) : getMessaging();
+
+navigator.serviceWorker
+  .register("./utils/firebase-messaging-sw.js")
+  .then((registration) => {
+    getToken(messaging, {
+      serviceWorkerRegistration: registration,
+      vapidKey: FIREBASE_VAPIDKEY,
+    })
+      .then((currentToken) => {
+        console.log(currentToken);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  })
+  .catch((error) => console.log(error));
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
