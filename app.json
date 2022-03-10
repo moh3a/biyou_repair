@@ -10,20 +10,23 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#17567B"
+      "backgroundColor": "#E7E5DF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#17567B"
-      }
+        "backgroundColor": "#E7E5DF"
+      },
+      "package": "com.moh3a.biyou_repair"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

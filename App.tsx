@@ -11,7 +11,7 @@ import store from "./redux/store";
 
 import FirebaseConfig from "./config/firebase.config";
 import { initializeApp, getApps } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { FIREBASE_VAPIDKEY } from "@env";
 
 // Supress warnings
@@ -20,24 +20,41 @@ LogBox.ignoreLogs([
   "AsyncStorage has been extracted from react-native core and will be removed in a future release",
 ]);
 
-const app = getApps().length === 0 && initializeApp(FirebaseConfig);
-const messaging = app ? getMessaging(app) : getMessaging();
+const initializeFirebase = async () => {
+  const app = initializeApp(FirebaseConfig);
+  const messaging = getMessaging(app);
 
-navigator.serviceWorker
-  .register("./utils/firebase-messaging-sw.js")
-  .then((registration) => {
+  if ("serviceWorker" in navigator) {
+    const registration = await navigator.serviceWorker.register(
+      "./firebase-messaging-sw.ts"
+    );
     getToken(messaging, {
       serviceWorkerRegistration: registration,
       vapidKey: FIREBASE_VAPIDKEY,
     })
       .then((currentToken) => {
-        console.log(currentToken);
+        console.log("hello");
+        if (currentToken) {
+          console.log(currentToken);
+        } else {
+          console.log("no token");
+          Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+              console.log("Notification permission granted.");
+            } else {
+              console.log("Unable to get permission to notify.");
+            }
+          });
+        }
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  })
-  .catch((error) => console.log(error));
+      .catch((err) => console.log(err));
+    onMessage(messaging, (payload) => {
+      console.log("Message received: " + payload);
+    });
+  }
+};
+
+if (getApps().length === 0) initializeFirebase();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
