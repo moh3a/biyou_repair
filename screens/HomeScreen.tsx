@@ -1,10 +1,15 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { useState } from "react";
-import { Dimensions, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 
-import { Text, View } from "../components/Themed";
+import { View } from "../components/Themed";
 import BiyouTextInput from "../components/elements/TextInput";
 import ItemDetails from "../components/home/ItemDetails";
 import Colors from "../constants/Colors";
@@ -52,52 +57,65 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../assets/images/adaptive-icon.png")}
-        style={{ height: 250, width: 250 }}
-      />
-      <View style={styles.searchBar}>
-        {error.length > 1 && <Error message={error} />}
-        <BiyouTextInput
-          placeholder="numéro de bon - exemple: 22A008"
-          value={id}
-          setValue={setId}
-          condition={error.length > 0 && !id}
+      <ImageBackground
+        source={require("../assets/images/bg.png")}
+        resizeMode="repeat"
+        style={{
+          height: "100%",
+          display: "flex",
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          source={require("../assets/images/adaptive-icon.png")}
+          style={{ height: 250, width: 250, justifyContent: "center" }}
         />
-        <BiyouTextInput
-          placeholder="nom sur le bon - exemple: Mohamed Mohamed"
-          value={name}
-          setValue={setName}
-          condition={error.length > 0 && !name}
-        />
-        <View style={styles.buttoncontainer}>
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginHorizontal: "auto",
-              marginVertical: 4,
-              height: 50,
-              width: 50,
-              borderRadius: 50,
-              // backgroundColor: Colors.lightBlue,
-              backgroundColor: Colors.green,
-            }}
-          >
-            <TouchableOpacity onPress={submitHandler}>
-              <FontAwesome size={30} name="search" color={Colors.white} />
-            </TouchableOpacity>
+
+        <View style={styles.searchBar}>
+          {error.length > 1 && <Error message={error} />}
+          <BiyouTextInput
+            placeholder="numéro de bon - exemple: 22A008"
+            value={id}
+            setValue={setId}
+            condition={error.length > 0 && !id}
+          />
+          <BiyouTextInput
+            placeholder="nom sur le bon - exemple: Mohamed Mohamed"
+            value={name}
+            setValue={setName}
+            condition={error.length > 0 && !name}
+          />
+          <View style={styles.buttoncontainer}>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: "auto",
+                marginVertical: 4,
+                height: 50,
+                width: 50,
+                borderRadius: 50,
+                // backgroundColor: Colors.lightBlue,
+                backgroundColor: Colors.green,
+              }}
+            >
+              <TouchableOpacity onPress={submitHandler}>
+                <FontAwesome size={30} name="search" color={Colors.white} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-      {openItemDetails && item && (
-        <ItemDetails
-          item={item}
-          openItemDetails={openItemDetails}
-          setOpenItemDetails={setOpenItemDetails}
-        />
-      )}
+        {openItemDetails && item && (
+          <ItemDetails
+            item={item}
+            openItemDetails={openItemDetails}
+            setOpenItemDetails={setOpenItemDetails}
+          />
+        )}
+      </ImageBackground>
     </View>
   );
 }
@@ -111,14 +129,8 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     // backgroundColor: Colors.white,
   },
-  title: {
-    fontSize: 35,
-    fontWeight: "bold",
-    marginVertical: 30,
-    marginHorizontal: 20,
-  },
   searchBar: {
-    width: "100%",
+    width: Dimensions.get("window").width,
     flex: 1,
     justifyContent: "center",
     backgroundColor: "transparent",
