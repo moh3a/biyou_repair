@@ -13,9 +13,6 @@ onBackgroundMessage(messaging, (payload) => {
     const notificationOptions = {
       body: payload.notification?.body,
     };
-    (self as any).registration.showNotification(
-      notificationTitle,
-      notificationOptions
-    );
+    self.registration.showNotification(notificationTitle, notificationOptions);
   }
 });
