@@ -15,6 +15,7 @@ import BiyouTextInput from "../../components/elements/TextInput";
 import BiyouButton from "../../components/elements/Button";
 import { fetchUser, selectUser } from "../../redux/userSlice";
 import Colors from "../../constants/Colors";
+import Error from "../Error";
 
 const Register = ({ setRegisterOpen }: any) => {
   const theme = useColorScheme();
@@ -71,7 +72,7 @@ const Register = ({ setRegisterOpen }: any) => {
 
   return (
     <View style={styles.container}>
-      {error.length > 1 && <Text style={styles.error}>{error}</Text>}
+      {error.length > 1 && <Error message={error} />}
       <BiyouTextInput
         placeholder="nom d'utilisateur"
         value={name}
@@ -150,15 +151,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     display: "flex",
     padding: 20,
-  },
-  error: {
-    backgroundColor: Colors.red,
-    color: Colors.white,
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
   },
 });
 

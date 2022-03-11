@@ -8,6 +8,7 @@ import BiyouModal from "../elements/Modal";
 import BiyouTextInput from "../elements/TextInput";
 import { createNewId, localISODate } from "../../utils/method";
 import Colors from "../../constants/Colors";
+import Error from "../Error";
 
 export default function AddItem({
   openAddModal,
@@ -65,7 +66,7 @@ export default function AddItem({
 
   return (
     <BiyouModal open={openAddModal} setOpen={setOpenAddModal}>
-      {error.length > 1 && <Text style={styles.error}>{error}</Text>}
+      {error.length > 1 && <Error message={error} />}
       <Text style={styles.modalText}>Ajouter: {id}</Text>
       <BiyouTextInput
         placeholder="nom du client"
@@ -91,15 +92,6 @@ export default function AddItem({
 }
 
 const styles = StyleSheet.create({
-  error: {
-    backgroundColor: Colors.red,
-    color: Colors.white,
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
   modalText: {
     marginBottom: 15,
     textAlign: "center",

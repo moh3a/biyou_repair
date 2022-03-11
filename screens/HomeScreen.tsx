@@ -8,6 +8,7 @@ import { Text, View } from "../components/Themed";
 import BiyouTextInput from "../components/elements/TextInput";
 import ItemDetails from "../components/home/ItemDetails";
 import Colors from "../constants/Colors";
+import Error from "../components/Error";
 
 export default function HomeScreen() {
   const db = getFirestore();
@@ -56,7 +57,7 @@ export default function HomeScreen() {
         style={{ height: 250, width: 250 }}
       />
       <View style={styles.searchBar}>
-        {error.length > 1 && <Text style={styles.error}>{error}</Text>}
+        {error.length > 1 && <Error message={error} />}
         <BiyouTextInput
           placeholder="numéro de bon - exemple: 22A008"
           value={id}
@@ -127,14 +128,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
-  },
-  error: {
-    backgroundColor: Colors.red,
-    color: Colors.white,
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
   },
 });

@@ -14,6 +14,7 @@ import BiyouButton from "../elements/Button";
 import BiyouModal from "../elements/Modal";
 import BiyouTextInput from "../elements/TextInput";
 import Colors from "../../constants/Colors";
+import Error from "../Error";
 
 const StatusList = [
   "",
@@ -95,7 +96,7 @@ const SearchModal = ({
 
   return (
     <BiyouModal open={openSearchModal} setOpen={setOpenSearchModal}>
-      {error.length > 0 && <Text style={styles.error}>{error}</Text>}
+      {error.length > 0 && <Error message={error} />}
       <Text style={styles.modalText}>
         Séléctionnez les paramètres de votre requête
       </Text>
@@ -163,15 +164,6 @@ const SearchModal = ({
 };
 
 const styles = StyleSheet.create({
-  error: {
-    backgroundColor: Colors.red,
-    color: Colors.white,
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
   modalText: {
     marginBottom: 15,
     textAlign: "center",

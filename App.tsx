@@ -11,10 +11,8 @@ import store from "./redux/store";
 
 import FirebaseConfig from "./config/firebase.config";
 import { initializeApp, getApps } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken } from "firebase/messaging";
 import { FIREBASE_VAPIDKEY } from "@env";
-import Error from "./components/Error";
-import { useEffect } from "react";
 
 // Supress warnings
 LogBox.ignoreLogs(["Setting a timer"]);
@@ -31,44 +29,35 @@ const initializeFirebase = async () => {
       try {
         const token = await getToken(messaging, {
           serviceWorkerRegistration: await navigator.serviceWorker.register(
-            "/firebase-messaging-sw.js"
+            "./firebase-messaging-sw.js"
           ),
           vapidKey: FIREBASE_VAPIDKEY,
         });
         if (token) {
-          return <Error message={`On a eu le token: ${token}`} />;
+          console.log(`On a eu le token: ${token}`);
         } else {
           const permission = await Notification.requestPermission();
-          return (
-            <Error
-              message={`On est pas permis d'envoyer des notifications. Status ${permission}`}
-            />
+          console.log(
+            `On est pas permis d'envoyer des notifications. Status ${permission}`
           );
         }
       } catch (error) {
-        return (
-          <Error
-            message={`On a pas réussi à avoir le FCM token. Le message d'erreur: ${error}`}
-          />
+        console.log(
+          `On a pas réussi à avoir le FCM token. Le message d'erreur: ${error}`
         );
       }
     });
   } else {
-    return (
-      <Error
-        message={`Les Service Workers ne sont pas disponibles sur ce navigateur. Vous ne receverez pas de notifications.`}
-      />
+    console.log(
+      `Les Service Workers ne sont pas disponibles sur ce navigateur. Vous ne receverez pas de notifications.`
     );
   }
 };
+if (getApps().length === 0) initializeFirebase();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-
-  useEffect(() => {
-    if (getApps().length === 0) initializeFirebase();
-  }, []);
 
   if (!isLoadingComplete) {
     return null;
