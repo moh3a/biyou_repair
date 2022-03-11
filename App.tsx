@@ -14,6 +14,7 @@ import { initializeApp, getApps } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { FIREBASE_VAPIDKEY } from "@env";
 import Error from "./components/Error";
+import { useEffect } from "react";
 
 // Supress warnings
 LogBox.ignoreLogs(["Setting a timer"]);
@@ -60,11 +61,14 @@ const initializeFirebase = async () => {
     );
   }
 };
-if (getApps().length === 0) initializeFirebase();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    if (getApps().length === 0) initializeFirebase();
+  }, []);
 
   if (!isLoadingComplete) {
     return null;
