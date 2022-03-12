@@ -1,6 +1,9 @@
+import axios from "axios";
+
 export interface IItem {
   clientName?: string;
   clientPhoneNumber?: string;
+  clientEmail?: string;
   itemId?: string;
   model?: string;
   serialNumber?: string;

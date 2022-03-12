@@ -1,4 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
+import axios from "axios";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import {
@@ -103,6 +104,37 @@ export default function AdminItemDetails({
       setTimeout(() => {
         setSuccesss("");
       }, 3000);
+    }
+  };
+
+  const notifyClient = async () => {
+    if (item && item.itemId && item.clientEmail) {
+      const text = `
+      <h3>Bonjour ${item.clientName},</h3>
+      <h4>Des nouveautées à propos de votre produit.</h4>
+      <p>Modèle du produit: ${item.model} ${item.serialNumber}</p>
+      <p>Etat actuelle du produit: ${item.status}.</p>
+      <p>Prestation à payer: ${item.prestation} DZD</p><br/>
+      <p>Diagnostique:</p><p>${item.diagnostic}</p>
+      <p>Pour plus d'information, visitez <a href="https://biyou-repair.web.app" target="_blank" rel="noreferrer">ce lien</a> ou appelez ce numéro: +213793013998.</p>
+      `;
+      const { data } = await axios(
+        "https://biyourepairapi.herokuapp.com/email",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          data: {
+            to: item.clientEmail,
+            subject: "Mise à jour | Biyou Repair",
+            text,
+          },
+        }
+      );
+      if (data.message === "Email envoyé") {
+        await updateDoc(doc(db, "items", item.itemId), {
+          notified: { isNotified: true, date: localISODate() },
+        });
+      }
     }
   };
 
@@ -364,6 +396,13 @@ export default function AdminItemDetails({
                 </View>
               )}
               <View style={styles.modalBlock}>
+                <CheckBox
+                  center
+                  title="Notifier le client"
+                  checkedColor={Colors.green}
+                  containerStyle={{ backgroundColor: Colors.white }}
+                  onPress={notifyClient}
+                />
                 <CheckBox
                   center
                   title="Marqué comme sortie"
