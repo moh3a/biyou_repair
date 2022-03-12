@@ -18,6 +18,10 @@ export interface IItem {
   clientNote?: string;
   createdAt?: string;
   modifiedAt?: string;
+  notified?: {
+    isNotified: boolean;
+    date?: string;
+  };
   finishedAt?: string;
 }
 

@@ -41,9 +41,10 @@ export default function AddItem({
       await setDoc(doc(db, "items", id), {
         clientName: name.toLowerCase(),
         clientPhoneNumber: phoneNumber,
-        itemId: id,
+        itemId: id.toUpperCase(),
         model,
         status: "En attente",
+        notified: { isNotified: false },
         createdAt: localISODate(),
       });
       await setDoc(doc(db, "currentId", "currentId"), { id });

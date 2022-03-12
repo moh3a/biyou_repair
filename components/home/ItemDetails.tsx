@@ -45,6 +45,7 @@ export default function ItemDetails({
         <Text style={{ fontSize: 35, fontWeight: "700" }}>
           {item.clientName}
         </Text>
+        <Text style={styles.modalText}>Email: {item.clientEmail}</Text>
         <Text style={styles.modalText}>
           Numéro de téléphone: {item.clientPhoneNumber}
         </Text>

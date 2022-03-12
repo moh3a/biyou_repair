@@ -185,6 +185,11 @@ export default function AdminItemDetails({
                 <Text style={styles.modalText}>
                   Date d'entrée: {item.createdAt}
                 </Text>
+                {item.clientEmail && (
+                  <Text style={styles.modalText}>
+                    Email: {item.clientEmail}
+                  </Text>
+                )}
                 <View>
                   <Text style={styles.modalText}>Numéro de téléphone:</Text>
                   <View style={{ marginVertical: 5 }}>
@@ -396,13 +401,21 @@ export default function AdminItemDetails({
                 </View>
               )}
               <View style={styles.modalBlock}>
-                <CheckBox
-                  center
-                  title="Notifier le client"
-                  checkedColor={Colors.green}
-                  containerStyle={{ backgroundColor: Colors.white }}
-                  onPress={notifyClient}
-                />
+                {item.clientEmail &&
+                  (item.notified?.isNotified ? (
+                    <Text style={[styles.modalText, { textAlign: "center" }]}>
+                      Client notifié le: {item.notified.date}
+                    </Text>
+                  ) : (
+                    <CheckBox
+                      center
+                      title="Notifier le client"
+                      checkedColor={Colors.green}
+                      containerStyle={{ backgroundColor: Colors.white }}
+                      onPress={notifyClient}
+                    />
+                  ))}
+
                 <CheckBox
                   center
                   title="Marqué comme sortie"

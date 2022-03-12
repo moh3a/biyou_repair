@@ -51,6 +51,7 @@ const Register = ({ setRegisterOpen }: any) => {
               userId: user.user.uid,
               username: user.user.displayName,
               role: "basic",
+              items: [],
             });
             dispatch(fetchUser(user.user));
             setRegisterOpen(false);
