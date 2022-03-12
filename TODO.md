@@ -1,5 +1,5 @@
 TODO
 
-- fcm sw registration
-- user adding his entered items / firebase cloud messaging for notifications
+- models database
 - env variables
+- fcm sw registration / firebase cloud messaging for notifications
