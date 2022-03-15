@@ -112,10 +112,14 @@ export default function AdminItemDetails({
       const text = `
       <h3>Bonjour ${item.clientName},</h3>
       <h4>Des nouveautées à propos de votre produit.</h4>
-      <p>Modèle du produit: ${item.model} ${item.serialNumber}</p>
+      <p>Modèle du produit: ${item.model} ${
+        item.serialNumber ? item.serialNumber : ""
+      }</p>
       <p>Etat actuelle du produit: ${item.status}.</p>
-      <p>Prestation à payer: ${item.prestation} DZD</p><br/>
-      <p>Diagnostique:</p><p>${item.diagnostic}</p>
+      <p>Prestation à payer: ${
+        item.prestation ? item.prestation : 0
+      } DZD</p><br/>
+      <p>Diagnostique:</p><p>${item.diagnostic ? item.diagnostic : ""}</p>
       <p>Pour plus d'information, visitez <a href="https://biyou-repair.web.app" target="_blank" rel="noreferrer">ce lien</a> ou appelez ce numéro: +213793013998.</p>
       `;
       const { data } = await axios(

@@ -1,10 +1,16 @@
-import axios from "axios";
-
-export interface IItem {
+export interface IEntry {
   clientName?: string;
   clientPhoneNumber?: string;
   clientEmail?: string;
   itemId?: string;
+  createdAt?: string;
+  products?: IItem[];
+}
+export interface IItem {
+  // clientName?: string;
+  // clientPhoneNumber?: string;
+  // clientEmail?: string;
+  // itemId?: string;
   model?: string;
   serialNumber?: string;
   status:
@@ -16,7 +22,7 @@ export interface IItem {
   prestation?: number;
   diagnostic?: string;
   clientNote?: string;
-  createdAt?: string;
+  // createdAt?: string;
   modifiedAt?: string;
   notified?: {
     isNotified: boolean;
