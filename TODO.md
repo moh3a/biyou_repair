@@ -1,7 +1,8 @@
 TODO
 
 - redesign database;
-  --- add and list done
   --- search client and admin remaining
+  --- edit item
+  --- fetch brands and models
 - env variables
 - fcm sw registration / firebase cloud messaging for notifications

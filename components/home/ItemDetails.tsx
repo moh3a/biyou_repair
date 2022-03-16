@@ -6,15 +6,17 @@ import { Pressable, StyleSheet, TextInput } from "react-native";
 import useColorScheme from "../../hooks/useColorScheme";
 import { Text, View } from "../../components/Themed";
 import BiyouModal from "../../components/elements/Modal";
-import { IItem } from "../../utils/method";
+import { IEntry, IItem } from "../../utils/method";
 import Colors from "../../constants/Colors";
+
+export interface IItemDetails extends IEntry, IItem {}
 
 export default function ItemDetails({
   item,
   openItemDetails,
   setOpenItemDetails,
 }: {
-  item: IItem;
+  item: any;
   openItemDetails: boolean;
   setOpenItemDetails: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -45,7 +47,9 @@ export default function ItemDetails({
         <Text style={{ fontSize: 35, fontWeight: "700" }}>
           {item.clientName}
         </Text>
-        <Text style={styles.modalText}>Email: {item.clientEmail}</Text>
+        {item.clientEmail && (
+          <Text style={styles.modalText}>Email: {item.clientEmail}</Text>
+        )}
         <Text style={styles.modalText}>
           Numéro de téléphone: {item.clientPhoneNumber}
         </Text>

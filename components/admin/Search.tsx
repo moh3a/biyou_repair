@@ -50,7 +50,7 @@ const SearchModal = ({
   const searchHandler = async () => {
     const queryConstraints: any[] = [];
     if (itemId) {
-      queryConstraints.push(where("itemId", "==", itemId.toLowerCase()));
+      queryConstraints.push(where("itemId", "==", itemId.toUpperCase()));
     }
     if (clientName) {
       queryConstraints.push(
@@ -58,15 +58,28 @@ const SearchModal = ({
       );
     }
     if (model) {
-      queryConstraints.push(where("model", "==", model.toLowerCase()));
+      queryConstraints.push(where("products.model", "==", model.toLowerCase()));
     }
+    // if (serialNumber) {
+    //   queryConstraints.push(
+    //     where("serialNumber", "==", serialNumber.toLowerCase())
+    //   );
+    // }
+    // if (status) {
+    //   queryConstraints.push(where("status", "==", status));
+    // }
+
     if (serialNumber) {
       queryConstraints.push(
-        where("serialNumber", "==", serialNumber.toLowerCase())
+        where("products", "array-contains-any", [
+          { serialNumber: serialNumber.toLowerCase() },
+        ])
       );
     }
     if (status) {
-      queryConstraints.push(where("status", "==", status));
+      queryConstraints.push(
+        where("products", "array-contains-any", [{ status }])
+      );
     }
 
     const results: any[] = [];

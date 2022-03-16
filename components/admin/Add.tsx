@@ -82,11 +82,16 @@ export default function AddItem({
 
   const getBrands = async () => {
     const { data } = await axios.get(
+      // "http://localhost:3000/smartphones"
       "https://biyourepairapi.herokuapp.com/smartphones"
     );
     console.log(data);
     if (data.success) {
-      setBrands(data.data);
+      let p: any[] = [];
+      data.data.map((brand: any) => {
+        p.push({ name: brand, models: [] });
+      });
+      setBrands(p);
     }
   };
 
@@ -126,11 +131,9 @@ export default function AddItem({
             old[idx] = { id: products[idx].id, model: e.toString() };
             setProducts(old);
           }}
-          // setValue={setModel}
-          // condition={!model}
         />
       ))}
-      {/* <View
+      <View
         style={{
           backgroundColor: "transparent",
           marginHorizontal: 15,
@@ -150,7 +153,7 @@ export default function AddItem({
           onFocus={getBrands}
           onChangeText={(e) => setBrand(e)}
         />
-      </View> */}
+      </View>
       <Pressable
         onPress={() =>
           setProducts((old) => [

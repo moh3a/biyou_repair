@@ -9,11 +9,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { View } from "../components/Themed";
+import { Text, View } from "../components/Themed";
 import BiyouTextInput from "../components/elements/TextInput";
 import ItemDetails from "../components/home/ItemDetails";
 import Colors from "../constants/Colors";
 import Error from "../components/Error";
+import ItemsList from "../components/account/ItemsList";
 
 export default function HomeScreen() {
   const db = getFirestore();
@@ -23,17 +24,29 @@ export default function HomeScreen() {
 
   const [openItemDetails, setOpenItemDetails] = useState(false);
   const [item, setItem] = useState<any>();
+  const [items, setItems] = useState<any>();
 
   const submitHandler = async () => {
     if (name && id) {
       onSnapshot(doc(db, "items", id.toUpperCase()), (doc) => {
         if (doc.exists()) {
-          if (doc.data().clientName.toLowerCase() === name.toLowerCase()) {
-            setItem(doc.data());
-            setOpenItemDetails(true);
-            setError("");
-            setId("");
-            setName("");
+          const data = doc.data();
+          if (data.clientName.toLowerCase() === name.toLowerCase()) {
+            if (data.products.length > 1) {
+              setItems(data);
+              setItem(null);
+              setOpenItemDetails(true);
+              setError("");
+              setId("");
+              setName("");
+            } else {
+              setItems(null);
+              setItem({ ...data, ...data.products[0] });
+              setOpenItemDetails(true);
+              setError("");
+              setId("");
+              setName("");
+            }
           } else {
             setError("Veuillez entrer le nom affiché sur le bon!");
             setTimeout(() => {
@@ -114,6 +127,13 @@ export default function HomeScreen() {
             openItemDetails={openItemDetails}
             setOpenItemDetails={setOpenItemDetails}
           />
+        )}
+        {items ? (
+          <ItemsList items={items} />
+        ) : (
+          <Text style={{ textAlign: "center", color: Colors.green }}>
+            Récupération des données...
+          </Text>
         )}
       </ImageBackground>
     </View>
