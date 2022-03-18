@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Pressable, StyleSheet, TextInput } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { doc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
 
-import { Text, View } from "../Themed";
+import { Text } from "../Themed";
 import BiyouButton from "../elements/Button";
 import BiyouModal from "../elements/Modal";
 import BiyouTextInput from "../elements/TextInput";
-import { createNewId, IEntry, localISODate } from "../../utils/method";
+import { createNewId, localISODate } from "../../utils/method";
 import Colors from "../../constants/Colors";
 import Error from "../Error";
-import axios from "axios";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function AddItem({
@@ -26,11 +25,9 @@ export default function AddItem({
     { model: "", id: Math.floor(Math.random() * 1000) },
   ]);
   const [error, setError] = useState("");
-  const [brands, setBrands] =
-    useState<{ name: string; models: [{ name: string }] }[]>();
-  const [brand, setBrand] = useState("");
   const db = getFirestore();
 
+  // set the entry ID
   const getLastId = useCallback(async () => {
     onSnapshot(doc(db, "currentId", "currentId"), (doc) => {
       if (doc.exists()) {
@@ -38,11 +35,11 @@ export default function AddItem({
       }
     });
   }, []);
-
   useEffect(() => {
     getLastId();
   }, [getLastId]);
 
+  // final submit function
   const addHandler = async () => {
     if (id && name && phoneNumber && products.length > 0) {
       products.map(async (product) => {
@@ -64,7 +61,7 @@ export default function AddItem({
       setOpenAddModal(false);
       setName("");
       setPhoneNumber("");
-      setProducts([]);
+      setProducts([{ model: "", id: Math.floor(Math.random() * 1000) }]);
     } else if (!id) {
       setError("Erreur avec le numéro de bon");
       setTimeout(() => {
@@ -75,21 +72,6 @@ export default function AddItem({
       setTimeout(() => {
         setError("");
       }, 3000);
-    }
-  };
-
-  const getBrands = async () => {
-    const { data } = await axios.get(
-      // "http://localhost:3000/smartphones"
-      "https://biyourepairapi.herokuapp.com/smartphones"
-    );
-    console.log(data);
-    if (data.success) {
-      let p: any[] = [];
-      data.data.map((brand: any) => {
-        p.push({ name: brand, models: [] });
-      });
-      setBrands(p);
     }
   };
 
@@ -131,27 +113,7 @@ export default function AddItem({
           }}
         />
       ))}
-      <View
-        style={{
-          backgroundColor: "transparent",
-          marginHorizontal: 15,
-          marginVertical: 4,
-        }}
-      >
-        <TextInput
-          style={{
-            padding: 10,
-            borderRadius: 15,
-            backgroundColor: Colors.gray,
-            color: Colors.black,
-          }}
-          placeholder="Marque du produit"
-          placeholderTextColor={"#999"}
-          value={brand}
-          onFocus={getBrands}
-          onChangeText={(e) => setBrand(e)}
-        />
-      </View>
+
       <Pressable
         onPress={() =>
           setProducts((old) => [
