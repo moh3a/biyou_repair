@@ -58,32 +58,18 @@ const SearchModal = ({
       );
     }
     if (model) {
-      queryConstraints.push(where("products.model", "==", model.toLowerCase()));
+      queryConstraints.push(where("model", "==", model.toLowerCase()));
     }
-    // if (serialNumber) {
-    //   queryConstraints.push(
-    //     where("serialNumber", "==", serialNumber.toLowerCase())
-    //   );
-    // }
-    // if (status) {
-    //   queryConstraints.push(where("status", "==", status));
-    // }
-
     if (serialNumber) {
       queryConstraints.push(
-        where("products", "array-contains-any", [
-          { serialNumber: serialNumber.toLowerCase() },
-        ])
+        where("serialNumber", "==", serialNumber.toLowerCase())
       );
     }
     if (status) {
-      queryConstraints.push(
-        where("products", "array-contains-any", [{ status }])
-      );
+      queryConstraints.push(where("status", "==", status));
     }
 
     const results: any[] = [];
-
     const querySnapshot = await getDocs(
       query(collection(db, "items"), ...queryConstraints)
     );

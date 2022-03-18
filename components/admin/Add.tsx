@@ -45,23 +45,21 @@ export default function AddItem({
 
   const addHandler = async () => {
     if (id && name && phoneNumber && products.length > 0) {
-      let bon: IEntry = {
-        clientName: name.toLowerCase(),
-        clientPhoneNumber: phoneNumber,
-        itemId: id.toUpperCase(),
-        createdAt: localISODate(),
-        products: [],
-      };
-      products.map((product) => {
+      products.map(async (product) => {
         if (product.model) {
-          bon.products?.push({
+          const entryRef = id + Math.floor(Math.random() * 10000).toString();
+          await setDoc(doc(db, "items", entryRef), {
+            itemId: id.toUpperCase(),
+            entryRef,
+            clientName: name.toLowerCase(),
+            clientPhoneNumber: phoneNumber,
+            createdAt: localISODate(),
             model: product.model,
             status: "En attente",
             notified: { isNotified: false },
           });
         }
       });
-      await setDoc(doc(db, "items", id), bon);
       await setDoc(doc(db, "currentId", "currentId"), { id });
       setOpenAddModal(false);
       setName("");

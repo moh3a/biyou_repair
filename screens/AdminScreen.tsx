@@ -19,7 +19,7 @@ import ItemsList from "../components/admin/ItemsList";
 import AddItem from "../components/admin/Add";
 import SearchModal from "../components/admin/Search";
 import { IUser, selectUser } from "../redux/userSlice";
-import { IItem } from "../utils/method";
+import { IEntry } from "../utils/method";
 import Colors from "../constants/Colors";
 
 export default function AdminScreen() {
@@ -29,7 +29,7 @@ export default function AdminScreen() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [openList, setOpenList] = useState(false);
-  const [items, setItems] = useState<IItem[]>();
+  const [items, setItems] = useState<IEntry[]>();
 
   const fetchItems = async () => {
     setItems([]);

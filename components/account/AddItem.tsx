@@ -1,14 +1,18 @@
 import {
   arrayUnion,
+  collection,
   doc,
-  getDoc,
+  getDocs,
   getFirestore,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
 import { selectUser } from "../../redux/userSlice";
+import { IEntry } from "../../utils/method";
 import BiyouButton from "../elements/Button";
 import BiyouTextInput from "../elements/TextInput";
 import Error from "../Error";
@@ -30,30 +34,33 @@ const AddItem = ({
   const addItem = async () => {
     setLoading(true);
     if (user && user.uid && email && itemId && name) {
-      const docRef = await getDoc(doc(db, "items", itemId.toUpperCase()));
-      if (docRef.exists()) {
-        if (docRef.data().clientName.toLowerCase() === name.toLowerCase()) {
-          await updateDoc(doc(db, "items", itemId.toUpperCase()), {
-            clientEmail: email,
-          });
-          await updateDoc(doc(db, "custom", user.uid), {
-            items: arrayUnion({ itemId: itemId.toUpperCase() }),
-          });
-          setLoading(false);
-          setAddOpen(false);
-        } else {
-          setLoading(false);
-          setError("Veuillez entrer le nom affiché sur le bon!");
-          setTimeout(() => {
-            setError("");
-          }, 3000);
-        }
-      } else {
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "items"),
+          where("itemId", "==", itemId.toUpperCase()),
+          where("clientName", "==", name.toLowerCase())
+        )
+      );
+      if (querySnapshot.empty) {
         setLoading(false);
-        setError("Ce bon n'existe pas");
+        setError("Ce bon n'existe pas! Veuillez bien vérifier vos entrées.");
         setTimeout(() => {
           setError("");
         }, 3000);
+      } else {
+        querySnapshot.forEach(async (d) => {
+          const item = d.data() as IEntry;
+          if (item.entryRef)
+            await updateDoc(doc(db, "items", item.entryRef), {
+              clientEmail: email,
+            });
+          if (user.uid)
+            await updateDoc(doc(db, "custom", user.uid), {
+              items: arrayUnion({ itemId: itemId.toUpperCase() }),
+            });
+        });
+        setLoading(false);
+        setAddOpen(false);
       }
     } else {
       setLoading(false);

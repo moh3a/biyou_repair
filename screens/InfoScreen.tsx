@@ -73,7 +73,9 @@ const InfoScreen = () => {
       </View>
       <View style={styles.box}>
         <Text style={styles.title}>Ou me trouver?</Text>
-        <Text style={styles.text}>Kadous, Oued Romane, El Achour - Alger</Text>
+        <Text style={styles.text}>
+          El Kadous, Oued Romane, El Achour - Alger
+        </Text>
       </View>
       <Overlay
         overlayStyle={styles.overlay}
@@ -91,7 +93,7 @@ const InfoScreen = () => {
         <View style={{ padding: 10 }}>
           <Text style={{ display: "flex", flexDirection: "row" }}>
             <Text style={{ fontWeight: "bold", marginRight: 5 }}>Email:</Text>{" "}
-            biyou20b@gmail.com
+            biyourepair@gmail.com
           </Text>
         </View>
       </Overlay>

@@ -9,7 +9,7 @@ import {
 
 import ItemDetails from "./ItemDetails";
 import { Text, View } from "../Themed";
-import { IEntry, IItem } from "../../utils/method";
+import { IEntry } from "../../utils/method";
 import Colors from "../../constants/Colors";
 
 const ItemsList = ({
@@ -21,10 +21,10 @@ const ItemsList = ({
   openList: boolean;
   setOpenList: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [item, setItem] = useState<any>();
+  const [item, setItem] = useState<IEntry>();
   const [openAdminItemDetails, setOpenAdminItemDetails] = useState(false);
 
-  const showItemDetails = (item: any) => {
+  const showItemDetails = (item: IEntry) => {
     setOpenAdminItemDetails(true);
     setItem(item);
   };
@@ -45,9 +45,9 @@ const ItemsList = ({
         </Pressable>
       </View>
       <View style={{ width: "100%", display: "flex" }}>
-        {items.map((item: IEntry) => (
+        {items.map((item: IEntry, index) => (
           <View
-            key={item.itemId}
+            key={index}
             style={{
               borderRadius: 10,
               backgroundColor: Colors.gray,
@@ -127,76 +127,55 @@ const ItemsList = ({
                   backgroundColor: "transparent",
                 }}
               >
-                {item.products?.map((product, idx) => (
-                  <TouchableOpacity
-                    key={idx}
-                    onPress={() =>
-                      showItemDetails({
-                        ...product,
-                        clientName: item.clientName,
-                        itemId: item.itemId,
-                        clientPhoneNumber: item.clientPhoneNumber,
-                        clientEmail: item.clientEmail,
-                        createdAt: item.createdAt,
-                      })
-                    }
+                <TouchableOpacity onPress={() => showItemDetails(item)}>
+                  <View
                     style={{
-                      borderTopWidth: 1,
-                      borderTopColor: Colors.yellow,
-                      paddingVertical: 5,
+                      flex: 1,
+                      backgroundColor: "transparent",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
                     }}
                   >
-                    <View
-                      style={{
-                        flex: 1,
-                        backgroundColor: "transparent",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        overflow: "hidden",
-                      }}
+                    <Text style={{ fontStyle: "italic" }}>{item.model}</Text>
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: "transparent",
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Text
+                      style={[
+                        {
+                          color: Colors.white,
+                          fontWeight: "bold",
+                          paddingHorizontal: 3,
+                        },
+                        item.status === "En attente" && {
+                          backgroundColor: Colors.red,
+                        },
+                        item.status === "Réparé" && {
+                          backgroundColor: "green",
+                        },
+                        item.status === "Devis" && {
+                          backgroundColor: Colors.violet,
+                        },
+                        item.status === "Retour au client" && {
+                          backgroundColor: Colors.red,
+                        },
+                        item.status === "Attente de pièces" && {
+                          backgroundColor: Colors.yellow,
+                        },
+                      ]}
                     >
-                      <Text style={{ fontStyle: "italic" }}>
-                        {product.model}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        backgroundColor: "transparent",
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <Text
-                        style={[
-                          {
-                            color: Colors.white,
-                            fontWeight: "bold",
-                            paddingHorizontal: 3,
-                          },
-                          product.status === "En attente" && {
-                            backgroundColor: Colors.red,
-                          },
-                          product.status === "Réparé" && {
-                            backgroundColor: "green",
-                          },
-                          product.status === "Devis" && {
-                            backgroundColor: Colors.violet,
-                          },
-                          product.status === "Retour au client" && {
-                            backgroundColor: Colors.red,
-                          },
-                          product.status === "Attente de pièces" && {
-                            backgroundColor: Colors.yellow,
-                          },
-                        ]}
-                      >
-                        {product.status}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+                      {item.status}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
           </View>

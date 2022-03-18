@@ -1,5 +1,12 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getFirestore,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { useState } from "react";
 import {
   Dimensions,
@@ -15,6 +22,7 @@ import ItemDetails from "../components/home/ItemDetails";
 import Colors from "../constants/Colors";
 import Error from "../components/Error";
 import ItemsList from "../components/account/ItemsList";
+import { IEntry } from "../utils/method";
 
 export default function HomeScreen() {
   const db = getFirestore();
@@ -23,43 +31,45 @@ export default function HomeScreen() {
   const [error, setError] = useState("");
 
   const [openItemDetails, setOpenItemDetails] = useState(false);
-  const [item, setItem] = useState<any>();
-  const [items, setItems] = useState<any>();
+  const [item, setItem] = useState<IEntry>();
+  const [items, setItems] = useState<IEntry[]>();
 
   const submitHandler = async () => {
     if (name && id) {
-      onSnapshot(doc(db, "items", id.toUpperCase()), (doc) => {
-        if (doc.exists()) {
-          const data = doc.data();
-          if (data.clientName.toLowerCase() === name.toLowerCase()) {
-            if (data.products.length > 1) {
-              setItems(data);
-              setItem(null);
-              setOpenItemDetails(true);
-              setError("");
-              setId("");
-              setName("");
-            } else {
-              setItems(null);
-              setItem({ ...data, ...data.products[0] });
-              setOpenItemDetails(true);
-              setError("");
-              setId("");
-              setName("");
-            }
-          } else {
-            setError("Veuillez entrer le nom affiché sur le bon!");
+      onSnapshot(
+        query(
+          collection(db, "items"),
+          where("itemId", "==", id.toUpperCase()),
+          where("clientName", "==", name.toLowerCase())
+        ),
+        (querySnapshot) => {
+          if (querySnapshot.empty) {
+            setError(
+              "Ce bon n'existe pas! Veuillez bien vérifier vos entrées."
+            );
             setTimeout(() => {
               setError("");
             }, 3000);
-          }
-        } else {
-          setError("Ce bon n'existe pas!");
-          setTimeout(() => {
+          } else {
+            if (querySnapshot.size === 1) {
+              let item = querySnapshot.docs[0].data() as IEntry;
+              setItems(undefined);
+              setItem(item);
+            } else {
+              let items: IEntry[] = [];
+              querySnapshot.forEach((item) => {
+                items.push(item.data() as IEntry);
+              });
+              setItems(items);
+              setItem(undefined);
+            }
+            setOpenItemDetails(true);
             setError("");
-          }, 3000);
+            setId("");
+            setName("");
+          }
         }
-      });
+      );
     } else {
       setError("Champs obligatoire!");
       setTimeout(() => {
@@ -111,7 +121,6 @@ export default function HomeScreen() {
                 height: 50,
                 width: 50,
                 borderRadius: 50,
-                // backgroundColor: Colors.lightBlue,
                 backgroundColor: Colors.green,
               }}
             >
@@ -128,13 +137,7 @@ export default function HomeScreen() {
             setOpenItemDetails={setOpenItemDetails}
           />
         )}
-        {items ? (
-          <ItemsList items={items} />
-        ) : (
-          <Text style={{ textAlign: "center", color: Colors.green }}>
-            Récupération des données...
-          </Text>
-        )}
+        {items && <ItemsList items={items} />}
       </ImageBackground>
     </View>
   );

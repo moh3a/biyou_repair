@@ -3,31 +3,27 @@ import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, TextInput } from "react-native";
 
-import useColorScheme from "../../hooks/useColorScheme";
 import { Text, View } from "../../components/Themed";
 import BiyouModal from "../../components/elements/Modal";
-import { IEntry, IItem } from "../../utils/method";
+import { IEntry } from "../../utils/method";
 import Colors from "../../constants/Colors";
-
-export interface IItemDetails extends IEntry, IItem {}
 
 export default function ItemDetails({
   item,
   openItemDetails,
   setOpenItemDetails,
 }: {
-  item: any;
+  item: IEntry;
   openItemDetails: boolean;
   setOpenItemDetails: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const theme = useColorScheme();
   const [note, setNote] = useState(item.clientNote ? item.clientNote : "");
   const [success, setSuccess] = useState("");
   const db = getFirestore();
 
   const submitHandler = async () => {
-    if (note && item.itemId) {
-      await updateDoc(doc(db, "items", item.itemId), {
+    if (note && item.entryRef) {
+      await updateDoc(doc(db, "items", item.entryRef), {
         clientNote: note,
       });
       setSuccess("Successfully submitted your note.");

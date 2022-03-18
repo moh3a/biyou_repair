@@ -13,8 +13,7 @@ import { ButtonGroup, CheckBox } from "react-native-elements";
 
 import { Text, View } from "../../components/Themed";
 import Colors from "../../constants/Colors";
-import useColorScheme from "../../hooks/useColorScheme";
-import { IItem, localISODate } from "../../utils/method";
+import { IEntry, localISODate } from "../../utils/method";
 
 const StatusList = [
   "En attente",
@@ -30,12 +29,11 @@ export default function AdminItemDetails({
   openAdminItemDetails,
   setOpenAdminItemDetails,
 }: {
-  item: IItem;
-  setItem: Dispatch<React.SetStateAction<IItem | undefined>>;
+  item: IEntry;
+  setItem: Dispatch<React.SetStateAction<IEntry | undefined>>;
   openAdminItemDetails: boolean;
   setOpenAdminItemDetails: Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const theme = useColorScheme();
   const [success, setSuccesss] = useState("");
   const [finishedCheck, setFinishedCheck] = useState(
     item.finishedAt ? true : false
@@ -59,8 +57,8 @@ export default function AdminItemDetails({
   const db = getFirestore();
 
   const updateStatus = useCallback(async () => {
-    if (statusIdx && item.itemId) {
-      await updateDoc(doc(db, "items", item.itemId), {
+    if (statusIdx && item.entryRef) {
+      await updateDoc(doc(db, "items", item.entryRef), {
         status: StatusList[statusIdx],
       });
     }
@@ -71,13 +69,13 @@ export default function AdminItemDetails({
   }, [updateStatus]);
 
   const updateFinishedDate = useCallback(async () => {
-    if (item.itemId) {
+    if (item.entryRef) {
       if (finishedCheck) {
-        await updateDoc(doc(db, "items", item.itemId), {
+        await updateDoc(doc(db, "items", item.entryRef), {
           finishedAt: localISODate(),
         });
       } else {
-        await updateDoc(doc(db, "items", item.itemId), {
+        await updateDoc(doc(db, "items", item.entryRef), {
           finishedAt: null,
         });
       }
@@ -89,10 +87,10 @@ export default function AdminItemDetails({
   }, [updateFinishedDate]);
 
   const updateHandler = async (key: string, value: string | number) => {
-    if (key && item.itemId) {
+    if (key && item.entryRef) {
       let updatedValue: any = {};
       await updateDoc(
-        doc(db, "items", item.itemId),
+        doc(db, "items", item.entryRef),
         Object.defineProperty(updatedValue, key, {
           value: typeof value === "string" ? value.toLowerCase() : value,
           configurable: true,
@@ -108,10 +106,12 @@ export default function AdminItemDetails({
   };
 
   const notifyClient = async () => {
-    if (item && item.itemId && item.clientEmail) {
+    if (item && item.entryRef && item.clientEmail) {
       const text = `
       <h3>Bonjour ${item.clientName},</h3>
-      <h4>Des nouveautées à propos de votre produit.</h4>
+      <h4>Des nouveautées à propos de votre produit avec identifiant ${
+        item.itemId
+      }.</h4>
       <p>Modèle du produit: ${item.model} ${
         item.serialNumber ? item.serialNumber : ""
       }</p>
@@ -135,7 +135,7 @@ export default function AdminItemDetails({
         }
       );
       if (data.message === "Email envoyé") {
-        await updateDoc(doc(db, "items", item.itemId), {
+        await updateDoc(doc(db, "items", item.entryRef), {
           notified: { isNotified: true, date: localISODate() },
         });
       }
