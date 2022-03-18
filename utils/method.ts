@@ -14,6 +14,8 @@ export interface IEntry {
     | "Retour au client"
     | "Attente de pièces";
   prestation?: number;
+  expenses?: number;
+  labor?: number;
   diagnostic?: string;
   clientNote?: string;
   modifiedAt?: string;
@@ -22,6 +24,14 @@ export interface IEntry {
     date?: string;
   };
   finishedAt?: string;
+}
+
+export interface IStats {
+  number_of_entries?: number;
+  number_of_prestations?: number;
+  total_revenue?: number;
+  total_expenses?: number;
+  total_profit?: number;
 }
 
 export const getMonthByLetter = () => {

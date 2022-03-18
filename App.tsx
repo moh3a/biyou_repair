@@ -11,8 +11,6 @@ import store from "./redux/store";
 
 import FirebaseConfig from "./config/firebase.config";
 import { initializeApp, getApps } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
-import { FIREBASE_VAPIDKEY } from "@env";
 
 // Supress warnings
 LogBox.ignoreLogs(["Setting a timer"]);
@@ -22,36 +20,36 @@ LogBox.ignoreLogs([
 
 const initializeFirebase = async () => {
   const app = initializeApp(FirebaseConfig);
-  const messaging = getMessaging(app);
+  // const messaging = getMessaging(app);
 
-  if (Platform.OS === "web" && "serviceWorker" in navigator) {
-    window.addEventListener("load", async () => {
-      try {
-        const token = await getToken(messaging, {
-          serviceWorkerRegistration: await navigator.serviceWorker.register(
-            "./firebase-messaging-sw.js"
-          ),
-          vapidKey: FIREBASE_VAPIDKEY,
-        });
-        if (token) {
-          console.log(`On a eu le token: ${token}`);
-        } else {
-          const permission = await Notification.requestPermission();
-          console.log(
-            `On est pas permis d'envoyer des notifications. Status ${permission}`
-          );
-        }
-      } catch (error) {
-        console.log(
-          `On a pas réussi à avoir le FCM token. Le message d'erreur: ${error}`
-        );
-      }
-    });
-  } else {
-    console.log(
-      `Les Service Workers ne sont pas disponibles sur ce navigateur. Vous ne receverez pas de notifications.`
-    );
-  }
+  // if (Platform.OS === "web" && "serviceWorker" in navigator) {
+  //   window.addEventListener("load", async () => {
+  //     try {
+  //       const token = await getToken(messaging, {
+  //         serviceWorkerRegistration: await navigator.serviceWorker.register(
+  //           "./firebase-messaging-sw.js"
+  //         ),
+  //         vapidKey: FIREBASE_VAPIDKEY,
+  //       });
+  //       if (token) {
+  //         console.log(`On a eu le token: ${token}`);
+  //       } else {
+  //         const permission = await Notification.requestPermission();
+  //         console.log(
+  //           `On est pas permis d'envoyer des notifications. Status ${permission}`
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.log(
+  //         `On a pas réussi à avoir le FCM token. Le message d'erreur: ${error}`
+  //       );
+  //     }
+  //   });
+  // } else {
+  //   console.log(
+  //     `Les Service Workers ne sont pas disponibles sur ce navigateur. Vous ne receverez pas de notifications.`
+  //   );
+  // }
 };
 if (getApps().length === 0) initializeFirebase();
 

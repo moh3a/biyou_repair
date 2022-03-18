@@ -17,7 +17,7 @@ const ItemsList = ({
   openList,
   setOpenList,
 }: {
-  items: IEntry[];
+  items?: IEntry[];
   openList: boolean;
   setOpenList: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -45,141 +45,145 @@ const ItemsList = ({
         </Pressable>
       </View>
       <View style={{ width: "100%", display: "flex" }}>
-        {items.map((item: IEntry, index) => (
-          <View
-            key={index}
-            style={{
-              borderRadius: 10,
-              backgroundColor: Colors.gray,
-              width: Dimensions.get("window").width - 10,
-              marginHorizontal: "auto",
-              marginVertical: 8,
-              display: "flex",
-              flexDirection: "row",
-              paddingVertical: 10,
-              paddingHorizontal: 5,
-              shadowColor: Colors.black,
-              shadowOffset: { width: 0, height: 1 },
-              shadowOpacity: 0.3,
-              shadowRadius: 10,
-            }}
-          >
+        {items ? (
+          items.map((item: IEntry, index) => (
             <View
+              key={index}
               style={{
-                flex: 1,
-                width: "100%",
-                backgroundColor: "transparent",
-                justifyContent: "center",
-                alignItems: "center",
-                overflow: "hidden",
-              }}
-            >
-              <Text>{item.itemId}</Text>
-            </View>
-            <View
-              style={{
-                flex: 6,
-                backgroundColor: "transparent",
-                width: "100%",
+                borderRadius: 10,
+                backgroundColor: Colors.gray,
+                width: Dimensions.get("window").width - 10,
+                marginHorizontal: "auto",
+                marginVertical: 8,
                 display: "flex",
                 flexDirection: "row",
+                paddingVertical: 10,
+                paddingHorizontal: 5,
+                shadowColor: Colors.black,
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.3,
+                shadowRadius: 10,
               }}
             >
               <View
                 style={{
                   flex: 1,
-                  display: "flex",
+                  width: "100%",
                   backgroundColor: "transparent",
-                  flexDirection: "column",
-                  alignItems: "center",
                   justifyContent: "center",
-                  paddingVertical: 5,
+                  alignItems: "center",
+                  overflow: "hidden",
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: "transparent",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    overflow: "hidden",
-                  }}
-                >
-                  <Text style={{ fontWeight: "bold", textAlign: "center" }}>
-                    {item.clientName}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    backgroundColor: "transparent",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    overflow: "hidden",
-                  }}
-                >
-                  <Text>{item.clientPhoneNumber}</Text>
-                </View>
+                <Text>{item.itemId}</Text>
               </View>
               <View
                 style={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
+                  flex: 6,
                   backgroundColor: "transparent",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
                 }}
               >
-                <TouchableOpacity onPress={() => showItemDetails(item)}>
+                <View
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    backgroundColor: "transparent",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingVertical: 5,
+                  }}
+                >
                   <View
                     style={{
-                      flex: 1,
                       backgroundColor: "transparent",
                       justifyContent: "center",
                       alignItems: "center",
                       overflow: "hidden",
                     }}
                   >
-                    <Text style={{ fontStyle: "italic" }}>{item.model}</Text>
-                  </View>
-                  <View
-                    style={{
-                      backgroundColor: "transparent",
-                      flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <Text
-                      style={[
-                        {
-                          color: Colors.white,
-                          fontWeight: "bold",
-                          paddingHorizontal: 3,
-                        },
-                        item.status === "En attente" && {
-                          backgroundColor: Colors.red,
-                        },
-                        item.status === "Réparé" && {
-                          backgroundColor: "green",
-                        },
-                        item.status === "Devis" && {
-                          backgroundColor: Colors.violet,
-                        },
-                        item.status === "Retour au client" && {
-                          backgroundColor: Colors.red,
-                        },
-                        item.status === "Attente de pièces" && {
-                          backgroundColor: Colors.yellow,
-                        },
-                      ]}
-                    >
-                      {item.status}
+                    <Text style={{ fontWeight: "bold", textAlign: "center" }}>
+                      {item.clientName}
                     </Text>
                   </View>
-                </TouchableOpacity>
+                  <View
+                    style={{
+                      backgroundColor: "transparent",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Text>{item.clientPhoneNumber}</Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <TouchableOpacity onPress={() => showItemDetails(item)}>
+                    <View
+                      style={{
+                        flex: 1,
+                        backgroundColor: "transparent",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Text style={{ fontStyle: "italic" }}>{item.model}</Text>
+                    </View>
+                    <View
+                      style={{
+                        backgroundColor: "transparent",
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Text
+                        style={[
+                          {
+                            color: Colors.white,
+                            fontWeight: "bold",
+                            paddingHorizontal: 3,
+                          },
+                          item.status === "En attente" && {
+                            backgroundColor: Colors.red,
+                          },
+                          item.status === "Réparé" && {
+                            backgroundColor: "green",
+                          },
+                          item.status === "Devis" && {
+                            backgroundColor: Colors.violet,
+                          },
+                          item.status === "Retour au client" && {
+                            backgroundColor: Colors.red,
+                          },
+                          item.status === "Attente de pièces" && {
+                            backgroundColor: Colors.yellow,
+                          },
+                        ]}
+                      >
+                        {item.status}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        ))}
+          ))
+        ) : (
+          <Text>Récupération des données...</Text>
+        )}
       </View>
       {openAdminItemDetails && item && (
         <ItemDetails

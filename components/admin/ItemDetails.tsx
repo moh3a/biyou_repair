@@ -3,6 +3,7 @@ import axios from "axios";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import {
+  Dimensions,
   Modal,
   Pressable,
   ScrollView,
@@ -51,6 +52,8 @@ export default function AdminItemDetails({
   const [prestation, setPrestation] = useState(
     item.prestation ? item.prestation : 0
   );
+  const [labor, setLabor] = useState(item.labor ? item.labor : 0);
+  const [expenses, setExpenses] = useState(item.expenses ? item.expenses : 0);
   const [diagnostic, setDiagnostic] = useState(
     item.diagnostic ? item.diagnostic : ""
   );
@@ -85,6 +88,10 @@ export default function AdminItemDetails({
   useEffect(() => {
     updateFinishedDate();
   }, [updateFinishedDate]);
+
+  useEffect(() => {
+    setPrestation(expenses + labor);
+  }, [expenses, labor]);
 
   const updateHandler = async (key: string, value: string | number) => {
     if (key && item.entryRef) {
@@ -325,41 +332,116 @@ export default function AdminItemDetails({
                     selectedTextStyle={{ color: Colors.white }}
                   />
                 </View>
-                <View>
-                  <Text style={styles.modalText}>Prestation:</Text>
-                  <View style={{ marginVertical: 5 }}>
-                    <TextInput
-                      value={prestation.toString()}
-                      onChangeText={(e) =>
-                        setPrestation(isNaN(parseFloat(e)) ? 0 : parseFloat(e))
-                      }
-                      placeholder=""
-                      style={{
-                        paddingVertical: 10,
-                        paddingLeft: 10,
-                        paddingRight: 40,
-                        borderRadius: 15,
-                        backgroundColor: Colors.black,
-                        color: Colors.white,
-                        borderColor: Colors.white,
-                        borderWidth: 1,
-                      }}
-                    />
-                    <Pressable
-                      onPress={() => updateHandler("prestation", prestation)}
-                      style={{ position: "absolute", right: 10, top: 10 }}
-                    >
-                      <FontAwesome name="save" size={25} color="orange" />
-                    </Pressable>
-                    {success === "prestation" && (
+                <View style={{ display: "flex", flexDirection: "row" }}>
+                  <View
+                    style={{
+                      width: Dimensions.get("window").width * 0.25,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Text style={[styles.modalText, { fontSize: 12 }]}>
+                      Prix la pièce:
+                    </Text>
+                    <View style={{ marginVertical: 5 }}>
+                      <TextInput
+                        value={expenses.toString()}
+                        onChangeText={(e) =>
+                          setExpenses(isNaN(parseFloat(e)) ? 0 : parseFloat(e))
+                        }
+                        placeholder=""
+                        style={{
+                          width: Dimensions.get("window").width * 0.2,
+                          padding: 10,
+                          borderRadius: 15,
+                          backgroundColor: Colors.black,
+                          color: Colors.white,
+                          borderColor: Colors.white,
+                          borderWidth: 1,
+                        }}
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: Dimensions.get("window").width * 0.25,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Text style={[styles.modalText, { fontSize: 12 }]}>
+                      Main-d'œuvre:
+                    </Text>
+                    <View style={{ marginVertical: 5 }}>
+                      <TextInput
+                        value={labor.toString()}
+                        onChangeText={(e) =>
+                          setLabor(isNaN(parseFloat(e)) ? 0 : parseFloat(e))
+                        }
+                        placeholder=""
+                        style={{
+                          width: Dimensions.get("window").width * 0.2,
+                          padding: 10,
+                          borderRadius: 15,
+                          backgroundColor: Colors.black,
+                          color: Colors.white,
+                          borderColor: Colors.white,
+                          borderWidth: 1,
+                        }}
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: Dimensions.get("window").width * 0.25,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Text style={[styles.modalText, { fontSize: 12 }]}>
+                      Prestation totale:
+                    </Text>
+                    <View style={{ marginVertical: 5 }}>
+                      <TextInput
+                        value={prestation.toString()}
+                        placeholder=""
+                        style={{
+                          width: Dimensions.get("window").width * 0.2,
+                          padding: 10,
+                          borderRadius: 15,
+                          backgroundColor: Colors.black,
+                          color: Colors.white,
+                          borderColor: Colors.white,
+                          borderWidth: 1,
+                        }}
+                      />
+                    </View>
+                  </View>
+                  <Pressable
+                    onPress={() => {
+                      updateHandler("expenses", expenses);
+                      updateHandler("labor", labor);
+                      updateHandler("prestation", prestation);
+                    }}
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      top: 15,
+                    }}
+                  >
+                    <FontAwesome name="save" size={25} color="orange" />
+                  </Pressable>
+                  {success === "labor" ||
+                    (success === "sparePart" && (
                       <FontAwesome
                         name="check"
                         size={25}
                         color="green"
-                        style={{ position: "absolute", right: 40, top: 10 }}
+                        style={{
+                          position: "absolute",
+                          right: 40,
+                          top: 10,
+                          padding: 10,
+                        }}
                       />
-                    )}
-                  </View>
+                    ))}
                 </View>
                 <View>
                   <Text style={styles.modalText}>Diagnostique</Text>
