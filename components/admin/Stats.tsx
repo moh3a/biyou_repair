@@ -30,36 +30,36 @@ const Stats = ({
   const db = getFirestore();
 
   const fetchStats = useCallback(async () => {
-    onSnapshot(doc(db, "tools", "stats"), async (docSnapshot) => {
-      const itemsSnapshot = await getDocs(collection(db, "items"));
-      if (!itemsSnapshot.empty) {
-        let sortiesCount = 0;
-        let prestationCount = 0;
-        let prestation = 0;
-        let expenses = 0;
-        let profit = 0;
-        itemsSnapshot.forEach((item) => {
-          if (item.exists()) {
-            const data = item.data();
-            if (data.finishedAt) sortiesCount++;
-            if (data.prestation > 0 && data.finishedAt) {
-              prestationCount++;
-              prestation += Number(data.prestation);
-            }
-            if (data.expenses > 0 && data.finishedAt)
-              expenses += Number(data.expenses);
-            if (data.labor > 0 && data.finishedAt) profit += Number(data.labor);
+    const itemsSnapshot = await getDocs(collection(db, "items"));
+    if (!itemsSnapshot.empty) {
+      let sortiesCount = 0;
+      let prestationCount = 0;
+      let prestation = 0;
+      let expenses = 0;
+      let profit = 0;
+      itemsSnapshot.forEach((item) => {
+        if (item.exists()) {
+          const data = item.data();
+          if (data.finishedAt) sortiesCount++;
+          if (data.prestation > 0 && data.finishedAt) {
+            prestationCount++;
+            prestation += Number(data.prestation);
           }
-        });
-        await updateDoc(doc(db, "tools", "stats"), {
-          number_of_entries: itemsSnapshot.size,
-          number_of_exits: sortiesCount,
-          number_of_prestations: prestationCount,
-          total_revenue: prestation,
-          total_expenses: expenses,
-          total_profit: profit,
-        });
-      }
+          if (data.expenses > 0 && data.finishedAt)
+            expenses += Number(data.expenses);
+          if (data.labor > 0 && data.finishedAt) profit += Number(data.labor);
+        }
+      });
+      await updateDoc(doc(db, "tools", "stats"), {
+        number_of_entries: itemsSnapshot.size,
+        number_of_exits: sortiesCount,
+        number_of_prestations: prestationCount,
+        total_revenue: prestation,
+        total_expenses: expenses,
+        total_profit: profit,
+      });
+    }
+    onSnapshot(doc(db, "tools", "stats"), async (docSnapshot) => {
       if (docSnapshot.exists()) {
         setStats(docSnapshot.data());
       }

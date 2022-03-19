@@ -1,14 +1,4 @@
 import { FontAwesome } from "@expo/vector-icons";
-import {
-  collection,
-  doc,
-  getDocs,
-  getFirestore,
-  onSnapshot,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
 import { useState } from "react";
 import {
   Dimensions,
@@ -18,18 +8,17 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 
+import Colors from "../constants/Colors";
 import { Text, View } from "../components/Themed";
 import ItemsList from "../components/admin/ItemsList";
 import AddItem from "../components/admin/Add";
 import SearchModal from "../components/admin/Search";
-import { IUser, selectUser } from "../redux/userSlice";
-import { IEntry, IStats } from "../utils/method";
-import Colors from "../constants/Colors";
 import Stats from "../components/admin/Stats";
+import { IUser, selectUser } from "../redux/userSlice";
+import { IEntry } from "../utils/method";
 
 export default function AdminScreen() {
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
-  const db = getFirestore();
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
