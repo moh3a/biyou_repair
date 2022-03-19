@@ -1,5 +1,11 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   Dimensions,
   Pressable,
@@ -11,23 +17,47 @@ import ItemDetails from "./ItemDetails";
 import { Text, View } from "../Themed";
 import { IEntry } from "../../utils/method";
 import Colors from "../../constants/Colors";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 
 const ItemsList = ({
   items,
+  setItems,
   openList,
   setOpenList,
 }: {
   items?: IEntry[];
+  setItems: any;
   openList: boolean;
   setOpenList: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [item, setItem] = useState<IEntry>();
   const [openAdminItemDetails, setOpenAdminItemDetails] = useState(false);
+  const db = getFirestore();
 
   const showItemDetails = (item: IEntry) => {
     setOpenAdminItemDetails(true);
     setItem(item);
   };
+
+  const fetchItems = useCallback(async () => {
+    setItems([]);
+    onSnapshot(query(collection(db, "items")), (querySnapshot) => {
+      let newlist: any[] = [];
+      querySnapshot.forEach((doc) => {
+        newlist.unshift(doc.data());
+      });
+      setItems(newlist);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   return (
     <View style={styles.listView}>

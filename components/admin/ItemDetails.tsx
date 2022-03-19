@@ -75,7 +75,7 @@ export default function AdminItemDetails({
     if (item.entryRef) {
       if (finishedCheck) {
         await updateDoc(doc(db, "items", item.entryRef), {
-          finishedAt: localISODate(),
+          finishedAt: localISODate().substring(0, 10),
         });
       } else {
         await updateDoc(doc(db, "items", item.entryRef), {

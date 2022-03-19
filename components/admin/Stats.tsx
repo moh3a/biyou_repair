@@ -1,19 +1,75 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React, { Dispatch, SetStateAction } from "react";
+import {
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Dimensions, Pressable, StyleSheet } from "react-native";
 import Colors from "../../constants/Colors";
 import { IStats } from "../../utils/method";
 import { Text, View } from "../Themed";
 
 const Stats = ({
-  stats,
   openStats,
   setOpenStats,
 }: {
-  stats?: IStats;
   openStats: boolean;
   setOpenStats: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const [stats, setStats] = useState<IStats>();
+  const db = getFirestore();
+
+  const fetchStats = useCallback(async () => {
+    onSnapshot(doc(db, "tools", "stats"), async (docSnapshot) => {
+      const itemsSnapshot = await getDocs(collection(db, "items"));
+      if (!itemsSnapshot.empty) {
+        let sortiesCount = 0;
+        let prestationCount = 0;
+        let prestation = 0;
+        let expenses = 0;
+        let profit = 0;
+        itemsSnapshot.forEach((item) => {
+          if (item.exists()) {
+            const data = item.data();
+            if (data.finishedAt) sortiesCount++;
+            if (data.prestation > 0 && data.finishedAt) {
+              prestationCount++;
+              prestation += Number(data.prestation);
+            }
+            if (data.expenses > 0 && data.finishedAt)
+              expenses += Number(data.expenses);
+            if (data.labor > 0 && data.finishedAt) profit += Number(data.labor);
+          }
+        });
+        await updateDoc(doc(db, "tools", "stats"), {
+          number_of_entries: itemsSnapshot.size,
+          number_of_exits: sortiesCount,
+          number_of_prestations: prestationCount,
+          total_revenue: prestation,
+          total_expenses: expenses,
+          total_profit: profit,
+        });
+      }
+      if (docSnapshot.exists()) {
+        setStats(docSnapshot.data());
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
   return (
     <View style={styles.statsView}>
       <View style={styles.buttoncontainer}>
@@ -50,6 +106,7 @@ const Stats = ({
             Statistiques
           </Text>
           <Text>Nombre d'entrées: {stats.number_of_entries}</Text>
+          <Text>Nombre de sorties: {stats.number_of_exits}</Text>
           <Text>
             Nombre d'entrées avec prestations: {stats.number_of_prestations}
           </Text>

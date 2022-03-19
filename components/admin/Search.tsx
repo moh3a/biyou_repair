@@ -5,16 +5,17 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { BottomSheet, ListItem } from "react-native-elements";
 
-import { Text } from "../Themed";
+import { Text, View } from "../Themed";
 import BiyouButton from "../elements/Button";
 import BiyouModal from "../elements/Modal";
 import BiyouTextInput from "../elements/TextInput";
 import Colors from "../../constants/Colors";
 import Error from "../Error";
+import DateTimePicker from "../elements/DatePicker";
 
 const StatusList = [
   "",
@@ -43,31 +44,29 @@ const SearchModal = ({
   const [clientName, setClientName] = useState("");
   const [model, setModel] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [exitDate, setExitDate] = useState("");
+  useEffect(() => {
+    console.log(exitDate);
+  }, [exitDate]);
 
   const [status, setStatus] = useState(StatusList[0]);
   const [openStatusPicker, setOpenStatusPicker] = useState(false);
 
   const searchHandler = async () => {
     const queryConstraints: any[] = [];
-    if (itemId) {
+    if (itemId)
       queryConstraints.push(where("itemId", "==", itemId.toUpperCase()));
-    }
-    if (clientName) {
+    if (clientName)
       queryConstraints.push(
         where("clientName", "==", clientName.toLowerCase())
       );
-    }
-    if (model) {
-      queryConstraints.push(where("model", "==", model.toLowerCase()));
-    }
-    if (serialNumber) {
+    if (model) queryConstraints.push(where("model", "==", model.toLowerCase()));
+    if (serialNumber)
       queryConstraints.push(
         where("serialNumber", "==", serialNumber.toLowerCase())
       );
-    }
-    if (status) {
-      queryConstraints.push(where("status", "==", status));
-    }
+    if (status) queryConstraints.push(where("status", "==", status));
+    if (exitDate) queryConstraints.push(where("finishedAt", "==", exitDate));
 
     const results: any[] = [];
     const querySnapshot = await getDocs(
@@ -152,6 +151,31 @@ const SearchModal = ({
           </ListItem>
         ))}
       </BottomSheet>
+      <View
+        style={{
+          backgroundColor: "transparent",
+          marginHorizontal: 15,
+          marginVertical: 4,
+        }}
+      >
+        <DateTimePicker
+          value={exitDate}
+          onChange={(e: any) => setExitDate(e.target.value)}
+          style={{
+            color: Colors.black,
+            borderColor: Colors.black,
+            borderWidth: 1,
+            padding: 10,
+            borderRadius: 15,
+            backgroundColor: Colors.gray,
+          }}
+        />
+        <Text
+          style={{ color: "#999", position: "absolute", right: 35, top: 10 }}
+        >
+          Date de sortie
+        </Text>
+      </View>
       <BiyouButton
         title="Chercher"
         clickHandler={searchHandler}

@@ -28,6 +28,7 @@ export interface IEntry {
 
 export interface IStats {
   number_of_entries?: number;
+  number_of_exits?: number;
   number_of_prestations?: number;
   total_revenue?: number;
   total_expenses?: number;
@@ -107,4 +108,45 @@ export const localISODate = () => {
   let local = new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
   let date = local.substring(0, 10) + " " + local.substring(11, 16);
   return date;
+};
+
+import { FIREBASE_VAPIDKEY } from "@env";
+import { getApps, initializeApp } from "firebase/app";
+import { getMessaging, getToken } from "firebase/messaging";
+import { Platform } from "react-native";
+import FirebaseConfig from "../config/firebase.config";
+export const initializeFirebase = async () => {
+  if (getApps().length === 0) {
+    const app = initializeApp(FirebaseConfig);
+    // const messaging = getMessaging(app);
+
+    // if (Platform.OS === "web" && "serviceWorker" in navigator) {
+    //   window.addEventListener("load", async () => {
+    //     try {
+    //       const token = await getToken(messaging, {
+    //         serviceWorkerRegistration: await navigator.serviceWorker.register(
+    //           "./firebase-messaging-sw.js"
+    //         ),
+    //         vapidKey: FIREBASE_VAPIDKEY,
+    //       });
+    //       if (token) {
+    //         console.log(`On a eu le token: ${token}`);
+    //       } else {
+    //         const permission = await Notification.requestPermission();
+    //         console.log(
+    //           `On est pas permis d'envoyer des notifications. Status ${permission}`
+    //         );
+    //       }
+    //     } catch (error) {
+    //       console.log(
+    //         `On a pas réussi à avoir le FCM token. Le message d'erreur: ${error}`
+    //       );
+    //     }
+    //   });
+    // } else {
+    //   console.log(
+    //     `Les Service Workers ne sont pas disponibles sur ce navigateur. Vous ne receverez pas de notifications.`
+    //   );
+    // }
+  }
 };

@@ -34,83 +34,10 @@ export default function AdminScreen() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
 
-  const [openList, setOpenList] = useState(false);
   const [items, setItems] = useState<IEntry[]>();
+  const [openList, setOpenList] = useState(false);
 
   const [openStats, setOpenStats] = useState(false);
-  const [stats, setStats] = useState<IStats>();
-
-  const fetchItems = async () => {
-    setItems([]);
-    onSnapshot(query(collection(db, "items")), (querySnapshot) => {
-      let newlist: any[] = [];
-      querySnapshot.forEach((doc) => {
-        newlist.unshift(doc.data());
-      });
-      setOpenStats(false);
-      setOpenList(true);
-      setItems(newlist);
-    });
-  };
-
-  const fetchStats = async () => {
-    onSnapshot(doc(db, "tools", "stats"), async (docSnapshot) => {
-      setOpenList(false);
-      setOpenStats(true);
-      const itemsSnapshot = await getDocs(collection(db, "items"));
-      if (!itemsSnapshot.empty) {
-        await updateDoc(doc(db, "tools", "stats"), {
-          number_of_entries: itemsSnapshot.size,
-        });
-      }
-
-      // chiffre d'affaire
-      const prestationSnapshot = await getDocs(
-        query(collection(db, "items"), where("prestation", ">", 0))
-      );
-      if (!prestationSnapshot.empty) {
-        let montant = 0;
-        prestationSnapshot.forEach((prix) => {
-          montant += Number(prix.data().prestation);
-        });
-        await updateDoc(doc(db, "tools", "stats"), {
-          number_of_prestations: prestationSnapshot.size,
-          total_revenue: montant,
-        });
-      }
-
-      // charges
-      const expensesSnapshot = await getDocs(
-        query(collection(db, "items"), where("expenses", ">", 0))
-      );
-      if (!expensesSnapshot.empty) {
-        let montant = 0;
-        expensesSnapshot.forEach((prix) => {
-          montant += Number(prix.data().expenses);
-        });
-        await updateDoc(doc(db, "tools", "stats"), {
-          total_expenses: montant,
-        });
-      }
-
-      // benefices
-      const profitSnapshot = await getDocs(
-        query(collection(db, "items"), where("labor", ">", 0))
-      );
-      if (!profitSnapshot.empty) {
-        let montant = 0;
-        profitSnapshot.forEach((prix) => {
-          montant += Number(prix.data().labor);
-        });
-        await updateDoc(doc(db, "tools", "stats"), {
-          total_profit: montant,
-        });
-      }
-      if (docSnapshot.exists()) {
-        setStats(docSnapshot.data());
-      }
-    });
-  };
 
   return (
     <>
@@ -142,7 +69,10 @@ export default function AdminScreen() {
 
             {/* Liste */}
             <TouchableOpacity
-              onPress={fetchItems}
+              onPress={() => {
+                setOpenStats(false);
+                setOpenList(true);
+              }}
               style={[styles.actioncard, styles.actioncardlist]}
             >
               <FontAwesome size={25} color={Colors.white} name="tasks" />
@@ -151,7 +81,10 @@ export default function AdminScreen() {
 
             {/* Stats */}
             <TouchableOpacity
-              onPress={fetchStats}
+              onPress={() => {
+                setOpenList(false);
+                setOpenStats(true);
+              }}
               style={[styles.actioncard, styles.actioncardstats]}
             >
               <FontAwesome size={25} color={Colors.white} name="bar-chart" />
@@ -163,6 +96,7 @@ export default function AdminScreen() {
               <View style={{ paddingBottom: 75 }}>
                 <ItemsList
                   items={items}
+                  setItems={setItems}
                   openList={openList}
                   setOpenList={setOpenList}
                 />
@@ -170,11 +104,7 @@ export default function AdminScreen() {
             )}
             {openStats && (
               <View style={{ paddingBottom: 75 }}>
-                <Stats
-                  stats={stats}
-                  openStats={openStats}
-                  setOpenStats={setOpenStats}
-                />
+                <Stats openStats={openStats} setOpenStats={setOpenStats} />
               </View>
             )}
             <SearchModal
