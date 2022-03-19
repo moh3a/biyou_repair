@@ -16,6 +16,12 @@ import SearchModal from "../components/admin/Search";
 import Stats from "../components/admin/Stats";
 import { IUser, selectUser } from "../redux/userSlice";
 import { IEntry } from "../utils/method";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 
 export default function AdminScreen() {
   const { user }: { user?: IUser | undefined } = useSelector(selectUser);
@@ -23,10 +29,24 @@ export default function AdminScreen() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
 
+  const [openStats, setOpenStats] = useState(false);
+
   const [items, setItems] = useState<IEntry[]>();
   const [openList, setOpenList] = useState(false);
-
-  const [openStats, setOpenStats] = useState(false);
+  const db = getFirestore();
+  const fetchItems = async () => {
+    setItems([]);
+    setOpenStats(false);
+    setOpenList(true);
+    onSnapshot(query(collection(db, "items")), (querySnapshot) => {
+      let newlist: any[] = [];
+      console.log("fetchItems called");
+      querySnapshot.forEach((doc) => {
+        newlist.unshift(doc.data());
+      });
+      setItems(newlist);
+    });
+  };
 
   return (
     <>
@@ -58,10 +78,7 @@ export default function AdminScreen() {
 
             {/* Liste */}
             <TouchableOpacity
-              onPress={() => {
-                setOpenStats(false);
-                setOpenList(true);
-              }}
+              onPress={fetchItems}
               style={[styles.actioncard, styles.actioncardlist]}
             >
               <FontAwesome size={25} color={Colors.white} name="tasks" />
@@ -85,7 +102,6 @@ export default function AdminScreen() {
               <View style={{ paddingBottom: 75 }}>
                 <ItemsList
                   items={items}
-                  setItems={setItems}
                   openList={openList}
                   setOpenList={setOpenList}
                 />

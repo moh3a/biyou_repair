@@ -30,6 +30,7 @@ export default function AddItem({
   // set the entry ID
   const getLastId = useCallback(async () => {
     onSnapshot(doc(db, "currentId", "currentId"), (doc) => {
+      console.log("getLastId called");
       if (doc.exists()) {
         setId(createNewId(doc.data().id));
       }
@@ -42,6 +43,7 @@ export default function AddItem({
   // final submit function
   const addHandler = async () => {
     if (id && name && phoneNumber && products.length > 0) {
+      console.log("addHandler called");
       products.map(async (product) => {
         if (product.model) {
           const entryRef = id + Math.floor(Math.random() * 10000).toString();

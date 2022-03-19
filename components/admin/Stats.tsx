@@ -2,6 +2,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   onSnapshot,
@@ -30,6 +31,7 @@ const Stats = ({
   const db = getFirestore();
 
   const fetchStats = useCallback(async () => {
+    console.log("fetchStats called");
     const itemsSnapshot = await getDocs(collection(db, "items"));
     if (!itemsSnapshot.empty) {
       let sortiesCount = 0;
@@ -59,11 +61,8 @@ const Stats = ({
         total_profit: profit,
       });
     }
-    onSnapshot(doc(db, "tools", "stats"), async (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        setStats(docSnapshot.data());
-      }
-    });
+    const statsRef = await getDoc(doc(db, "tools", "stats"));
+    if (statsRef.exists()) setStats(statsRef.data());
   }, []);
 
   useEffect(() => {
