@@ -40,7 +40,6 @@ export default function AdminScreen() {
     setOpenList(true);
     onSnapshot(query(collection(db, "items")), (querySnapshot) => {
       let newlist: any[] = [];
-      console.log("fetchItems called");
       querySnapshot.forEach((doc) => {
         newlist.unshift(doc.data());
       });

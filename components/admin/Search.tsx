@@ -69,7 +69,6 @@ const SearchModal = ({
     if (exitDate) queryConstraints.push(where("finishedAt", "==", exitDate));
 
     const results: any[] = [];
-    console.log("searchHandler called");
     const querySnapshot = await getDocs(
       query(collection(db, "items"), ...queryConstraints)
     );

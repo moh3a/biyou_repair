@@ -60,8 +60,7 @@ export default function AdminItemDetails({
   const db = getFirestore();
 
   const updateStatus = useCallback(async () => {
-    if (statusIdx && item.entryRef) {
-      console.log("updateStatus called");
+    if (statusIdx && StatusList[statusIdx] !== item.status && item.entryRef) {
       await updateDoc(doc(db, "items", item.entryRef), {
         status: StatusList[statusIdx],
       });
@@ -74,7 +73,6 @@ export default function AdminItemDetails({
 
   const updateFinishedDate = useCallback(async () => {
     if (item.entryRef) {
-      console.log("updateFinishedDate called");
       if (finishedCheck) {
         await updateDoc(doc(db, "items", item.entryRef), {
           finishedAt: localISODate().substring(0, 10),
@@ -98,7 +96,7 @@ export default function AdminItemDetails({
   const updateHandler = async (key: string, value: string | number) => {
     if (key && item.entryRef) {
       let updatedValue: any = {};
-      console.log("updateHandler called");
+
       await updateDoc(
         doc(db, "items", item.entryRef),
         Object.defineProperty(updatedValue, key, {

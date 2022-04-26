@@ -31,7 +31,6 @@ const Stats = ({
   const db = getFirestore();
 
   const fetchStats = useCallback(async () => {
-    console.log("fetchStats called");
     const itemsSnapshot = await getDocs(collection(db, "items"));
     if (!itemsSnapshot.empty) {
       let sortiesCount = 0;
